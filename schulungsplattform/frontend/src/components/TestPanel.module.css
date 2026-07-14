@@ -1,0 +1,297 @@
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0 10px 10px 10px;
+  box-shadow: var(--shadow);
+  padding: 26px 30px 30px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.intro {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+/* ── Fortschrittsleiste ────────────────────────────────────────────────────── */
+.progressWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.25s;
+}
+
+.progressText {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Frage ─────────────────────────────────────────────────────────────────── */
+.question {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.questionCorrect {
+  border-color: #86efac;
+  background: rgba(22, 101, 52, 0.04);
+}
+
+.questionWrong {
+  border-color: #fca5a5;
+  background: rgba(153, 27, 27, 0.04);
+}
+
+.questionHead {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.qNum {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(28, 105, 212, 0.12);
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.qText {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.qType {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  display: block;
+  margin-top: 2px;
+}
+
+/* ── Optionen ──────────────────────────────────────────────────────────────── */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  font-size: 14px;
+}
+
+.option:hover {
+  background: rgba(28, 105, 212, 0.04);
+}
+
+.optionSelected {
+  border-color: var(--primary);
+  background: rgba(28, 105, 212, 0.07);
+}
+
+.optionCorrect {
+  border-color: #86efac;
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.optionWrong {
+  border-color: #fca5a5;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.option input {
+  accent-color: var(--primary);
+}
+
+.textInput {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Feedback nach Abgabe ──────────────────────────────────────────────────── */
+.feedback {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.feedbackCorrect {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.feedbackWrong {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
+.feedbackLabel {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.correctAnswer {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* ── Ergebnis-Banner ───────────────────────────────────────────────────────── */
+.resultBanner {
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.resultPassed {
+  background: var(--success-bg);
+  border: 1px solid #86efac;
+}
+
+.resultFailed {
+  background: var(--warn-bg);
+  border: 1px solid #fcd34d;
+}
+
+.resultIcon {
+  flex-shrink: 0;
+}
+
+.resultPassed .resultIcon {
+  color: var(--success);
+}
+
+.resultFailed .resultIcon {
+  color: var(--warn);
+}
+
+.resultTitle {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 2px;
+}
+
+.resultText {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.recommend {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.recommend ul {
+  margin: 4px 0 0;
+  padding-left: 20px;
+}
+
+/* ── Aktionen ──────────────────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondaryBtn:hover {
+  background: rgba(28, 105, 212, 0.05);
+}

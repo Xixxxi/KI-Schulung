@@ -1,0 +1,11 @@
+# Ignore local environments
+.env/
+venv/
+ENV/
+env/
+.venv/
+*.env
+*.env.*
+
+# Ignore node_modules
+**/node_modules

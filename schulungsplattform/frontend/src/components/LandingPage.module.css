@@ -1,0 +1,427 @@
+/* ── Root ───────────────────────────────────────────────────────────────── */
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--nav-bg);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.heroInner {
+  padding: 40px 48px 32px;
+  max-width: 1200px;
+}
+
+.heroTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.heroSub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 640px;
+  line-height: 1.65;
+}
+
+.heroRule {
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary) 0%, transparent 60%);
+}
+
+/* ── Content ─────────────────────────────────────────────────────────────── */
+.content {
+  flex: 1;
+  padding: 36px 48px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.sectionAccent {
+  width: 3px;
+  height: 36px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.sectionSub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ── Schritte-Erklärung ──────────────────────────────────────────────────── */
+.stepsRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stepCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px;
+  position: relative;
+  gap: 8px;
+  border-right: 1px solid var(--border);
+}
+
+.stepCard:last-child {
+  border-right: none;
+}
+
+.stepNum {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(28, 105, 212, 0.1);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepIconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(28, 105, 212, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.stepCardLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stepCardHint {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 200px;
+}
+
+.stepArrow {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  z-index: 1;
+  background: var(--card-bg);
+  border-radius: 50%;
+}
+
+/* ── Tile Grid ───────────────────────────────────────────────────────────── */
+.tileGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* ── Tile ─────────────────────────────────────────────────────────────────── */
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--tile-accent, var(--primary));
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tile:hover::before {
+  opacity: 1;
+}
+
+.tile:hover {
+  border-color: color-mix(in srgb, var(--tile-accent, var(--primary)) 35%, var(--border) 65%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.tile:active {
+  transform: translateY(0);
+}
+
+/* ── Tile innerer Aufbau ─────────────────────────────────────────────────── */
+.tileTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 18px 14px;
+}
+
+.tileTopRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tileIconWrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tileEmoji {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.tileArrow {
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.15s, transform 0.15s;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tile:hover .tileArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.badgePassed {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tileLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  padding: 0 18px 3px;
+}
+
+.tileTagline {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 18px 10px;
+}
+
+.tileDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 0 18px 10px;
+  flex: 1;
+}
+
+.tileMeta {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  padding: 0 18px 14px;
+}
+
+.tileMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tileMetaIcon {
+  flex-shrink: 0;
+}
+
+.badgeDone {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgeProgress {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* (alter Name für Rückwärtskompatibilität) */
+.badgePassed {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Tile-Fortschrittsbalken ─────────────────────────────────────────────── */
+.tileProgressBar {
+  height: 3px;
+  background: var(--border);
+  margin: 0 18px 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tileProgressFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  min-width: 4px;
+}
+
+/* ── Tile Footer ──────────────────────────────────────────────────────────── */
+.tileFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg);
+  transition: background 0.15s;
+}
+
+.tile:hover .tileFooter {
+  background: color-mix(in srgb, var(--tile-accent, var(--primary)) 5%, var(--bg) 95%);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .heroInner {
+    padding: 28px 24px 20px;
+  }
+
+  .content {
+    padding: 24px 24px 40px;
+  }
+
+  .stepsRow {
+    flex-direction: column;
+  }
+
+  .stepCard {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+  }
+
+  .stepCard:last-child {
+    border-bottom: none;
+  }
+
+  .stepNum {
+    position: static;
+  }
+
+  .stepArrow {
+    display: none;
+  }
+
+  .stepCardHint {
+    max-width: none;
+  }
+}

@@ -1,0 +1,88 @@
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0 10px 10px 10px;
+  box-shadow: var(--shadow);
+  padding: 26px 30px 30px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.intro {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.unlockBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 9px;
+  padding: 11px 16px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.unlockOfficial {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #86efac;
+}
+
+.unlockOpen {
+  background: rgba(28, 105, 212, 0.08);
+  color: var(--primary-dark);
+  border: 1px solid rgba(28, 105, 212, 0.25);
+}
+
+.search {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-family: inherit;
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.entry {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.entry:hover {
+  border-color: rgba(28, 105, 212, 0.35);
+  box-shadow: var(--shadow);
+}
+
+.term {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--primary-dark);
+  margin-bottom: 4px;
+}
+
+.definition {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 30px;
+}

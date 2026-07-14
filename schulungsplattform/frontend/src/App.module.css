@@ -1,0 +1,280 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Kopfzeile ─────────────────────────────────────────────────────────────── */
+.header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brandTitle {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.brandSub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.headerSpacer {
+  flex: 1;
+}
+
+/* ── Breadcrumb ─────────────────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.breadcrumbBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.breadcrumbBtn:hover {
+  background: rgba(28, 105, 212, 0.08);
+}
+
+.breadcrumbSep {
+  color: var(--border);
+  flex-shrink: 0;
+}
+
+.breadcrumbCurrent {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 6px;
+}
+
+
+.chapterPickerLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+
+.chapterPicker {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ── Schritt-Navigation ────────────────────────────────────────────────────── */
+.stepNav {
+  display: flex;
+  gap: 8px;
+  padding: 14px 28px 0;
+  max-width: 860px;
+}
+
+.stepBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.stepBtn:hover:not(:disabled) {
+  background: rgba(28, 105, 212, 0.05);
+}
+
+.stepBtnActive {
+  background: var(--card-bg);
+  color: var(--primary);
+  border-bottom-color: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.stepBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stepNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(28, 105, 212, 0.12);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.stepBtnActive .stepNum {
+  background: var(--primary);
+  color: #fff;
+}
+
+.stepLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.stepHint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.lock {
+  margin-left: auto;
+  color: var(--text-muted);
+}
+
+/* ── Inhalt (Legacy, nicht mehr im chapter-view genutzt) ──────────────────── */
+.main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 24px 28px 60px;
+}
+
+/* Landing Page + Topic-Page füllen die gesamte Breite aus */
+.mainFull {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Kapitel-Layout: Sidebar links + Content rechts ───────────────────────── */
+.chapterLayout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chapterContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.panelWrap {
+  padding: 0 28px 60px;
+  max-width: 860px;
+}
+
+.statusBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+/* Statusboxen außerhalb des Panels brauchen eigene Außenabstände */
+.statusPadded {
+  margin: 20px 28px;
+}
+
+.statusInfo {
+  background: rgba(28, 105, 212, 0.08);
+  color: var(--primary-dark);
+}
+
+.statusError {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--card-bg);
+}

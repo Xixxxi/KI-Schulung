@@ -1,0 +1,331 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten erstellen",
+  "topicDescription": "Von der Idee bis zum fertigen Agenten: Sprachmodelle, der Agent-Loop, Tools und erste Best Practices – Schritt für Schritt erklärt.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Grundlagen",
+  "subTopicDescription": "Was ein Agent ist, die vier Bausteine, der Agent-Loop und wie Werkzeuge definiert werden.",
+
+  "id": "ki-agent-grundlagen",
+  "order": 1,
+  "title": "KI-Agenten – Grundlagen",
+  "summary": "Was ein KI-Agent ist, aus welchen Bausteinen er besteht und wie ein einfacher Agent-Loop mit Werkzeugen (Tools) funktioniert.",
+  "estimatedMinutes": 15,
+  "lessons": [
+    {
+      "id": "l1-was-ist-agent",
+      "title": "Was ist ein KI-Agent?",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein KI-Agent ist ein System, das ein Sprachmodell (LLM) nutzt, um selbstständig ein Ziel zu verfolgen. Anders als ein reiner Chatbot beantwortet ein Agent nicht nur eine einzelne Frage – er plant Schritte, ruft Werkzeuge auf und reagiert auf Ergebnisse, bis das Ziel erreicht ist."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Chatbot",
+            "color": "#6b7280",
+            "items": [
+              "Nimmt eine Eingabe entgegen",
+              "Gibt genau eine Antwort zurück",
+              "Kein Zugriff auf externe Daten",
+              "Kein Gedächtnis zwischen Gesprächen"
+            ]
+          },
+          "right": {
+            "label": "KI-Agent",
+            "color": "#1c69d4",
+            "items": [
+              "Verfolgt ein Ziel über mehrere Schritte",
+              "Kann Werkzeuge aufrufen (Suche, Rechner …)",
+              "Beobachtet Ergebnisse und plant neu",
+              "Hält Zwischenergebnisse im Kontext"
+            ]
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Kernidee in einem Satz",
+          "text": "Chatbot = eine Frage, eine Antwort. Agent = ein Kreislauf aus Denken, Handeln und Beobachten über beliebig viele Schritte."
+        }
+      ]
+    },
+    {
+      "id": "l2-bausteine",
+      "title": "Die vier Bausteine eines Agenten",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Fast jeder Agent besteht aus denselben vier Grundbausteinen. Wer diese kennt, kann jeden Agenten lesen, debuggen und weiterentwickeln."
+        },
+        {
+          "type": "cards",
+          "title": "Die vier Bausteine",
+          "items": [
+            {
+              "icon": "🧠",
+              "label": "Modell (LLM)",
+              "color": "#1c69d4",
+              "description": "Das 'Gehirn': versteht Text, plant Schritte und formuliert Antworten oder Werkzeugaufrufe."
+            },
+            {
+              "icon": "📋",
+              "label": "Instruktionen",
+              "color": "#6d28d9",
+              "description": "Der System-Prompt: legt Rolle, Ziel und Grenzen des Agenten fest, bevor der erste Schritt läuft."
+            },
+            {
+              "icon": "🔧",
+              "label": "Werkzeuge (Tools)",
+              "color": "#0369a1",
+              "description": "Funktionen, mit denen der Agent die Außenwelt erreicht – z. B. Websuche, Datenbankabfrage oder Taschenrechner."
+            },
+            {
+              "icon": "💾",
+              "label": "Speicher (Memory)",
+              "color": "#166534",
+              "description": "Die bisherige Konversation und Zwischenergebnisse – das, was das Modell bei jedem Schritt als Kontext erhält."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Merkhilfe",
+          "text": "Modell + Instruktionen + Werkzeuge + Speicher = Agent. Fehlt ein Baustein vollständig, ist das Ergebnis meist nur ein einfacher Chatbot."
+        }
+      ]
+    },
+    {
+      "id": "l3-agent-loop",
+      "title": "Der Agent-Loop: Denken → Handeln → Beobachten",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Das Herzstück eines Agenten ist ein Kreislauf (Loop). Er wiederholt sich so lange, bis das Ziel erreicht ist – oder eine maximale Schrittzahl als Sicherheitsnetz greift."
+        },
+        {
+          "type": "diagram",
+          "caption": "Ablauf eines Agent-Loop-Durchlaufs",
+          "nodes": [
+            { "id": "start", "type": "start", "emoji": "🎯", "label": "Ziel", "sublabel": "wird übergeben" },
+            { "id": "reason", "type": "step", "emoji": "🤔", "label": "Denken", "sublabel": "Was ist der nächste Schritt?" },
+            { "id": "act", "type": "step", "emoji": "⚡", "label": "Handeln", "sublabel": "Tool aufrufen oder antworten" },
+            { "id": "observe", "type": "step", "emoji": "👁", "label": "Beobachten", "sublabel": "Ergebnis in Kontext aufnehmen" },
+            { "id": "end", "type": "end", "emoji": "✅", "label": "Fertig", "sublabel": "Antwort ausgeben" }
+          ],
+          "loop": {
+            "label": "Wenn das Ziel noch nicht erreicht ist → zurück zu Denken"
+          },
+          "note": "Der Loop endet, wenn der Agent eine Antwort ausgibt (Ziel erreicht) oder MAX_SCHRITTE überschritten sind."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "Stark vereinfachter Agent-Loop in Python",
+          "text": "ziel = \"Wie ist das Wetter in München?\"\nkontext = [system_prompt, ziel]\n\nfor schritt in range(MAX_SCHRITTE):\n    antwort = llm(kontext)              # 1. Denken\n\n    if antwort.will_tool_aufrufen:\n        ergebnis = tool_ausfuehren(antwort.tool)  # 2. Handeln\n        kontext.append(ergebnis)        # 3. Beobachten → nächster Durchlauf\n    else:\n        return antwort.text             # Ziel erreicht – Schleife verlassen"
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Wichtig: Abbruchbedingung nicht vergessen",
+          "text": "Ohne ein Limit für die Schrittanzahl (MAX_SCHRITTE) kann ein Agent in eine Endlosschleife geraten. Eine Abbruchbedingung ist Pflicht – und sie sollte niedrig starten (z. B. 10 Schritte)."
+        }
+      ]
+    },
+    {
+      "id": "l4-tools",
+      "title": "Werkzeuge (Tools) definieren und einsetzen",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Werkzeuge geben dem Agenten Fähigkeiten, die das Sprachmodell allein nicht hat: aktuelle Daten abrufen, rechnen, Dateien lesen oder in Datenbanken suchen. Ein gutes Werkzeug besteht aus drei Teilen:"
+        },
+        {
+          "type": "steps",
+          "title": "Aufbau eines Werkzeugs",
+          "items": [
+            {
+              "label": "Name",
+              "description": "Ein klarer, eindeutiger Bezeichner. Das Modell wählt das Werkzeug anhand des Namens.",
+              "example": "wetter_abfragen, datenbank_suchen, pdf_lesen"
+            },
+            {
+              "label": "Beschreibung",
+              "description": "Ein Satz, der erklärt, wann und wofür das Werkzeug eingesetzt wird. Je präziser, desto zuverlässiger die Auswahl.",
+              "example": "\"Gibt das aktuelle Wetter für eine beliebige Stadt zurück.\""
+            },
+            {
+              "label": "Eingabe-Parameter",
+              "description": "Klar typisierte Parameter (Name + Typ + Beschreibung). Das Modell erzeugt die Eingabe, also müssen sie eindeutig definiert sein.",
+              "example": "stadt: str – Der Name der Stadt, für die das Wetter abgefragt wird."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "Ein vollständiges Beispiel-Werkzeug",
+          "text": "def wetter_abfragen(stadt: str) -> str:\n    \"\"\"\n    Gibt das aktuelle Wetter für eine Stadt zurück.\n    Nutze dieses Tool, wenn der Nutzer nach dem aktuellen\n    Wetter in einem bestimmten Ort fragt.\n    \"\"\"\n    # In einer echten Implementierung: API-Aufruf\n    return f\"In {stadt} sind es aktuell 21 °C und sonnig.\""
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Daumenregel",
+          "text": "Wenn du einem neuen Mitarbeiter in einem Satz erklären könntest, wozu das Werkzeug dient – dann ist die Beschreibung gut genug für den Agenten."
+        }
+      ]
+    },
+    {
+      "id": "l5-best-practices",
+      "title": "Erste Best Practices",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Mit den Grundlagen im Gepäck gibt es einige Faustregeln, die fast immer helfen – egal ob du deinen ersten oder deinen zehnten Agenten baust."
+        },
+        {
+          "type": "steps",
+          "title": "Schritt für Schritt zum ersten Agenten",
+          "items": [
+            {
+              "label": "Klein anfangen",
+              "description": "Starte mit einem einzigen, klar definierten Ziel und maximal zwei Werkzeugen. Komplexität lässt sich später hinzufügen.",
+              "example": "Ziel: Wetterauskunft geben. Tools: wetter_abfragen, ort_suchen."
+            },
+            {
+              "label": "System-Prompt sorgfältig formulieren",
+              "description": "Gib dem Agenten eine klare Rolle, das Ziel und explizite Grenzen (was er NICHT tun soll).",
+              "example": "\"Du bist ein Wetter-Assistent. Antworte nur auf Fragen zum Wetter. Benutze niemals eigene Annahmen über Temperaturen.\""
+            },
+            {
+              "label": "Abbruchbedingung setzen",
+              "description": "Immer MAX_SCHRITTE definieren – und mit einem niedrigen Wert starten, um Kosten und Endlosschleifen zu vermeiden.",
+              "example": "MAX_SCHRITTE = 8  # Bei Bedarf erhöhen"
+            },
+            {
+              "label": "Jeden Schritt protokollieren",
+              "description": "Logge Denkschritte, Werkzeugaufrufe und Beobachtungen. Ohne Logs ist Debugging bei Agenten nahezu unmöglich.",
+              "example": "print(f\"[Schritt {i}] Tool: {antwort.tool}, Input: {antwort.tool_input}\")"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Du bist bereit für den Test",
+          "text": "Wenn du diese fünf Lektionen verstanden hast, teste jetzt dein Wissen. Nach bestandenem Test steht dir das vollständige Nachschlagewerk mit allen Kernbegriffen zur Verfügung."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l1-was-ist-agent",
+        "question": "Worin unterscheidet sich ein KI-Agent am deutlichsten von einem einfachen Chatbot?",
+        "options": [
+          "Er verwendet ein größeres Sprachmodell.",
+          "Er verfolgt ein Ziel über mehrere Schritte und kann Werkzeuge nutzen.",
+          "Er antwortet immer schneller.",
+          "Er benötigt kein Sprachmodell."
+        ],
+        "correct": 1,
+        "explanation": "Ein Agent plant über mehrere Schritte, nutzt Werkzeuge und reagiert auf Ergebnisse – ein Chatbot liefert nur eine einzelne Antwort."
+      },
+      {
+        "id": "q2",
+        "type": "multi",
+        "lessonRef": "l2-bausteine",
+        "question": "Welche der folgenden gehören zu den vier Bausteinen eines Agenten? (Mehrfachauswahl)",
+        "options": [
+          "Modell (LLM)",
+          "Instruktionen (System-Prompt)",
+          "Grafikkarte",
+          "Werkzeuge (Tools)",
+          "Speicher (Memory/Kontext)"
+        ],
+        "correct": [0, 1, 3, 4],
+        "explanation": "Die vier Bausteine sind Modell, Instruktionen, Werkzeuge und Speicher. Eine Grafikkarte ist Infrastruktur, aber kein konzeptioneller Baustein des Agenten."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l3-agent-loop",
+        "question": "In welcher Reihenfolge laufen die drei Phasen des Agent-Loops ab?",
+        "options": [
+          "Handeln → Denken → Beobachten",
+          "Beobachten → Handeln → Denken",
+          "Denken → Handeln → Beobachten",
+          "Denken → Beobachten → Handeln"
+        ],
+        "correct": 2,
+        "explanation": "Der Loop läuft: Denken (Reason) → Handeln (Act) → Beobachten (Observe) – und beginnt dann erneut, bis das Ziel erreicht ist."
+      },
+      {
+        "id": "q4",
+        "type": "single",
+        "lessonRef": "l3-agent-loop",
+        "question": "Warum ist eine Abbruchbedingung (z. B. maximale Schrittzahl) im Agent-Loop wichtig?",
+        "options": [
+          "Sie macht die Antworten höflicher.",
+          "Sie verhindert eine mögliche Endlosschleife.",
+          "Sie ist nur für Chatbots relevant.",
+          "Sie erhöht die Antwortqualität automatisch."
+        ],
+        "correct": 1,
+        "explanation": "Ohne Limit könnte der Agent endlos weiterlaufen. Eine Abbruchbedingung (MAX_SCHRITTE) ist deshalb Pflicht."
+      },
+      {
+        "id": "q5",
+        "type": "text",
+        "lessonRef": "l4-tools",
+        "question": "Erkläre kurz, warum eine präzise Beschreibung eines Werkzeugs entscheidend ist. (Tipp: nenne 'Beschreibung' und 'wählt' oder 'nutzt')",
+        "keywords": ["beschreibung", "wählt", "nutzt"],
+        "minKeywords": 1,
+        "hint": "Denke daran, wie der Agent entscheidet, welches Werkzeug er wann einsetzt.",
+        "explanation": "Das Modell entscheidet anhand von Name und Beschreibung, wann und welches Werkzeug es nutzt. Klare Beschreibungen führen zu zuverlässigerer Werkzeugwahl."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "KI-Agent",
+      "definition": "Ein System, das ein Sprachmodell nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen – inklusive Planung, Werkzeugnutzung und Reaktion auf Ergebnisse."
+    },
+    {
+      "term": "Sprachmodell (LLM)",
+      "definition": "Das 'Gehirn' des Agenten: ein Modell, das natürliche Sprache versteht und erzeugt. Beispiel: GPT-Modelle."
+    },
+    {
+      "term": "System-Prompt / Instruktionen",
+      "definition": "Die grundlegenden Anweisungen, die Rolle, Ziel und Grenzen des Agenten festlegen – werden vor dem ersten Schritt übergeben."
+    },
+    {
+      "term": "Werkzeug (Tool)",
+      "definition": "Eine Funktion, mit der ein Agent auf die Außenwelt zugreift, z. B. Websuche, Taschenrechner oder Datenbankabfrage. Besteht aus Name, Beschreibung und definierten Eingabe-Parametern."
+    },
+    {
+      "term": "Speicher (Memory / Kontext)",
+      "definition": "Der bisherige Gesprächsverlauf und die Zwischenergebnisse, die dem Modell bei jedem Schritt als Kontext zur Verfügung stehen."
+    },
+    {
+      "term": "Agent-Loop",
+      "definition": "Der Kreislauf aus Denken (Reason), Handeln (Act) und Beobachten (Observe), der sich wiederholt, bis das Ziel erreicht oder die maximale Schrittzahl überschritten ist."
+    },
+    {
+      "term": "Abbruchbedingung (MAX_SCHRITTE)",
+      "definition": "Eine Regel – meist eine maximale Schrittzahl –, die verhindert, dass der Agent-Loop endlos weiterläuft. Pflichtbestandteil jedes Agenten."
+    },
+    {
+      "term": "Reason–Act–Observe",
+      "definition": "Die drei Phasen eines Loop-Durchlaufs: überlegen (welcher Schritt als Nächstes), handeln (Werkzeug aufrufen oder antworten), Ergebnis beobachten und in Kontext aufnehmen."
+    }
+  ]
+}
