@@ -1,17 +1,16 @@
 /* ── Sidebar-Wrapper ─────────────────────────────────────────────────────── */
 .sidebar {
-  width: 234px;
-  min-width: 234px;
+  width: 240px;
+  min-width: 240px;
   flex-shrink: 0;
   background: var(--card-bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  /* Bleibt beim Scrollen des Inhalts stehen */
   position: sticky;
-  top: 57px; /* Höhe des Headers */
-  max-height: calc(100vh - 57px);
+  top: 56px;
+  max-height: calc(100vh - 56px);
 }
 
 /* ── Thema-Header ─────────────────────────────────────────────────────────── */
@@ -19,9 +18,20 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 18px 16px 12px;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   background: var(--nav-bg);
+  position: relative;
+}
+
+.topicHeader::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--bmw-blue) 0%, transparent 70%);
 }
 
 .topicIcon {
@@ -39,11 +49,12 @@
 }
 
 .topicLabel {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 2px;
 }
 
 .topicTitle {
@@ -124,11 +135,11 @@
 }
 
 .subBtn:hover {
-  background: rgba(28, 105, 212, 0.05);
+  background: rgba(28, 105, 212, 0.04);
 }
 
 .subBtnActive {
-  background: color-mix(in srgb, var(--accent, var(--primary)) 8%, transparent 92%);
+  background: rgba(28, 105, 212, 0.06);
 }
 
 .subBtnActive::before {
@@ -138,7 +149,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--accent, var(--primary));
+  background: var(--accent, var(--bmw-blue));
   border-radius: 0 2px 2px 0;
 }
 
@@ -197,8 +208,8 @@
 
 .subDoneLabel {
   display: block;
-  font-size: 10.5px;
-  color: #166534;
+  font-size: 10px;
+  color: var(--success);
   font-weight: 600;
   margin-top: 2px;
 }

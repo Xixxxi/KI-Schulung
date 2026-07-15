@@ -1,4 +1,4 @@
-/* ── Root ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ Root â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .root {
   display: flex;
   flex-direction: column;
@@ -6,14 +6,26 @@
   background: var(--bg);
 }
 
-/* ── Topic-Hero ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Topic-Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   background: var(--nav-bg);
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--bmw-blue) 0%, var(--bmw-blue-light) 40%, transparent 80%);
 }
 
 .heroInner {
-  padding: 36px 48px 28px;
+  padding: 40px 48px 32px;
   max-width: 1000px;
   display: flex;
   align-items: flex-start;
@@ -21,35 +33,37 @@
 }
 
 .heroIcon {
-  font-size: 42px;
+  font-size: 40px;
   line-height: 1;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 4px;
+  filter: grayscale(0.2);
 }
 
 .heroTitle {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
 }
 
 .heroSub {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.55);
   line-height: 1.65;
-  max-width: 640px;
-  margin: 0 0 12px;
+  max-width: 580px;
+  margin: 0 0 14px;
+  font-weight: 300;
 }
 
 .heroMeta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  gap: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
   flex-wrap: wrap;
 }
 
@@ -58,22 +72,18 @@
   align-items: center;
   gap: 5px;
   padding: 3px 10px;
-  border-radius: 20px;
-  background: rgba(22, 101, 52, 0.4);
+  border-radius: 3px;
+  background: rgba(10, 110, 46, 0.3);
   color: #86efac;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  border: 1px solid rgba(134, 239, 172, 0.3);
+  border: 1px solid rgba(134, 239, 172, 0.25);
 }
 
-.heroRule {
-  height: 3px;
-}
-
-/* ── Content ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .content {
   flex: 1;
-  padding: 32px 48px 48px;
+  padding: 36px 48px 52px;
   max-width: 1000px;
   width: 100%;
 }
@@ -81,52 +91,54 @@
 .sectionHeader {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
 .sectionAccent {
-  width: 3px;
-  height: 36px;
-  border-radius: 2px;
+  width: 2px;
+  height: 32px;
+  background: var(--bmw-blue);
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .sectionTitle {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   margin: 0 0 2px;
 }
 
 .sectionSub {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
   line-height: 1.55;
   max-width: 580px;
+  font-weight: 400;
 }
 
-/* ── Unterthemen-Liste ───────────────────────────────────────────────────── */
+/* â”€â”€ Unterthemen-Liste â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .subTopicList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* ── Karte ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ Karte â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .card {
   display: flex;
   align-items: center;
   gap: 18px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 0;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   position: relative;
   overflow: hidden;
 }
@@ -138,9 +150,9 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--card-accent, var(--primary));
+  background: var(--card-accent, var(--bmw-blue));
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity 0.2s;
 }
 
 .card:hover::before {
@@ -148,16 +160,16 @@
 }
 
 .card:hover {
-  border-color: color-mix(in srgb, var(--card-accent, var(--primary)) 30%, var(--border) 70%);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-  transform: translateX(2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-1);
+  transform: translateX(3px);
 }
 
 .card:active {
-  transform: translateX(0);
+  transform: translateX(1px);
 }
 
-/* ── Nummer links ────────────────────────────────────────────────────────── */
+/* â”€â”€ Nummer links â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cardNum {
   width: 52px;
   min-height: 52px;
@@ -165,14 +177,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
   border-radius: 0;
   flex-shrink: 0;
-  margin-left: 0;
+  color: var(--text-muted);
+  background: var(--bg);
+  border-right: 1px solid var(--border);
 }
 
-/* ── Körper ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ KÃ¶rper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cardBody {
   flex: 1;
   padding: 16px 0;
@@ -184,7 +198,7 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .cardTitle {
@@ -199,11 +213,12 @@
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  border-radius: 20px;
-  background: #dcfce7;
-  color: #166534;
+  border-radius: 3px;
+  background: var(--success-bg);
+  color: var(--success);
   font-size: 11px;
   font-weight: 600;
+  border: 1px solid var(--success-border);
 }
 
 .cardBadgePartial {
@@ -211,11 +226,12 @@
   align-items: center;
   gap: 4px;
   padding: 2px 8px;
-  border-radius: 20px;
-  background: #fffbeb;
-  color: #92400e;
+  border-radius: 3px;
+  background: rgba(28, 105, 212, 0.07);
+  color: var(--bmw-blue-dark);
   font-size: 11px;
   font-weight: 600;
+  border: 1px solid rgba(28, 105, 212, 0.2);
 }
 
 .cardDesc {
@@ -223,9 +239,10 @@
   color: var(--text-muted);
   line-height: 1.55;
   margin: 0 0 10px;
+  font-weight: 400;
 }
 
-/* ── Schritt-Chips ───────────────────────────────────────────────────────── */
+/* â”€â”€ Schritt-Chips â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cardSteps {
   display: flex;
   align-items: center;
@@ -246,7 +263,7 @@
   font-size: 14px;
 }
 
-/* ── Aktion rechts ───────────────────────────────────────────────────────── */
+/* â”€â”€ Aktion rechts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cardAction {
   display: flex;
   flex-direction: column;
@@ -256,7 +273,8 @@
   flex-shrink: 0;
   opacity: 0;
   transform: translateX(-4px);
-  transition: opacity 0.15s, transform 0.15s;
+  transition: opacity 0.2s, transform 0.2s;
+  color: var(--bmw-blue);
 }
 
 .card:hover .cardAction {
@@ -268,18 +286,20 @@
   font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 860px) {
   .heroInner {
-    padding: 24px 20px 20px;
+    padding: 28px 24px 24px;
     flex-direction: column;
     gap: 10px;
   }
 
   .content {
-    padding: 24px 20px 40px;
+    padding: 28px 24px 40px;
   }
 
   .cardAction {

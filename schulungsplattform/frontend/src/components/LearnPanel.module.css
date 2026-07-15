@@ -2,9 +2,9 @@
 .panel {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 0 10px 10px 10px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 0 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   min-height: 520px;
@@ -32,8 +32,8 @@
 }
 
 .chapterTitle {
-  font-size: 21px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 700;
   margin: 0 0 6px;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -58,11 +58,12 @@
 .chapterSummary {
   font-size: 14px;
   color: var(--text);
-  background: rgba(28, 105, 212, 0.05);
-  border-left: 3px solid var(--primary);
-  padding: 11px 14px;
-  border-radius: 0 8px 8px 0;
-  line-height: 1.6;
+  background: rgba(28, 105, 212, 0.04);
+  border-left: 3px solid var(--bmw-blue);
+  padding: 12px 16px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  line-height: 1.65;
+  font-weight: 400;
 }
 
 /* ── Fortschrittsleiste ──────────────────────────────────────────────────── */
@@ -74,7 +75,7 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary) 0%, #5b9ef9 100%);
+  background: var(--bmw-blue);
   border-radius: 0 2px 2px 0;
   transition: width 0.4s ease;
 }
@@ -100,10 +101,10 @@
 }
 
 .dot {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   background: var(--bg);
   cursor: pointer;
   display: flex;
@@ -115,18 +116,18 @@
 }
 
 .dot:hover {
-  border-color: var(--primary);
+  border-color: var(--bmw-blue);
 }
 
 .dotActive {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--bmw-blue);
+  border-color: var(--bmw-blue);
 }
 
 .dotDone {
-  background: #dcfce7;
-  border-color: #86efac;
-  color: #166534;
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
 }
 
 /* ── Lektions-Inhalt ─────────────────────────────────────────────────────── */
@@ -150,13 +151,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--primary);
+  background: var(--bmw-blue);
   color: #fff;
-  font-size: 14px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 700;
   flex-shrink: 0;
 }
 
@@ -219,21 +220,21 @@
 }
 
 .calloutInfo {
-  background: rgba(28, 105, 212, 0.07);
+  background: rgba(28, 105, 212, 0.05);
   border-color: rgba(28, 105, 212, 0.2);
-  color: #1550a8;
+  color: var(--bmw-blue-dark);
 }
 
 .calloutTip {
-  background: #f0fdf4;
-  border-color: #86efac;
-  color: #166534;
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
 }
 
 .calloutWarn {
-  background: #fffbeb;
-  border-color: #fcd34d;
-  color: #92400e;
+  background: var(--warn-bg);
+  border-color: #f0c060;
+  color: var(--warn);
 }
 
 /* ── Code-Block ──────────────────────────────────────────────────────────── */
@@ -251,16 +252,16 @@
 }
 
 .code {
-  background: #0f172a;
-  color: #e2e8f0;
-  border-radius: 10px;
-  padding: 16px 18px;
+  background: #111827;
+  color: #d1d5db;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
   overflow-x: auto;
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
   font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
-  border: 1px solid #1e293b;
+  border: 1px solid #1f2937;
 }
 
 /* ── Vergleichs-Block ────────────────────────────────────────────────────── */
@@ -276,7 +277,7 @@
 
 .compSide {
   padding: 18px 20px;
-  background: color-mix(in srgb, var(--comp-color) 6%, white 94%);
+  background: color-mix(in srgb, var(--comp-color) 5%, var(--bg) 95%);
   border-top: 3px solid var(--comp-color);
 }
 
@@ -341,10 +342,10 @@
 }
 
 .card {
-  background: var(--bg);
+  background: var(--card-bg);
   border: 1px solid var(--border);
-  border-top: 3px solid var(--card-color, var(--primary));
-  border-radius: 10px;
+  border-top: 3px solid var(--card-color, var(--bmw-blue));
+  border-radius: var(--radius-lg);
   padding: 16px 14px;
   display: flex;
   flex-direction: column;
@@ -427,13 +428,7 @@
 .diagramNode_step {
   background: rgba(28, 105, 212, 0.07);
   border-color: rgba(28, 105, 212, 0.25);
-  color: #1550a8;
-}
-
-.diagramNode_end {
-  background: #f0fdf4;
-  border-color: #86efac;
-  color: #166534;
+  color: var(--success);
 }
 
 .diagramEmoji {
@@ -522,13 +517,13 @@
 }
 
 .stepBadge {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--primary);
+  background: var(--bmw-blue);
   color: #fff;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -575,10 +570,10 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 30px;
+  padding: 14px 30px;
   border-top: 1px solid var(--border);
-  background: var(--bg);
-  border-radius: 0 0 10px 10px;
+  background: var(--card-bg);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   flex-shrink: 0;
 }
 
@@ -588,13 +583,14 @@
   gap: 6px;
   padding: 9px 16px;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--radius);
   background: var(--card-bg);
-  color: var(--text-muted);
-  font-size: 13.5px;
+  color: var(--text-secondary);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .navBack:hover:not(:disabled) {
@@ -613,7 +609,7 @@
   gap: 6px;
   padding: 9px 14px;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--radius);
   background: transparent;
   color: var(--text-muted);
   font-size: 13px;
@@ -633,17 +629,18 @@
   gap: 6px;
   padding: 9px 20px;
   border: none;
-  border-radius: 9px;
-  background: var(--primary);
+  border-radius: var(--radius);
+  background: var(--bmw-blue);
   color: #fff;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .navNext:hover {
-  background: var(--primary-dark);
+  background: var(--bmw-blue-dark);
 }
 
 .navTest {
@@ -652,17 +649,18 @@
   gap: 8px;
   padding: 9px 20px;
   border: none;
-  border-radius: 9px;
-  background: #166534;
+  border-radius: var(--radius);
+  background: var(--success);
   color: #fff;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .navTest:hover {
-  background: #14532d;
+  background: #08582a;
 }
 
 /* ── Spin-Animation ──────────────────────────────────────────────────────── */

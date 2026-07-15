@@ -6,34 +6,35 @@
 
 /* ── Kopfzeile ─────────────────────────────────────────────────────────────── */
 .header {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 28px;
+  background: var(--nav-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 32px;
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
 }
 
 .logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: var(--primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bmw-blue);
   color: #fff;
   border: none;
   cursor: pointer;
   flex-shrink: 0;
-  transition: opacity 0.15s;
+  transition: background 0.15s;
 }
 
 .logo:hover {
-  opacity: 0.85;
+  background: var(--bmw-blue-dark);
 }
 
 .brand {
@@ -43,13 +44,17 @@
 }
 
 .brandTitle {
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #FFFFFF;
+  letter-spacing: 0.01em;
 }
 
 .brandSub {
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+  font-weight: 400;
 }
 
 .headerSpacer {
@@ -61,8 +66,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 12.5px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
   min-width: 0;
   overflow: hidden;
 }
@@ -73,56 +78,68 @@
   gap: 5px;
   padding: 4px 8px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--primary);
-  font-size: 12.5px;
-  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s;
+  transition: color 0.15s, background 0.15s;
 }
 
 .breadcrumbBtn:hover {
-  background: rgba(28, 105, 212, 0.08);
+  color: #fff;
+  background: rgba(255,255,255,0.08);
 }
 
 .breadcrumbSep {
-  color: var(--border);
+  color: rgba(255,255,255,0.25);
   flex-shrink: 0;
 }
 
 .breadcrumbCurrent {
   font-weight: 600;
-  color: var(--text);
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 4px 6px;
 }
 
-
 .chapterPickerLabel {
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
   margin-right: 6px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .chapterPicker {
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
-  color: var(--text);
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.07);
+  font-size: 13px;
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.chapterPicker:focus {
+  outline: none;
+  border-color: var(--bmw-blue);
 }
 
 /* ── Schritt-Navigation ────────────────────────────────────────────────────── */
 .stepNav {
   display: flex;
-  gap: 8px;
-  padding: 14px 28px 0;
-  max-width: 860px;
+  gap: 0;
+  padding: 0 32px;
+  padding-top: 20px;
+  max-width: 920px;
+  border-bottom: 1px solid var(--border);
 }
 
 .stepBtn {
@@ -130,30 +147,42 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 12px 18px;
   border: 1px solid var(--border);
-  border-radius: 10px 10px 0 0;
-  background: transparent;
+  border-bottom: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--bg);
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  letter-spacing: 0.01em;
+  margin-right: 4px;
+  position: relative;
+  bottom: -1px;
+}
+
+.stepBtn:last-child {
+  margin-right: 0;
 }
 
 .stepBtn:hover:not(:disabled) {
-  background: rgba(28, 105, 212, 0.05);
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border-strong);
 }
 
 .stepBtnActive {
   background: var(--card-bg);
-  color: var(--primary);
+  color: var(--bmw-blue);
+  border-color: var(--border);
   border-bottom-color: var(--card-bg);
-  box-shadow: var(--shadow);
+  box-shadow: 0 -2px 0 0 var(--bmw-blue) inset;
 }
 
 .stepBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
@@ -161,18 +190,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: rgba(28, 105, 212, 0.12);
-  color: var(--primary);
-  font-size: 13px;
+  background: rgba(28, 105, 212, 0.1);
+  color: var(--bmw-blue);
+  font-size: 12px;
   font-weight: 700;
   flex-shrink: 0;
 }
 
 .stepBtnActive .stepNum {
-  background: var(--primary);
+  background: var(--bmw-blue);
   color: #fff;
 }
 
@@ -180,27 +209,29 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .stepHint {
   font-size: 11px;
   font-weight: 400;
   color: var(--text-muted);
+  margin-top: 1px;
 }
 
 .lock {
   margin-left: auto;
   color: var(--text-muted);
+  opacity: 0.6;
 }
 
-/* ── Inhalt (Legacy, nicht mehr im chapter-view genutzt) ──────────────────── */
+/* ── Inhalt ──────────────────────────────────────── */
 .main {
   flex: 1;
   max-width: 1000px;
   margin: 0 auto;
   width: 100%;
-  padding: 24px 28px 60px;
+  padding: 24px 32px 60px;
 }
 
 /* Landing Page + Topic-Page füllen die gesamte Breite aus */
@@ -228,8 +259,8 @@
 }
 
 .panelWrap {
-  padding: 0 28px 60px;
-  max-width: 860px;
+  padding: 0 32px 60px;
+  max-width: 920px;
 }
 
 .statusBox {
@@ -237,24 +268,26 @@
   align-items: center;
   gap: 10px;
   padding: 14px 18px;
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   margin: 20px 0;
   font-size: 14px;
+  border: 1px solid transparent;
 }
 
-/* Statusboxen außerhalb des Panels brauchen eigene Außenabstände */
 .statusPadded {
-  margin: 20px 28px;
+  margin: 20px 32px;
 }
 
 .statusInfo {
-  background: rgba(28, 105, 212, 0.08);
-  color: var(--primary-dark);
+  background: rgba(28, 105, 212, 0.06);
+  color: var(--bmw-blue-dark);
+  border-color: rgba(28, 105, 212, 0.18);
 }
 
 .statusError {
   background: var(--danger-bg);
   color: var(--danger);
+  border-color: var(--danger-border);
 }
 
 .spin {
@@ -262,19 +295,17 @@
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .footer {
   text-align: center;
   padding: 16px;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   border-top: 1px solid var(--border);
   background: var(--card-bg);
+  letter-spacing: 0.02em;
 }
+

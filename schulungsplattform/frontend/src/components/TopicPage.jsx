@@ -28,7 +28,6 @@ export default function TopicPage({ topic, onSelectChapter }) {
             </div>
           </div>
         </div>
-        <div className={styles.heroRule} style={{ background: `linear-gradient(90deg, ${accent} 0%, transparent 60%)` }} />
       </header>
 
       {/* ── Unterthemen ── */}

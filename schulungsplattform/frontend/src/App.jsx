@@ -146,7 +146,7 @@ export default function App() {
           <GraduationCap size={22} />
         </button>
         <div className={styles.brand}>
-          <span className={styles.brandTitle}>Schulungsplattform</span>
+          <span className={styles.brandTitle}>KI-Schulung</span>
           <span className={styles.brandSub}>Lernen · Testen · Nachschlagen</span>
         </div>
         <div className={styles.headerSpacer} />
@@ -281,7 +281,7 @@ export default function App() {
       )}
 
       <footer className={styles.footer}>
-        Schulungsplattform · Proof of Concept · React + Flask
+        KI-Schulungsplattform · Digital Learning · React + Flask
       </footer>
     </div>
   )

@@ -1,4 +1,4 @@
-/* ── Root ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ Root â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .root {
   display: flex;
   flex-direction: column;
@@ -7,51 +7,81 @@
   overflow-y: auto;
 }
 
-/* ── Hero ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   background: var(--nav-bg);
-  padding: 0;
   flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle geometric accent line */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--bmw-blue) 0%, var(--bmw-blue-light) 40%, transparent 80%);
 }
 
 .heroInner {
-  padding: 40px 48px 32px;
+  padding: 52px 48px 44px;
   max-width: 1200px;
 }
 
+.heroEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.heroEyebrowLine {
+  width: 28px;
+  height: 2px;
+  background: var(--bmw-blue);
+  flex-shrink: 0;
+}
+
+.heroEyebrowText {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bmw-blue-light);
+}
+
 .heroTitle {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin-bottom: 12px;
+  line-height: 1.15;
+  margin-bottom: 14px;
 }
 
 .heroSub {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.65);
-  max-width: 640px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 560px;
   line-height: 1.65;
+  font-weight: 300;
 }
 
-.heroRule {
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary) 0%, transparent 60%);
-}
-
-/* ── Content ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .content {
   flex: 1;
-  padding: 36px 48px 48px;
+  padding: 44px 48px 56px;
   display: flex;
   flex-direction: column;
-  gap: 44px;
+  gap: 48px;
   max-width: 1200px;
   width: 100%;
 }
 
-/* ── Section ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Section â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section {
   display: flex;
   flex-direction: column;
@@ -60,16 +90,16 @@
 .sectionHeader {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 24px;
 }
 
 .sectionAccent {
-  width: 3px;
-  height: 36px;
-  border-radius: 2px;
+  width: 2px;
+  height: 32px;
+  background: var(--bmw-blue);
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .sectionTitle {
@@ -78,22 +108,24 @@
   color: var(--text);
   letter-spacing: -0.01em;
   line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .sectionSub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 3px;
+  font-weight: 400;
 }
 
-/* ── Schritte-Erklärung ──────────────────────────────────────────────────── */
+/* â”€â”€ Schritte-ErklÃ¤rung â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stepsRow {
   display: flex;
   align-items: stretch;
-  gap: 0;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
 }
 
@@ -103,26 +135,32 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 28px 20px;
+  padding: 32px 24px;
   position: relative;
-  gap: 8px;
+  gap: 10px;
   border-right: 1px solid var(--border);
+  transition: background 0.15s;
 }
 
 .stepCard:last-child {
   border-right: none;
 }
 
+.stepCard:hover {
+  background: rgba(28, 105, 212, 0.025);
+}
+
 .stepNum {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  width: 22px;
-  height: 22px;
+  top: 16px;
+  left: 16px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: rgba(28, 105, 212, 0.1);
-  color: var(--primary);
-  font-size: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -132,57 +170,64 @@
 .stepIconWrap {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
-  background: rgba(28, 105, 212, 0.08);
+  border-radius: 50%;
+  background: rgba(28, 105, 212, 0.07);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+  color: var(--bmw-blue);
 }
 
 .stepCardLabel {
   font-size: 14px;
   font-weight: 700;
   color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .stepCardHint {
   font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.55;
   max-width: 200px;
+  font-weight: 400;
 }
 
 .stepArrow {
   position: absolute;
-  right: -8px;
+  right: -10px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--bmw-blue);
   z-index: 1;
   background: var(--card-bg);
   border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ── Tile Grid ───────────────────────────────────────────────────────────── */
+/* â”€â”€ Tile Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tileGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
 }
 
-/* ── Tile ─────────────────────────────────────────────────────────────────── */
+/* â”€â”€ Tile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tile {
   display: flex;
   flex-direction: column;
-  gap: 0;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
   padding: 0;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
   position: relative;
   overflow: hidden;
 }
@@ -193,10 +238,10 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: var(--tile-accent, var(--primary));
+  height: 3px;
+  background: var(--tile-accent, var(--bmw-blue));
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity 0.2s;
 }
 
 .tile:hover::before {
@@ -204,21 +249,21 @@
 }
 
 .tile:hover {
-  border-color: color-mix(in srgb, var(--tile-accent, var(--primary)) 35%, var(--border) 65%);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-1);
+  transform: translateY(-3px);
 }
 
 .tile:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
 }
 
-/* ── Tile innerer Aufbau ─────────────────────────────────────────────────── */
+/* â”€â”€ Tile innerer Aufbau â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tileTop {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 18px 18px 14px;
+  padding: 20px 20px 14px;
 }
 
 .tileTopRight {
@@ -228,13 +273,15 @@
 }
 
 .tileIconWrap {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
 }
 
 .tileEmoji {
@@ -243,10 +290,10 @@
 }
 
 .tileArrow {
-  color: var(--text-muted);
+  color: var(--bmw-blue);
   opacity: 0;
   transform: translateX(-4px);
-  transition: opacity 0.15s, transform 0.15s;
+  transition: opacity 0.2s, transform 0.2s;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -261,43 +308,48 @@
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  border-radius: 20px;
-  background: #dcfce7;
-  color: #166534;
+  border-radius: 3px;
+  background: var(--success-bg);
+  color: var(--success);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  border: 1px solid var(--success-border);
 }
 
 .tileLabel {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.01em;
-  padding: 0 18px 3px;
+  padding: 0 20px 4px;
+  line-height: 1.25;
 }
 
 .tileTagline {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0 18px 10px;
+  letter-spacing: 0.08em;
+  padding: 0 20px 10px;
+  color: var(--bmw-blue);
 }
 
 .tileDesc {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.6;
-  padding: 0 18px 10px;
+  padding: 0 20px 12px;
   flex: 1;
+  font-weight: 400;
 }
 
 .tileMeta {
   list-style: none;
   display: flex;
-  gap: 14px;
-  padding: 0 18px 14px;
+  gap: 16px;
+  padding: 0 20px 14px;
+  margin: 0;
 }
 
 .tileMetaItem {
@@ -310,6 +362,8 @@
 
 .tileMetaIcon {
   flex-shrink: 0;
+  color: var(--bmw-blue);
+  opacity: 0.7;
 }
 
 .badgeDone {
@@ -317,12 +371,13 @@
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  border-radius: 20px;
-  background: #dcfce7;
-  color: #166534;
+  border-radius: 3px;
+  background: var(--success-bg);
+  color: var(--success);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  border: 1px solid var(--success-border);
 }
 
 .badgeProgress {
@@ -330,69 +385,62 @@
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  border-radius: 20px;
-  background: #fffbeb;
-  color: #92400e;
+  border-radius: 3px;
+  background: rgba(28, 105, 212, 0.07);
+  color: var(--bmw-blue-dark);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
+  border: 1px solid rgba(28, 105, 212, 0.2);
 }
 
-/* (alter Name für Rückwärtskompatibilität) */
-.badgePassed {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 20px;
-  background: #dcfce7;
-  color: #166534;
-  font-size: 11px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* ── Tile-Fortschrittsbalken ─────────────────────────────────────────────── */
+/* â”€â”€ Tile-Fortschrittsbalken â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tileProgressBar {
-  height: 3px;
+  height: 2px;
   background: var(--border);
-  margin: 0 18px 0;
-  border-radius: 2px;
+  margin: 0 20px;
+  border-radius: 1px;
   overflow: hidden;
 }
 
 .tileProgressFill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: 1px;
   transition: width 0.4s ease;
   min-width: 4px;
+  background: var(--tile-accent, var(--bmw-blue));
 }
 
-/* ── Tile Footer ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Tile Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tileFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 18px;
+  padding: 12px 20px;
   border-top: 1px solid var(--border);
   font-size: 12px;
   font-weight: 600;
   background: var(--bg);
   transition: background 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .tile:hover .tileFooter {
-  background: color-mix(in srgb, var(--tile-accent, var(--primary)) 5%, var(--bg) 95%);
+  background: rgba(28, 105, 212, 0.03);
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 860px) {
   .heroInner {
-    padding: 28px 24px 20px;
+    padding: 36px 24px 28px;
+  }
+
+  .heroTitle {
+    font-size: 26px;
   }
 
   .content {
-    padding: 24px 24px 40px;
+    padding: 28px 24px 40px;
   }
 
   .stepsRow {
@@ -406,7 +454,7 @@
     text-align: left;
     align-items: center;
     gap: 16px;
-    padding: 18px 20px;
+    padding: 20px;
   }
 
   .stepCard:last-child {
@@ -425,3 +473,4 @@
     max-width: none;
   }
 }
+

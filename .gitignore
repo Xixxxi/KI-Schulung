@@ -9,3 +9,7 @@ env/
 
 # Ignore node_modules
 **/node_modules
+
+# Ignore node_modules
+**/dist
+**/__pycache__

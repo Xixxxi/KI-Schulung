@@ -15,13 +15,16 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
       {/* ── Hero ── */}
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <h1 className={styles.heroTitle}>Willkommen auf der Schulungsplattform</h1>
+          <div className={styles.heroEyebrow}>
+            <div className={styles.heroEyebrowLine} />
+            <span className={styles.heroEyebrowText}>Digital Learning Platform</span>
+          </div>
+          <h1 className={styles.heroTitle}>KI-Schulung</h1>
           <p className={styles.heroSub}>
             Lerne Schritt für Schritt, teste dein Wissen und schlage Begriffe nach —
             wähle ein Thema aus, um zu starten.
           </p>
         </div>
-        <div className={styles.heroRule} />
       </header>
 
       <div className={styles.content}>

@@ -1,15 +1,16 @@
 .panel {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 0 10px 10px 10px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
   box-shadow: var(--shadow);
-  padding: 26px 30px 30px;
+  padding: 26px 30px 32px;
 }
 
 .title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 4px;
+  letter-spacing: -0.02em;
 }
 
 .intro {
@@ -36,7 +37,7 @@
 
 .progressFill {
   height: 100%;
-  background: var(--primary);
+  background: var(--bmw-blue);
   transition: width 0.25s;
 }
 
@@ -49,19 +50,19 @@
 /* ── Frage ─────────────────────────────────────────────────────────────────── */
 .question {
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 18px 20px;
   margin-bottom: 16px;
 }
 
 .questionCorrect {
-  border-color: #86efac;
-  background: rgba(22, 101, 52, 0.04);
+  border-color: var(--success-border);
+  background: rgba(10, 110, 46, 0.03);
 }
 
 .questionWrong {
-  border-color: #fca5a5;
-  background: rgba(153, 27, 27, 0.04);
+  border-color: var(--danger-border);
+  background: rgba(192, 0, 26, 0.03);
 }
 
 .questionHead {
@@ -72,16 +73,16 @@
 
 .qNum {
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(28, 105, 212, 0.12);
-  color: var(--primary);
+  background: rgba(28, 105, 212, 0.08);
+  color: var(--bmw-blue);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .qText {
@@ -110,7 +111,7 @@
   gap: 10px;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.12s, border-color 0.12s;
   font-size: 14px;
@@ -121,18 +122,18 @@
 }
 
 .optionSelected {
-  border-color: var(--primary);
-  background: rgba(28, 105, 212, 0.07);
+  border-color: var(--bmw-blue);
+  background: rgba(28, 105, 212, 0.06);
 }
 
 .optionCorrect {
-  border-color: #86efac;
+  border-color: var(--success-border);
   background: var(--success-bg);
   color: var(--success);
 }
 
 .optionWrong {
-  border-color: #fca5a5;
+  border-color: var(--danger-border);
   background: var(--danger-bg);
   color: var(--danger);
 }
@@ -144,11 +145,17 @@
 .textInput {
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 10px 12px;
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
+  transition: border-color 0.15s;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: var(--bmw-blue);
 }
 
 .hint {
@@ -171,11 +178,15 @@
 .feedbackCorrect {
   background: var(--success-bg);
   color: var(--success);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius);
 }
 
 .feedbackWrong {
   background: var(--warn-bg);
   color: var(--warn);
+  border: 1px solid #f0c060;
+  border-radius: var(--radius);
 }
 
 .feedbackLabel {
@@ -204,12 +215,12 @@
 
 .resultPassed {
   background: var(--success-bg);
-  border: 1px solid #86efac;
+  border: 1px solid var(--success-border);
 }
 
 .resultFailed {
   background: var(--warn-bg);
-  border: 1px solid #fcd34d;
+  border: 1px solid #f0c060;
 }
 
 .resultIcon {
@@ -259,22 +270,24 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--primary);
+  background: var(--bmw-blue);
   color: #fff;
   border: none;
-  border-radius: 9px;
-  padding: 11px 20px;
+  border-radius: var(--radius);
+  padding: 11px 22px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .primaryBtn:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: var(--bmw-blue-dark);
 }
 
 .primaryBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
@@ -283,15 +296,18 @@
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: var(--primary);
+  color: var(--bmw-blue);
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--radius);
   padding: 11px 20px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  letter-spacing: 0.01em;
 }
 
 .secondaryBtn:hover {
-  background: rgba(28, 105, 212, 0.05);
+  background: rgba(28, 105, 212, 0.04);
+  border-color: rgba(28, 105, 212, 0.3);
 }
