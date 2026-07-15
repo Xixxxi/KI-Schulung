@@ -227,7 +227,7 @@ export default function App() {
             )}
 
             {/* Panel-Inhalt */}
-            <div className={styles.panelWrap}>
+            <div className={step === 'learn' ? `${styles.panelWrap} ${styles.panelWrapWide}` : styles.panelWrap}>
               {!activeChapter && !loading && (
                 <div className={`${styles.statusBox} ${styles.statusInfo}`}>
                   <Lock size={18} /> Kapitel nicht gefunden.

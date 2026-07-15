@@ -1,230 +1,243 @@
 {
   "topicId": "ki-agenten",
   "topicTitle": "KI-Agenten und Automatisierung",
-  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst – von den Grundlagen bis zur Integration in Werkzeuge wie Jira und GitHub.",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst.",
   "topicIcon": "🤖",
   "topicAccentColor": "#1c69d4",
   "topicOrder": 1,
   "subTopicTitle": "Grundlagen von KI-Agenten",
-  "subTopicDescription": "Was ein KI-Agent ist, woraus er besteht, wie der Agent-Loop funktioniert und welche Autonomiegrade es gibt.",
+  "subTopicDescription": "Was einen KI-Agenten ausmacht, welche Bausteine er hat, wie der Loop funktioniert und wann er sich lohnt.",
   "tag": "Allgemein",
 
   "id": "ki-agent-grundlagen",
   "order": 1,
   "title": "Grundlagen von KI-Agenten",
-  "summary": "Was einen KI-Agenten von einem Chatbot und von klassischer Automatisierung unterscheidet, aus welchen Bausteinen er besteht, wie der Agent-Loop arbeitet und welche Grade an Selbstständigkeit sinnvoll sind.",
-  "estimatedMinutes": 16,
+  "summary": "Was einen KI-Agenten von Chatbot und Skript unterscheidet – und wann er sich wirklich lohnt.",
+  "estimatedMinutes": 14,
   "lessons": [
     {
-      "id": "l1-was-ist-agent",
-      "title": "Was ist ein KI-Agent?",
+      "id": "l1",
+      "title": "KI-Agent oder Chatbot?",
       "blocks": [
-        {
-          "type": "text",
-          "text": "Ein KI-Agent ist ein System, das ein Sprachmodell (LLM) nutzt, um selbstständig ein Ziel zu verfolgen. Der entscheidende Unterschied zu einem Chatbot: Ein Agent beantwortet nicht nur eine einzelne Frage, sondern plant Schritte, ruft Werkzeuge auf, prüft Ergebnisse und arbeitet so lange weiter, bis das Ziel erreicht ist."
-        },
-        {
-          "type": "text",
-          "text": "Für technische Fachleute lässt sich der Unterschied zur klassischen Automatisierung gut fassen: Ein Skript folgt einem festen, vorab programmierten Ablauf. Ein Agent entscheidet dagegen zur Laufzeit selbst, welcher Schritt als Nächstes sinnvoll ist – abhängig davon, was er unterwegs beobachtet."
-        },
         {
           "type": "comparison",
           "left": {
-            "label": "Klassische Automatisierung",
+            "label": "Chatbot / Skript",
             "color": "#6b7280",
             "items": [
-              "Fester, vorab definierter Ablauf",
-              "Reagiert nur auf einprogrammierte Fälle",
-              "Bricht bei Unerwartetem ab",
-              "Jeder Sonderfall muss codiert werden"
+              "Fester Ablauf, keine eigene Entscheidung",
+              "Scheitert bei unbekannten Situationen",
+              "Ein Input → ein Output"
             ]
           },
           "right": {
             "label": "KI-Agent",
             "color": "#1c69d4",
             "items": [
-              "Entscheidet den nächsten Schritt zur Laufzeit",
-              "Geht mit unstrukturierten Eingaben um",
-              "Reagiert flexibel auf Zwischenergebnisse",
-              "Verarbeitet auch Fälle, die nicht vorab bedacht wurden"
+              "Entscheidet den nächsten Schritt selbst",
+              "Beobachtet Ergebnisse und plant neu",
+              "Wiederholt bis das Ziel erreicht ist"
             ]
           }
         },
         {
-          "type": "callout",
-          "tone": "info",
-          "title": "Die drei Stufen in einem Satz",
-          "text": "Skript = fester Ablauf. Chatbot = eine Frage, eine Antwort. Agent = ein Kreislauf aus Denken, Handeln und Beobachten über beliebig viele Schritte, bis ein Ziel erreicht ist."
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Ein Skript verschiebt abgeschlossene GitHub-PRs automatisch in die richtige Jira-Spalte. Ist das ein KI-Agent?",
+          "options": [
+            "Ja – es läuft automatisch.",
+            "Nein – es folgt festen Regeln ohne eigene Entscheidung.",
+            "Ja – weil Jira und GitHub beteiligt sind."
+          ],
+          "correct": 1,
+          "explanation": "Feste Regeln = klassische Automatisierung. Ein Agent entscheidet erst zur Laufzeit selbst, was als Nächstes sinnvoll ist.",
+          "hint": "Trifft das Skript irgendwelche eigenen Entscheidungen?"
         }
       ]
     },
     {
-      "id": "l2-bausteine",
-      "title": "Die vier Bausteine eines Agenten",
+      "id": "l2",
+      "title": "Die vier Bausteine",
       "blocks": [
         {
-          "type": "text",
-          "text": "Fast jeder Agent – egal wie komplex – besteht aus denselben vier Grundbausteinen. Wer diese vier Teile kennt, kann jeden Agenten verstehen, einordnen und später selbst gestalten."
-        },
-        {
           "type": "cards",
-          "title": "Die vier Bausteine",
           "items": [
             {
               "icon": "🧠",
               "label": "Modell (LLM)",
               "color": "#1c69d4",
-              "description": "Das 'Gehirn': versteht Sprache, plant Schritte und entscheidet, ob geantwortet oder ein Werkzeug aufgerufen wird."
+              "description": "Das Gehirn: plant Schritte, entscheidet ob geantwortet oder ein Tool aufgerufen wird."
             },
             {
               "icon": "📋",
               "label": "Instruktionen",
               "color": "#6d28d9",
-              "description": "Der System-Prompt: legt Rolle, Ziel und Grenzen des Agenten fest, bevor der erste Schritt läuft. Das 'Pflichtenheft' des Agenten."
+              "description": "Der System-Prompt: legt Rolle, Ziel und Grenzen des Agenten fest."
             },
             {
               "icon": "🔧",
               "label": "Werkzeuge (Tools)",
               "color": "#0369a1",
-              "description": "Funktionen, mit denen der Agent die Außenwelt erreicht – z. B. Datei lesen, Datenbank abfragen, eine API aufrufen oder ein Ticket anlegen."
+              "description": "Verbindet den Agenten mit der Außenwelt: Jira, GitHub, Datenbanken, APIs."
             },
             {
               "icon": "💾",
               "label": "Speicher (Memory)",
               "color": "#166534",
-              "description": "Der bisherige Verlauf und die Zwischenergebnisse – das, was das Modell bei jedem Schritt als Kontext erhält, um Entscheidungen zu treffen."
+              "description": "Verlauf und Zwischenergebnisse – der Kontext für jeden Schritt."
             }
           ]
         },
         {
-          "type": "callout",
-          "tone": "tip",
-          "title": "Merkhilfe",
-          "text": "Modell + Instruktionen + Werkzeuge + Speicher = Agent. Fehlt der Baustein 'Werkzeuge' vollständig, kann das System nur reden, aber nichts bewirken – dann ist es nur ein Chatbot."
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Ein Agent hat Modell, Instruktionen und Speicher – aber keine Werkzeuge. Was fehlt ihm?",
+          "options": [
+            "Nichts – er funktioniert vollständig.",
+            "Die Verbindung zur Außenwelt: er kann keine APIs aufrufen oder Tickets anlegen.",
+            "Er kann den System-Prompt nicht lesen."
+          ],
+          "correct": 1,
+          "explanation": "Ohne Werkzeuge kann ein Agent nur reden, aber nicht handeln. Tools sind die Hände des Agenten.",
+          "hint": "Werkzeuge = Verbindung zur Außenwelt."
         }
       ]
     },
     {
-      "id": "l3-agent-loop",
-      "title": "Der Agent-Loop: Denken → Handeln → Beobachten",
+      "id": "l3",
+      "title": "Der Reason–Act–Observe-Zyklus",
       "blocks": [
-        {
-          "type": "text",
-          "text": "Das Herzstück jedes Agenten ist ein Kreislauf (Loop). Er wiederholt sich so lange, bis das Ziel erreicht ist – oder bis eine maximale Schrittzahl als Sicherheitsnetz greift. Dieses Muster ist bei praktisch allen Agenten gleich, unabhängig vom eingesetzten Werkzeug oder Framework."
-        },
         {
           "type": "diagram",
-          "caption": "Ablauf eines Agent-Loop-Durchlaufs",
+          "caption": "Der Agent-Loop – wiederholt sich bis das Ziel erreicht ist",
           "nodes": [
-            { "id": "start", "type": "start", "emoji": "🎯", "label": "Ziel", "sublabel": "wird übergeben" },
-            { "id": "reason", "type": "step", "emoji": "🤔", "label": "Denken", "sublabel": "Was ist der nächste Schritt?" },
-            { "id": "act", "type": "step", "emoji": "⚡", "label": "Handeln", "sublabel": "Werkzeug aufrufen oder antworten" },
-            { "id": "observe", "type": "step", "emoji": "👁", "label": "Beobachten", "sublabel": "Ergebnis in den Kontext aufnehmen" },
-            { "id": "end", "type": "end", "emoji": "✅", "label": "Fertig", "sublabel": "Ziel erreicht, Antwort ausgeben" }
+            { "id": "goal",    "type": "start", "emoji": "🎯", "label": "Ziel",    "sublabel": "kommt rein" },
+            { "id": "reason",  "type": "step",  "emoji": "🤔", "label": "Reason",  "sublabel": "Was jetzt?" },
+            { "id": "act",     "type": "step",  "emoji": "⚡", "label": "Act",     "sublabel": "Tool oder Antwort" },
+            { "id": "observe", "type": "step",  "emoji": "👁", "label": "Observe", "sublabel": "Ergebnis merken" },
+            { "id": "done",    "type": "end",   "emoji": "✅", "label": "Fertig",  "sublabel": "Ziel erreicht" }
           ],
-          "loop": {
-            "label": "Solange das Ziel noch nicht erreicht ist → zurück zu Denken"
-          },
-          "note": "Der Loop endet, wenn der Agent das Ziel als erreicht meldet oder die maximale Schrittzahl überschritten wird."
+          "loop": { "label": "Ziel noch nicht erreicht → zurück zu Reason" },
+          "note": "Sicherheitsnetz: MAX_SCHRITTE verhindert Endlosschleifen."
         },
         {
-          "type": "code",
-          "language": "python",
-          "caption": "Der Agent-Loop als Pseudocode – das Grundmuster",
-          "text": "ziel = \"Fasse die drei neuesten Fehlermeldungen im Log zusammen.\"\nkontext = [system_prompt, ziel]\n\nfor schritt in range(MAX_SCHRITTE):\n    entscheidung = llm(kontext)              # 1. DENKEN\n\n    if entscheidung.will_werkzeug_nutzen:\n        ergebnis = werkzeug_ausfuehren(entscheidung.werkzeug)  # 2. HANDELN\n        kontext.append(ergebnis)             # 3. BEOBACHTEN -> naechster Durchlauf\n    else:\n        print(entscheidung.text)             # Ziel erreicht -> Loop verlassen\n        break"
-        },
-        {
-          "type": "callout",
-          "tone": "warn",
-          "title": "Ohne Abbruchbedingung kein Agent",
-          "text": "Ohne ein Limit für die Schrittzahl (MAX_SCHRITTE) kann ein Agent in einer Endlosschleife hängen bleiben und dabei fortlaufend Kosten verursachen. Eine Abbruchbedingung ist Pflicht – und sollte niedrig starten (z. B. 8–10 Schritte)."
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Ein Agent analysiert einen Fehler-Log. Welche Reihenfolge ist korrekt?",
+          "options": [
+            "Act → Reason → Observe",
+            "Reason → Act → Observe",
+            "Observe → Reason → Act"
+          ],
+          "correct": 1,
+          "explanation": "Erst planen (Reason), dann handeln (Act), dann Ergebnis aufnehmen (Observe) – dann beginnt der nächste Durchlauf.",
+          "hint": "Erst denken, dann handeln, dann schauen."
         }
       ]
     },
     {
-      "id": "l4-autonomie",
-      "title": "Autonomiegrade: Wie viel Selbstständigkeit ist sinnvoll?",
+      "id": "l4",
+      "title": "Wie viel Autonomie ist sinnvoll?",
       "blocks": [
         {
-          "type": "text",
-          "text": "Ein Agent muss nicht alles allein entscheiden. In der Praxis gibt es ein Spektrum – von einem reinen Assistenten, der nur Vorschläge macht, bis zum vollautonomen Agenten, der eigenständig handelt. Die richtige Stufe hängt vom Risiko der Aufgabe ab."
-        },
-        {
           "type": "steps",
-          "title": "Vom Assistenten zum autonomen Agenten",
+          "title": "Vier Stufen – von Vorschlag bis vollständig autonom",
           "items": [
             {
-              "label": "Stufe 1 – Assistent (Vorschlag)",
-              "description": "Der Agent schlägt vor, führt aber nichts aus. Ein Mensch entscheidet und handelt. Niedrigstes Risiko.",
-              "example": "Der Agent formuliert eine Commit-Nachricht – du übernimmst oder änderst sie."
+              "label": "Stufe 1 – Vorschlag",
+              "description": "Agent schlägt vor, Mensch entscheidet und handelt.",
+              "example": "Agent formuliert Release Notes, du gibst frei."
             },
             {
-              "label": "Stufe 2 – Assistent mit Freigabe",
-              "description": "Der Agent bereitet eine Aktion vollständig vor und führt sie erst nach ausdrücklicher Bestätigung aus.",
-              "example": "Der Agent entwirft eine E-Mail-Antwort und sendet sie erst nach deinem Klick."
+              "label": "Stufe 2 – Freigabe",
+              "description": "Agent bereitet alles vor, führt erst nach OK aus.",
+              "example": "Agent erstellt Jira-Ticket, du klickst 'Speichern'."
             },
             {
-              "label": "Stufe 3 – Halbautonom (Leitplanken)",
-              "description": "Der Agent handelt selbstständig, aber nur innerhalb klar definierter Grenzen. Kritische Aktionen erfordern weiterhin Freigabe.",
-              "example": "Der Agent darf Test-Tickets anlegen, aber keine produktiven Systeme verändern."
+              "label": "Stufe 3 – Leitplanken",
+              "description": "Agent handelt frei, aber nur innerhalb fester Grenzen.",
+              "example": "Darf Test-Tickets anlegen, keine Produktionsänderungen."
             },
             {
               "label": "Stufe 4 – Autonom",
-              "description": "Der Agent verfolgt ein Ziel vollständig eigenständig. Nur für gut abgegrenzte, risikoarme Aufgaben mit sauberer Protokollierung geeignet.",
-              "example": "Der Agent sortiert eingehende Support-Tickets automatisch in Kategorien."
+              "description": "Vollständig eigenständig – nur für risikoarme, klar begrenzte Aufgaben.",
+              "example": "Eingehende PRs automatisch nach Dateipfad labeln."
             }
           ]
         },
         {
-          "type": "callout",
-          "tone": "tip",
-          "title": "Faustregel für den Start",
-          "text": "Beginne immer auf einer niedrigen Autonomiestufe. Erhöhe die Selbstständigkeit erst, wenn du dem Agenten bei einer Aufgabe wiederholt vertrauen konntest. Je höher das Risiko einer Fehlentscheidung, desto mehr menschliche Kontrolle gehört dazu."
+          "type": "quizCheck",
+          "title": "Szenario",
+          "question": "Ein Agent soll selbstständig veraltete Branches im produktiven Repo löschen. Welche Stufe ist angemessen?",
+          "options": [
+            "Stufe 4 – autonom, das spart Zeit.",
+            "Stufe 1–2 – Vorschlag oder Freigabe, weil das kaum umkehrbar ist.",
+            "Stufe 3 genügt – er löscht ja nur Branches."
+          ],
+          "correct": 1,
+          "explanation": "Je schwerer eine Aktion umkehrbar ist, desto mehr Kontrolle gehört dazu. Stufe 1–2 ist der richtige Startpunkt.",
+          "hint": "Wie leicht lässt sich ein gelöschter produktiver Branch rückgängig machen?"
         }
       ]
     },
     {
-      "id": "l5-wo-hilft",
-      "title": "Wo Agenten bei der Automatisierung helfen",
+      "id": "l5",
+      "title": "Wann lohnt ein Agent?",
       "blocks": [
-        {
-          "type": "text",
-          "text": "Nicht jede Aufgabe braucht einen Agenten. Ihre Stärke spielen Agenten dort aus, wo klassische Automatisierung an unstrukturierten Eingaben oder wechselnden Situationen scheitert."
-        },
         {
           "type": "comparison",
           "left": {
             "label": "Gut geeignet für Agenten",
             "color": "#166534",
             "items": [
-              "Unstrukturierte Texte verstehen (E-Mails, Tickets, Logs)",
-              "Mehrere Schritte mit Entscheidungen verketten",
-              "Informationen aus verschiedenen Quellen zusammenführen",
-              "Aufgaben mit vielen Sonderfällen"
+              "Unstrukturierte Texte: Tickets, E-Mails, Logs",
+              "Mehrere Schritte mit Entscheidungen",
+              "Viele Sonderfälle, die nicht vorab bekannt sind"
             ]
           },
           "right": {
             "label": "Besser klassisch lösen",
             "color": "#6b7280",
             "items": [
+              "Feste Regeln, keine Interpretation nötig",
               "Exakte, deterministische Berechnungen",
-              "Feste Regeln ohne Interpretationsspielraum",
-              "Höchste Zuverlässigkeit ohne Abweichung nötig",
               "Sehr hohe Frequenz bei minimalen Kosten"
             ]
           }
         },
         {
-          "type": "callout",
-          "tone": "info",
-          "title": "Typische Einsatzfelder im Arbeitsalltag",
-          "text": "Ticket-Triage und Klassifizierung, Zusammenfassen langer Dokumente, Code-Reviews vorbereiten, Log-Analysen, Rechercheaufgaben, das Übersetzen zwischen Formaten und das Vorbereiten von Routine-Antworten – überall dort, wo Sprache und Urteilsvermögen gefragt sind."
-        },
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Welche Aufgabe ist ein guter Kandidat für einen KI-Agenten?",
+          "options": [
+            "PR-Anzahl pro Tag zählen und exportieren.",
+            "Eingehende Jira-Bugs kategorisieren und dem richtigen Team zuweisen.",
+            "Einen Betrag von EUR in USD umrechnen."
+          ],
+          "correct": 1,
+          "explanation": "Ticket-Kategorisierung erfordert Sprachverständnis und Urteil – genau die Stärke von KI-Agenten. Zählen und Umrechnen sind deterministische Operationen.",
+          "hint": "Braucht die Aufgabe Urteilsvermögen?"
+        }
+      ]
+    },
+    {
+      "id": "l6",
+      "title": "Dein erster Anwendungsfall",
+      "blocks": [
         {
           "type": "callout",
-          "tone": "tip",
-          "title": "Du hast die Grundlage gelegt",
-          "text": "Du kennst jetzt die Bausteine, den Agent-Loop und die Autonomiegrade. Im nächsten Kapitel baust du deinen ersten eigenen, spezialisierten Agenten für eine konkrete Aufgabe."
+          "tone": "info",
+          "title": "Typische Kandidaten aus dem Arbeitsalltag",
+          "text": "Jira-Tickets triagieren und zuweisen · GitHub-PRs zusammenfassen · Fehler-Logs analysieren · Release Notes aus Commits generieren · Code-Reviews vorbereiten · E-Mail-Antworten vorformulieren."
+        },
+        {
+          "type": "taskInput",
+          "title": "Selbst anwenden",
+          "prompt": "Nenne eine Aufgabe aus deinem Arbeitsalltag, die ein KI-Agent übernehmen könnte. Erkläre kurz, warum sie für einen Agenten geeignet ist.",
+          "placeholder": "z. B. Eingehende Jira-Bugs zusammenfassen und priorisieren, weil das Sprachverständnis und Urteil erfordert …",
+          "minLength": 40,
+          "success": "Genau solche Aufgaben – mit Sprache, Urteil und mehreren Schritten – sind der Kern von KI-Automatisierung.",
+          "hint": "Gibt es Entscheidungen oder Sonderfälle dabei? Dann passt ein Agent."
         }
       ]
     }
@@ -235,108 +248,104 @@
       {
         "id": "q1",
         "type": "single",
-        "lessonRef": "l1-was-ist-agent",
-        "question": "Was ist der zentrale Unterschied zwischen einem KI-Agenten und klassischer Automatisierung (einem Skript)?",
+        "lessonRef": "l1",
+        "question": "Was unterscheidet einen KI-Agenten grundlegend von einem Automatisierungs-Skript?",
         "options": [
-          "Ein Agent läuft schneller als ein Skript.",
-          "Ein Agent entscheidet zur Laufzeit selbst über den nächsten Schritt, ein Skript folgt einem festen Ablauf.",
-          "Ein Skript kann keine Werkzeuge aufrufen.",
-          "Ein Agent benötigt keine Programmierung."
+          "Ein Agent ist immer schneller als ein Skript.",
+          "Ein Agent entscheidet zur Laufzeit selbst über den nächsten Schritt.",
+          "Skripte können keine APIs aufrufen.",
+          "Ein Agent braucht kein Sprachmodell."
         ],
         "correct": 1,
-        "explanation": "Ein Skript folgt einem vorab programmierten, festen Ablauf. Ein Agent entscheidet dagegen zur Laufzeit anhand seiner Beobachtungen selbst, welcher Schritt als Nächstes sinnvoll ist."
+        "explanation": "Skripte folgen festen Abläufen. Ein Agent trifft eigenständige Entscheidungen basierend auf dem, was er beobachtet."
       },
       {
         "id": "q2",
         "type": "multi",
-        "lessonRef": "l2-bausteine",
-        "question": "Welche vier Bausteine bilden zusammen einen KI-Agenten? (Mehrfachauswahl)",
+        "lessonRef": "l2",
+        "question": "Welche vier Elemente bilden zusammen einen KI-Agenten? (Mehrfachauswahl)",
         "options": [
           "Modell (LLM)",
           "Instruktionen (System-Prompt)",
           "Grafikkarte",
           "Werkzeuge (Tools)",
-          "Speicher (Memory/Kontext)"
+          "Speicher (Memory)"
         ],
         "correct": [0, 1, 3, 4],
-        "explanation": "Die vier Bausteine sind Modell, Instruktionen, Werkzeuge und Speicher. Eine Grafikkarte ist Infrastruktur, aber kein konzeptioneller Baustein des Agenten."
+        "explanation": "Modell, Instruktionen, Werkzeuge und Speicher – alle vier sind nötig. Eine Grafikkarte ist Infrastruktur, kein konzeptioneller Baustein."
       },
       {
         "id": "q3",
         "type": "single",
-        "lessonRef": "l3-agent-loop",
-        "question": "In welcher Reihenfolge laufen die drei Phasen eines Agent-Loop-Durchlaufs ab?",
+        "lessonRef": "l3",
+        "question": "In welcher Reihenfolge laufen die Phasen des Agent-Loops ab?",
         "options": [
-          "Handeln → Denken → Beobachten",
-          "Beobachten → Handeln → Denken",
-          "Denken → Handeln → Beobachten",
-          "Denken → Beobachten → Handeln"
+          "Act → Reason → Observe",
+          "Observe → Act → Reason",
+          "Reason → Act → Observe",
+          "Reason → Observe → Act"
         ],
         "correct": 2,
-        "explanation": "Der Loop läuft: Denken (nächsten Schritt bestimmen) → Handeln (Werkzeug aufrufen oder antworten) → Beobachten (Ergebnis aufnehmen) – und beginnt dann erneut, bis das Ziel erreicht ist."
+        "explanation": "Erst planen (Reason), dann handeln (Act), dann das Ergebnis aufnehmen (Observe) – dann beginnt der nächste Durchlauf."
       },
       {
         "id": "q4",
         "type": "single",
-        "lessonRef": "l4-autonomie",
-        "question": "Welche Autonomiestufe ist für eine risikoreiche Aufgabe der beste Startpunkt?",
+        "lessonRef": "l4",
+        "question": "Ein Agent soll eigenständig produktive Datenbankeinträge löschen. Welche Autonomiestufe ist der richtige Startpunkt?",
         "options": [
-          "Sofort vollautonom, um Zeit zu sparen.",
-          "Eine niedrige Stufe – der Agent schlägt vor oder handelt nur nach Freigabe.",
+          "Stufe 4 (vollständig autonom) – maximale Effizienz.",
+          "Stufe 1–2 (Vorschlag oder Freigabe) – schwer umkehrbare Aktionen brauchen Kontrolle.",
           "Autonomie spielt keine Rolle, nur das Modell zählt.",
-          "Die höchste Stufe, damit der Agent flexibel bleibt."
+          "Stufe 3 mit Leitplanken ist immer ausreichend."
         ],
         "correct": 1,
-        "explanation": "Je höher das Risiko einer Fehlentscheidung, desto mehr menschliche Kontrolle gehört dazu. Man startet niedrig (Vorschlag oder Freigabe) und erhöht die Autonomie erst mit wachsendem Vertrauen."
+        "explanation": "Schwer umkehrbare Aktionen gehören auf eine niedrige Autonomiestufe. Man erhöht die Selbstständigkeit erst mit wachsendem Vertrauen."
       },
       {
         "id": "q5",
         "type": "single",
-        "lessonRef": "l5-wo-hilft",
-        "question": "Für welche Art von Aufgabe ist ein KI-Agent typischerweise NICHT die beste Wahl?",
+        "lessonRef": "l5",
+        "question": "Für welche Aufgabe ist ein KI-Agent die bessere Wahl gegenüber einem Skript?",
         "options": [
-          "Das Klassifizieren eingehender Support-Tickets.",
-          "Das Zusammenfassen langer, unstrukturierter Dokumente.",
-          "Eine exakte, deterministische Berechnung mit festen Regeln.",
-          "Das Analysieren von Log-Dateien mit vielen Sonderfällen."
+          "Commits nach Zeitstempel sortieren.",
+          "Eingehende Support-Tickets in Jira kategorisieren und priorisieren.",
+          "Täglich um 02:00 Uhr einen Datenbankexport starten.",
+          "Einen EUR-Betrag in USD umrechnen."
         ],
-        "correct": 2,
-        "explanation": "Exakte, deterministische Berechnungen mit festen Regeln löst klassische Software zuverlässiger und günstiger. Agenten glänzen bei unstrukturierten Eingaben und Aufgaben mit Interpretationsspielraum."
+        "correct": 1,
+        "explanation": "Ticket-Kategorisierung erfordert Sprachverständnis und Urteilsvermögen – beides Stärken von KI-Agenten. Die anderen Aufgaben sind deterministisch."
       }
     ]
   },
   "reference": [
     {
       "term": "KI-Agent",
-      "definition": "Ein System, das ein Sprachmodell nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen – inklusive Planung, Werkzeugnutzung und Reaktion auf Zwischenergebnisse."
+      "definition": "Ein System, das ein Sprachmodell nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen. Es plant, handelt, beobachtet und wiederholt, bis das Ziel erreicht ist."
     },
     {
-      "term": "Klassische Automatisierung",
-      "definition": "Ein vorab programmierter, fester Ablauf (Skript). Reagiert nur auf einprogrammierte Fälle und bricht bei Unerwartetem ab. Im Gegensatz zum Agenten trifft es keine eigenen Laufzeit-Entscheidungen."
-    },
-    {
-      "term": "Sprachmodell (LLM)",
-      "definition": "Das 'Gehirn' des Agenten: ein Modell, das natürliche Sprache versteht und erzeugt und entscheidet, ob geantwortet oder ein Werkzeug aufgerufen wird."
+      "term": "Agent-Loop (Reason–Act–Observe)",
+      "definition": "Der Kern jedes Agenten: planen (Reason), handeln (Act), Ergebnis aufnehmen (Observe) – dann wiederholen, bis das Ziel erreicht oder MAX_SCHRITTE überschritten ist."
     },
     {
       "term": "Werkzeug (Tool)",
-      "definition": "Eine Funktion, mit der ein Agent auf die Außenwelt zugreift, z. B. eine Datei lesen, eine Datenbank abfragen oder ein Ticket anlegen. Ohne Werkzeuge kann ein Agent nur reden, aber nichts bewirken."
+      "definition": "Eine Funktion, mit der ein Agent die Außenwelt erreicht – z. B. eine Jira-API aufrufen, eine Datei lesen oder ein GitHub-Issue anlegen. Ohne Tools kann ein Agent nur reden."
     },
     {
-      "term": "Speicher (Memory / Kontext)",
-      "definition": "Der bisherige Verlauf und die Zwischenergebnisse, die dem Modell bei jedem Schritt als Kontext zur Verfügung stehen, um Entscheidungen zu treffen."
+      "term": "Speicher (Memory)",
+      "definition": "Verlauf und Zwischenergebnisse, die dem Modell bei jedem Schritt als Kontext zur Verfügung stehen."
     },
     {
-      "term": "Agent-Loop",
-      "definition": "Der Kreislauf aus Denken (nächsten Schritt bestimmen), Handeln (Werkzeug aufrufen oder antworten) und Beobachten (Ergebnis aufnehmen), der sich wiederholt, bis das Ziel erreicht oder die maximale Schrittzahl überschritten ist."
-    },
-    {
-      "term": "Abbruchbedingung (MAX_SCHRITTE)",
-      "definition": "Eine Regel – meist eine maximale Schrittzahl –, die verhindert, dass der Agent-Loop endlos weiterläuft und dabei Kosten verursacht. Pflichtbestandteil jedes Agenten."
+      "term": "Instruktionen (System-Prompt)",
+      "definition": "Text, der dem Agenten vor dem ersten Schritt mitteilt, welche Rolle er hat, was er tun soll und was er nie tun soll."
     },
     {
       "term": "Autonomiegrad",
-      "definition": "Das Maß an Selbstständigkeit eines Agenten – von reinen Vorschlägen (Assistent) über Handeln nach Freigabe bis zu vollautonomem Handeln. Die geeignete Stufe richtet sich nach dem Risiko der Aufgabe."
+      "definition": "Das Maß an Selbstständigkeit – von 'Vorschlag machen' (Stufe 1) bis 'vollständig autonom handeln' (Stufe 4). Je höher das Risiko einer Fehlentscheidung, desto niedriger sollte die Stufe sein."
+    },
+    {
+      "term": "MAX_SCHRITTE",
+      "definition": "Eine Sicherheitsgrenze, die verhindert, dass der Agent-Loop endlos weiterläuft. Immer setzen – niedrig starten, z. B. 8–10 Schritte."
     }
   ]
 }

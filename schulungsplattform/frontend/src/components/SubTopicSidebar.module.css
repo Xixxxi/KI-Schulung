@@ -1,7 +1,7 @@
 /* ── Sidebar-Wrapper ─────────────────────────────────────────────────────── */
 .sidebar {
-  width: 240px;
-  min-width: 240px;
+  width: 210px;
+  min-width: 210px;
   flex-shrink: 0;
   background: var(--card-bg);
   border-right: 1px solid var(--border);

@@ -263,6 +263,10 @@
   max-width: 920px;
 }
 
+.panelWrapWide {
+  max-width: 1240px;
+}
+
 .statusBox {
   display: flex;
   align-items: center;
