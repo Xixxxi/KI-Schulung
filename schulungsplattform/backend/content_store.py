@@ -116,6 +116,8 @@ def list_chapters_summary() -> list[dict[str, Any]]:
             "topicOrder": chapter.get("topicOrder", 999),
             "subTopicTitle": chapter.get("subTopicTitle") or chapter.get("title", ""),
             "subTopicDescription": chapter.get("subTopicDescription") or chapter.get("summary", ""),
+            # Klassifizierung: optionales Tag (z. B. "Allgemein", "BMW-intern")
+            "tag": chapter.get("tag"),
             # Escape-Hatch: optionaler Custom-Renderer (Standard: generischer Flow)
             "renderer": chapter.get("renderer"),
         })
@@ -179,6 +181,7 @@ def list_topics(progress: "dict | None" = None) -> list[dict[str, Any]]:
             "questionCount": ch["questionCount"],
             "referenceCount": ch["referenceCount"],
             "renderer": ch.get("renderer"),
+            "tag": ch.get("tag"),
             "passed": bool(p.get("passed")),
             "bestScorePercent": int(p.get("scorePercent", 0)),
         })

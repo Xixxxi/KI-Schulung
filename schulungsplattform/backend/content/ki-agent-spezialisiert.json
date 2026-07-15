@@ -1,0 +1,329 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst – von den Grundlagen bis zur Integration in Werkzeuge wie Jira und GitHub.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Eigene spezialisierte Agenten erstellen",
+  "subTopicDescription": "Vom Ziel zum fertigen Fach-Agenten: Rolle definieren, mit Werkzeugen ausstatten, Leitplanken setzen und einen echten Agenten in VS Code bauen.",
+  "tag": "Allgemein",
+
+  "id": "ki-agent-spezialisiert",
+  "order": 2,
+  "title": "Eigene spezialisierte Agenten erstellen",
+  "summary": "Wie du einen Agenten für eine konkrete Aufgabe zuschneidest: die Rolle über den System-Prompt definieren, ihn mit den richtigen Werkzeugen ausstatten, Grenzen setzen und einen lauffähigen Beispiel-Agenten Schritt für Schritt in VS Code bauen.",
+  "estimatedMinutes": 24,
+  "lessons": [
+    {
+      "id": "l1-was-ist-spezialisiert",
+      "title": "Was macht einen Agenten 'spezialisiert'?",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein spezialisierter Agent ist auf genau eine Aufgabe zugeschnitten. Statt eines Alleskönners, der vieles halb kann, baust du einen Fachexperten, der eine Sache zuverlässig erledigt. Das macht sein Verhalten vorhersehbarer, einfacher zu testen und leichter zu kontrollieren."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Allzweck-Assistent",
+            "color": "#6b7280",
+            "items": [
+              "Deckt viele Themen oberflächlich ab",
+              "Verhalten schwer vorhersehbar",
+              "Antworten variieren stark",
+              "Schwer zu testen und abzusichern"
+            ]
+          },
+          "right": {
+            "label": "Spezialisierter Agent",
+            "color": "#1c69d4",
+            "items": [
+              "Genau eine klar umrissene Aufgabe",
+              "Vorhersehbares, konsistentes Verhalten",
+              "Feste Ein- und Ausgabeformate",
+              "Einfach zu testen und einzugrenzen"
+            ]
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Die vier Design-Fragen",
+          "text": "Bevor du baust, beantworte vier Fragen: 1) Welches EINE Ziel hat der Agent? 2) Welche ROLLE nimmt er ein? 3) Welche WERKZEUGE braucht er? 4) Welche GRENZEN soll er niemals überschreiten? Diese vier Antworten sind der Bauplan."
+        }
+      ]
+    },
+    {
+      "id": "l2-rolle-definieren",
+      "title": "Die Rolle definieren: der System-Prompt als Stellenbeschreibung",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Der System-Prompt ist das wichtigste Werkzeug zur Spezialisierung. Er wirkt wie eine Stellenbeschreibung: Er legt fest, wer der Agent ist, was er tut und wie er sich verhält – noch bevor die erste Aufgabe hereinkommt. Ein präziser System-Prompt ist der Unterschied zwischen einem verlässlichen Fach-Agenten und einem unberechenbaren Plaudergerät."
+        },
+        {
+          "type": "steps",
+          "title": "Aufbau eines professionellen System-Prompts",
+          "items": [
+            {
+              "label": "Persona – Wer ist der Agent?",
+              "description": "Eine klar definierte Fachrolle erzeugt konsistenteres Verhalten als eine allgemeine.",
+              "example": "Du bist ein erfahrener Release-Manager mit Fokus auf saubere, aussagekräftige Commit-Nachrichten."
+            },
+            {
+              "label": "Aufgabe – Was genau soll er tun?",
+              "description": "Beschreibe die Hauptaufgabe mit einem konkreten Verb statt vager Formulierungen.",
+              "example": "Du wandelst eine Beschreibung von Code-Änderungen in eine Commit-Nachricht nach Conventional-Commits-Standard um."
+            },
+            {
+              "label": "Grenzen – Was soll er NIE tun?",
+              "description": "Explizite Verbote sind wirksamer als implizite Erwartungen und begrenzen Halluzinationen.",
+              "example": "Erfinde keine Änderungen, die nicht beschrieben wurden. Frag nach, wenn die Beschreibung unklar ist."
+            },
+            {
+              "label": "Format – Wie sieht die Ausgabe aus?",
+              "description": "Lege Struktur, Länge und Sprache fest. Formatvorgaben befolgt das Modell sehr zuverlässig.",
+              "example": "Antworte nur mit der Commit-Nachricht, ohne Erklärung. Erste Zeile max. 72 Zeichen."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "System-Prompts wie Code behandeln",
+          "text": "Speichere System-Prompts in Dateien, versioniere sie in Git und teste Änderungen systematisch. Ein unbemerkt veränderter System-Prompt ist eine der häufigsten Fehlerquellen bei spezialisierten Agenten."
+        }
+      ]
+    },
+    {
+      "id": "l3-setup",
+      "title": "Setup: Arbeitsumgebung in VS Code vorbereiten",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Für den praktischen Teil brauchst du eine kleine Python-Umgebung. Das Setup dauert wenige Minuten und ist die Basis für alle Beispiele in diesem und den folgenden Kapiteln."
+        },
+        {
+          "type": "steps",
+          "title": "Einmalige Einrichtung (VS Code Terminal)",
+          "items": [
+            {
+              "label": "Projektordner und virtuelle Umgebung anlegen",
+              "description": "Eine isolierte Python-Umgebung hält Pakete sauber getrennt vom System.",
+              "example": "mkdir agent-werkstatt && cd agent-werkstatt\npython -m venv .venv\n.venv\\Scripts\\activate"
+            },
+            {
+              "label": "Benötigte Pakete installieren",
+              "description": "Das offizielle OpenAI-SDK und python-dotenv zum sicheren Laden des API-Keys.",
+              "example": "pip install openai python-dotenv"
+            },
+            {
+              "label": ".env-Datei mit API-Key anlegen",
+              "description": "API-Keys gehören niemals in den Code. Die .env-Datei bleibt lokal und wird über .gitignore aus Git ausgeschlossen.",
+              "example": "# .env  (im Projektordner anlegen)\nOPENAI_API_KEY=sk-..."
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "verbindung_test.py – prüft, ob alles bereit ist",
+          "text": "from dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()          # liest OPENAI_API_KEY aus .env\nclient = OpenAI()      # Key wird automatisch aus der Umgebung gelesen\n\nantwort = client.chat.completions.create(\n    model=\"gpt-4o-mini\",\n    messages=[{\"role\": \"user\", \"content\": \"Antworte mit genau: BEREIT\"}]\n)\nprint(antwort.choices[0].message.content)  # -> BEREIT"
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Direkt aus VS Code ausführen",
+          "text": "Mit F5 (Run without Debugging) oder Rechtsklick auf die Datei und 'In Terminal ausführen' startet das Skript im integrierten Terminal. VS Code erkennt die .venv automatisch, wenn sie im Projektordner liegt."
+        }
+      ]
+    },
+    {
+      "id": "l4-agent-bauen",
+      "title": "Praxis: einen Commit-Nachrichten-Agenten bauen",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Jetzt bauen wir einen echten spezialisierten Agenten. Seine Aufgabe: aus einer kurzen Beschreibung von Code-Änderungen eine saubere Commit-Nachricht erzeugen. Der Agent hat genau eine Aufgabe, eine klare Rolle und ein festes Ausgabeformat – ein Musterbeispiel für Spezialisierung."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "commit_agent.py – ein vollständiger spezialisierter Agent",
+          "text": "from dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()\nclient = OpenAI()\n\n# Die 'Stellenbeschreibung' des Agenten\nSYSTEM_PROMPT = \"\"\"\nDu bist ein erfahrener Release-Manager.\nDeine einzige Aufgabe: aus einer Beschreibung von Code-Aenderungen\neine Commit-Nachricht nach dem Conventional-Commits-Standard erzeugen.\n\nRegeln:\n- Format der ersten Zeile: <typ>(<bereich>): <kurzbeschreibung>\n- Erlaubte Typen: feat, fix, refactor, docs, test, chore\n- Erste Zeile maximal 72 Zeichen, im Imperativ\n- Danach eine Leerzeile, dann optional 1-3 Stichpunkte als Details\n\nGrenzen:\n- Erfinde keine Aenderungen, die nicht beschrieben wurden\n- Antworte NUR mit der Commit-Nachricht, ohne weitere Erklaerung\n\"\"\"\n\ndef erzeuge_commit(beschreibung: str) -> str:\n    antwort = client.chat.completions.create(\n        model=\"gpt-4o-mini\",\n        messages=[\n            {\"role\": \"system\", \"content\": SYSTEM_PROMPT},\n            {\"role\": \"user\",   \"content\": beschreibung}\n        ],\n        temperature=0   # deterministisch: gleiche Eingabe -> gleiche Ausgabe\n    )\n    return antwort.choices[0].message.content\n\nif __name__ == \"__main__\":\n    beschreibung = (\n        \"Login-Formular hat bei leerem Passwort keine Fehlermeldung gezeigt. \"\n        \"Habe eine Validierung ergaenzt und einen Test dafuer geschrieben.\"\n    )\n    print(erzeuge_commit(beschreibung))"
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Was du hier siehst",
+          "text": "Der Agent ist auf eine Aufgabe reduziert (Commit-Nachricht), hat eine klare Rolle (Release-Manager), ein festes Ausgabeformat (Conventional Commits) und explizite Grenzen (nichts erfinden). Genau das macht ihn spezialisiert und zuverlässig."
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Selbst ausprobieren",
+          "text": "Ändere den Text in der Variable 'beschreibung' und führe das Skript erneut aus. Teste bewusst Grenzfälle: Was passiert bei einer sehr vagen Beschreibung? Bei mehreren Änderungen auf einmal? So lernst du das Verhalten deines Agenten kennen."
+        }
+      ]
+    },
+    {
+      "id": "l5-leitplanken",
+      "title": "Leitplanken und Wiederverwendbarkeit",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein produktiver Agent braucht mehr als einen guten System-Prompt. Er braucht Leitplanken, die auch dann greifen, wenn das Modell einmal danebenliegt – und eine Struktur, die sich für weitere Agenten wiederverwenden lässt."
+        },
+        {
+          "type": "steps",
+          "title": "Von der Demo zum verlässlichen Agenten",
+          "items": [
+            {
+              "label": "Eingabe prüfen, bevor der Agent startet",
+              "description": "Leere oder unsinnige Eingaben abfangen, bevor sie unnötige Kosten verursachen.",
+              "example": "if not beschreibung.strip(): raise ValueError('Beschreibung darf nicht leer sein')"
+            },
+            {
+              "label": "Ausgabe validieren, bevor sie verwendet wird",
+              "description": "Prüfe, ob die Antwort dem erwarteten Format entspricht, statt ihr blind zu vertrauen.",
+              "example": "erlaubte = ('feat', 'fix', 'refactor', 'docs', 'test', 'chore')\nif not commit.split('(')[0].startswith(erlaubte): ...  # erneut anfordern"
+            },
+            {
+              "label": "Den Agenten als wiederverwendbare Funktion kapseln",
+              "description": "Eine klare Funktion mit Ein- und Ausgabe lässt sich testen, in Pipelines einbauen und für den nächsten Agenten als Vorlage nutzen.",
+              "example": "def erzeuge_commit(beschreibung: str) -> str: ..."
+            },
+            {
+              "label": "System-Prompt auslagern und versionieren",
+              "description": "Den Prompt in eine eigene Datei legen, damit Änderungen nachvollziehbar und testbar bleiben.",
+              "example": "SYSTEM_PROMPT = Path('prompts/commit_agent.txt').read_text(encoding='utf-8')"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Vertraue der Ausgabe nicht blind",
+          "text": "Auch ein gut instruierter Agent kann gelegentlich vom Format abweichen oder Unerwünschtes produzieren. Für jede Ausgabe, die weiterverarbeitet oder ausgeführt wird, gehört eine Validierung dazu – besonders wenn der Agent später autonomer handeln soll."
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Bereit für den nächsten Schritt",
+          "text": "Du kannst jetzt einen spezialisierten Agenten für eine einzelne Aufgabe bauen. Im nächsten Kapitel verkettest du mehrere solcher Schritte zu einem durchgehenden, mehrstufigen Arbeitsablauf."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l1-was-ist-spezialisiert",
+        "question": "Warum ist ein spezialisierter Agent einem Allzweck-Assistenten für eine konkrete Aufgabe oft überlegen?",
+        "options": [
+          "Weil er ein größeres Sprachmodell verwendet.",
+          "Weil sein Verhalten vorhersehbarer, testbarer und leichter zu kontrollieren ist.",
+          "Weil er ganz ohne System-Prompt auskommt.",
+          "Weil er grundsätzlich schneller antwortet."
+        ],
+        "correct": 1,
+        "explanation": "Ein spezialisierter Agent ist auf genau eine Aufgabe zugeschnitten. Das macht sein Verhalten konsistent, sein Format fest und ihn dadurch einfacher zu testen und einzugrenzen."
+      },
+      {
+        "id": "q2",
+        "type": "multi",
+        "lessonRef": "l2-rolle-definieren",
+        "question": "Welche Elemente gehören in einen professionellen System-Prompt? (Mehrfachauswahl)",
+        "options": [
+          "Persona – wer ist der Agent?",
+          "Der API-Key",
+          "Aufgabe – was genau soll er tun?",
+          "Grenzen – was soll er nie tun?",
+          "Format – wie sieht die Ausgabe aus?"
+        ],
+        "correct": [0, 2, 3, 4],
+        "explanation": "Ein professioneller System-Prompt definiert Persona, Aufgabe, Grenzen und Ausgabeformat. Der API-Key gehört niemals in den Prompt, sondern sicher in die .env-Datei."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l4-agent-bauen",
+        "question": "Warum wird der Commit-Agent im Beispiel mit temperature=0 aufgerufen?",
+        "options": [
+          "Damit er kreativere Nachrichten schreibt.",
+          "Damit gleiche Eingaben möglichst gleiche, deterministische Ausgaben erzeugen.",
+          "Weil temperature=0 die API-Kosten halbiert.",
+          "Weil das Modell sonst keinen System-Prompt beachtet."
+        ],
+        "correct": 1,
+        "explanation": "temperature=0 macht das Modell so deterministisch wie möglich. Für eine formatgebundene Aufgabe wie eine Commit-Nachricht ist Konsistenz wichtiger als Kreativität."
+      },
+      {
+        "id": "q4",
+        "type": "single",
+        "lessonRef": "l5-leitplanken",
+        "question": "Was ist eine sinnvolle 'Leitplanke', bevor die Ausgabe eines Agenten weiterverwendet wird?",
+        "options": [
+          "Der Ausgabe grundsätzlich blind vertrauen.",
+          "Die Ausgabe gegen das erwartete Format validieren und bei Abweichung erneut anfordern.",
+          "Die temperature auf den Maximalwert setzen.",
+          "Den System-Prompt bei jedem Aufruf zufällig ändern."
+        ],
+        "correct": 1,
+        "explanation": "Auch ein gut instruierter Agent kann vom Format abweichen. Deshalb sollte jede weiterverarbeitete Ausgabe validiert werden – etwa ob der Commit-Typ zu den erlaubten Werten gehört."
+      },
+      {
+        "id": "q5",
+        "type": "single",
+        "lessonRef": "l2-rolle-definieren",
+        "question": "Warum empfiehlt es sich, den System-Prompt in einer eigenen Datei zu versionieren?",
+        "options": [
+          "Damit das Modell schneller lädt.",
+          "Weil ein unbemerkt veränderter System-Prompt eine der häufigsten Fehlerquellen ist – Versionierung macht Änderungen nachvollziehbar.",
+          "Weil der Prompt sonst nicht funktioniert.",
+          "Damit man den API-Key nicht mehr braucht."
+        ],
+        "correct": 1,
+        "explanation": "Der System-Prompt bestimmt das gesamte Verhalten des Agenten. Ihn wie Code zu versionieren macht Änderungen nachvollziehbar und testbar und verhindert schwer auffindbare Fehler."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "Spezialisierter Agent",
+      "definition": "Ein Agent, der auf genau eine klar umrissene Aufgabe zugeschnitten ist. Sein Verhalten ist dadurch vorhersehbar, konsistent und leichter zu testen als das eines Allzweck-Assistenten."
+    },
+    {
+      "term": "System-Prompt",
+      "definition": "Die 'Stellenbeschreibung' des Agenten: definiert Persona, Aufgabe, Grenzen und Ausgabeformat, bevor die erste Aufgabe hereinkommt. Das wichtigste Werkzeug zur Spezialisierung."
+    },
+    {
+      "term": "Persona",
+      "definition": "Die im System-Prompt definierte Fachrolle des Agenten (z. B. 'erfahrener Release-Manager'). Eine präzise Rolle erzeugt konsistenteres Verhalten als eine allgemeine."
+    },
+    {
+      "term": "Leitplanke (Guardrail)",
+      "definition": "Eine technische Absicherung rund um den Agenten – etwa Eingabeprüfung vor dem Start und Ausgabevalidierung danach –, die greift, auch wenn das Modell einmal danebenliegt."
+    },
+    {
+      "term": "temperature",
+      "definition": "API-Parameter (0–2), der die Zufälligkeit der Ausgabe steuert. 0 = deterministisch und wiederholbar, höhere Werte = kreativer. Für formatgebundene Aufgaben wird ein niedriger Wert gewählt."
+    },
+    {
+      "term": "Conventional Commits",
+      "definition": "Ein verbreiteter Standard für Commit-Nachrichten im Format <typ>(<bereich>): <beschreibung>, z. B. fix(login): Validierung bei leerem Passwort ergänzen. Im Beispiel das Zielformat des Agenten."
+    },
+    {
+      "term": "Ausgabevalidierung",
+      "definition": "Die Prüfung, ob die Antwort eines Agenten dem erwarteten Format und Inhalt entspricht, bevor sie weiterverwendet wird. Unverzichtbar, sobald eine Ausgabe automatisch weiterverarbeitet oder ausgeführt wird."
+    },
+    {
+      "term": ".env-Datei",
+      "definition": "Eine lokale Datei zum Speichern von Geheimnissen wie dem API-Key. Wird über python-dotenv geladen und via .gitignore aus der Versionskontrolle ausgeschlossen, damit keine Schlüssel im Code landen."
+    }
+  ]
+}

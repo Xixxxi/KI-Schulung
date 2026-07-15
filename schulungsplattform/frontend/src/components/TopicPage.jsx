@@ -18,7 +18,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
               <p className={styles.heroSub}>{topic.description}</p>
             )}
             <div className={styles.heroMeta}>
-              <span>{subs.length} {subs.length === 1 ? 'Unterthema' : 'Unterthemen'}</span>
+              <span>{subs.length} {subs.length === 1 ? 'Kapitel' : 'Kapitel'}</span>
               {topic.totalMinutes > 0 && <span>· ca. {topic.totalMinutes} min</span>}
               {topic.allPassed && (
                 <span className={styles.heroBadge}>
@@ -30,15 +30,15 @@ export default function TopicPage({ topic, onSelectChapter }) {
         </div>
       </header>
 
-      {/* ── Unterthemen ── */}
+      {/* ── Kapitel ── */}
       <div className={styles.content}>
         <div className={styles.sectionHeader}>
           <div className={styles.sectionAccent} style={{ background: accent }} />
           <div>
-            <h2 className={styles.sectionTitle}>Unterthemen</h2>
+            <h2 className={styles.sectionTitle}>Kapitel</h2>
             <p className={styles.sectionSub}>
-              Wähle ein Unterthema, um mit dem Lernen zu beginnen.
-              Jedes Unterthema enthält Lektionen, ein Quiz und ein Nachschlagewerk.
+              Wähle ein Kapitel, um mit dem Lernen zu beginnen.
+              Jedes Kapitel enthält Lektionen, ein Quiz und ein Nachschlagewerk.
             </p>
           </div>
         </div>
@@ -60,6 +60,11 @@ export default function TopicPage({ topic, onSelectChapter }) {
               <div className={styles.cardBody}>
                 <div className={styles.cardHeader}>
                   <span className={styles.cardTitle}>{sub.title}</span>
+                  {sub.tag && (
+                    <span className={`${styles.cardTag} ${sub.tag.toLowerCase() === 'allgemein' ? styles.cardTagGeneral : styles.cardTagBMW}`}>
+                      {sub.tag}
+                    </span>
+                  )}
                   {sub.passed && (
                     <span className={styles.cardBadge}>
                       <CheckCircle2 size={11} /> Abgeschlossen

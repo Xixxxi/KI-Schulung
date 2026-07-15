@@ -1,18 +1,19 @@
 {
   "topicId": "ki-agenten",
-  "topicTitle": "KI-Agenten erstellen",
-  "topicDescription": "Von der Idee bis zum fertigen Agenten: Sprachmodelle, der Agent-Loop, Tools und erste Best Practices – Schritt für Schritt erklärt.",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst – von den Grundlagen bis zur Integration in Werkzeuge wie Jira und GitHub.",
   "topicIcon": "🤖",
   "topicAccentColor": "#1c69d4",
   "topicOrder": 1,
-  "subTopicTitle": "Grundlagen",
-  "subTopicDescription": "Was ein Agent ist, die vier Bausteine, der Agent-Loop und wie Werkzeuge definiert werden.",
+  "subTopicTitle": "Grundlagen von KI-Agenten",
+  "subTopicDescription": "Was ein KI-Agent ist, woraus er besteht, wie der Agent-Loop funktioniert und welche Autonomiegrade es gibt.",
+  "tag": "Allgemein",
 
   "id": "ki-agent-grundlagen",
   "order": 1,
-  "title": "KI-Agenten – Grundlagen",
-  "summary": "Was ein KI-Agent ist, aus welchen Bausteinen er besteht und wie ein einfacher Agent-Loop mit Werkzeugen (Tools) funktioniert.",
-  "estimatedMinutes": 15,
+  "title": "Grundlagen von KI-Agenten",
+  "summary": "Was einen KI-Agenten von einem Chatbot und von klassischer Automatisierung unterscheidet, aus welchen Bausteinen er besteht, wie der Agent-Loop arbeitet und welche Grade an Selbstständigkeit sinnvoll sind.",
+  "estimatedMinutes": 16,
   "lessons": [
     {
       "id": "l1-was-ist-agent",
@@ -20,36 +21,40 @@
       "blocks": [
         {
           "type": "text",
-          "text": "Ein KI-Agent ist ein System, das ein Sprachmodell (LLM) nutzt, um selbstständig ein Ziel zu verfolgen. Anders als ein reiner Chatbot beantwortet ein Agent nicht nur eine einzelne Frage – er plant Schritte, ruft Werkzeuge auf und reagiert auf Ergebnisse, bis das Ziel erreicht ist."
+          "text": "Ein KI-Agent ist ein System, das ein Sprachmodell (LLM) nutzt, um selbstständig ein Ziel zu verfolgen. Der entscheidende Unterschied zu einem Chatbot: Ein Agent beantwortet nicht nur eine einzelne Frage, sondern plant Schritte, ruft Werkzeuge auf, prüft Ergebnisse und arbeitet so lange weiter, bis das Ziel erreicht ist."
+        },
+        {
+          "type": "text",
+          "text": "Für technische Fachleute lässt sich der Unterschied zur klassischen Automatisierung gut fassen: Ein Skript folgt einem festen, vorab programmierten Ablauf. Ein Agent entscheidet dagegen zur Laufzeit selbst, welcher Schritt als Nächstes sinnvoll ist – abhängig davon, was er unterwegs beobachtet."
         },
         {
           "type": "comparison",
           "left": {
-            "label": "Chatbot",
+            "label": "Klassische Automatisierung",
             "color": "#6b7280",
             "items": [
-              "Nimmt eine Eingabe entgegen",
-              "Gibt genau eine Antwort zurück",
-              "Kein Zugriff auf externe Daten",
-              "Kein Gedächtnis zwischen Gesprächen"
+              "Fester, vorab definierter Ablauf",
+              "Reagiert nur auf einprogrammierte Fälle",
+              "Bricht bei Unerwartetem ab",
+              "Jeder Sonderfall muss codiert werden"
             ]
           },
           "right": {
             "label": "KI-Agent",
             "color": "#1c69d4",
             "items": [
-              "Verfolgt ein Ziel über mehrere Schritte",
-              "Kann Werkzeuge aufrufen (Suche, Rechner …)",
-              "Beobachtet Ergebnisse und plant neu",
-              "Hält Zwischenergebnisse im Kontext"
+              "Entscheidet den nächsten Schritt zur Laufzeit",
+              "Geht mit unstrukturierten Eingaben um",
+              "Reagiert flexibel auf Zwischenergebnisse",
+              "Verarbeitet auch Fälle, die nicht vorab bedacht wurden"
             ]
           }
         },
         {
           "type": "callout",
           "tone": "info",
-          "title": "Kernidee in einem Satz",
-          "text": "Chatbot = eine Frage, eine Antwort. Agent = ein Kreislauf aus Denken, Handeln und Beobachten über beliebig viele Schritte."
+          "title": "Die drei Stufen in einem Satz",
+          "text": "Skript = fester Ablauf. Chatbot = eine Frage, eine Antwort. Agent = ein Kreislauf aus Denken, Handeln und Beobachten über beliebig viele Schritte, bis ein Ziel erreicht ist."
         }
       ]
     },
@@ -59,7 +64,7 @@
       "blocks": [
         {
           "type": "text",
-          "text": "Fast jeder Agent besteht aus denselben vier Grundbausteinen. Wer diese kennt, kann jeden Agenten lesen, debuggen und weiterentwickeln."
+          "text": "Fast jeder Agent – egal wie komplex – besteht aus denselben vier Grundbausteinen. Wer diese vier Teile kennt, kann jeden Agenten verstehen, einordnen und später selbst gestalten."
         },
         {
           "type": "cards",
@@ -69,25 +74,25 @@
               "icon": "🧠",
               "label": "Modell (LLM)",
               "color": "#1c69d4",
-              "description": "Das 'Gehirn': versteht Text, plant Schritte und formuliert Antworten oder Werkzeugaufrufe."
+              "description": "Das 'Gehirn': versteht Sprache, plant Schritte und entscheidet, ob geantwortet oder ein Werkzeug aufgerufen wird."
             },
             {
               "icon": "📋",
               "label": "Instruktionen",
               "color": "#6d28d9",
-              "description": "Der System-Prompt: legt Rolle, Ziel und Grenzen des Agenten fest, bevor der erste Schritt läuft."
+              "description": "Der System-Prompt: legt Rolle, Ziel und Grenzen des Agenten fest, bevor der erste Schritt läuft. Das 'Pflichtenheft' des Agenten."
             },
             {
               "icon": "🔧",
               "label": "Werkzeuge (Tools)",
               "color": "#0369a1",
-              "description": "Funktionen, mit denen der Agent die Außenwelt erreicht – z. B. Websuche, Datenbankabfrage oder Taschenrechner."
+              "description": "Funktionen, mit denen der Agent die Außenwelt erreicht – z. B. Datei lesen, Datenbank abfragen, eine API aufrufen oder ein Ticket anlegen."
             },
             {
               "icon": "💾",
               "label": "Speicher (Memory)",
               "color": "#166534",
-              "description": "Die bisherige Konversation und Zwischenergebnisse – das, was das Modell bei jedem Schritt als Kontext erhält."
+              "description": "Der bisherige Verlauf und die Zwischenergebnisse – das, was das Modell bei jedem Schritt als Kontext erhält, um Entscheidungen zu treffen."
             }
           ]
         },
@@ -95,7 +100,7 @@
           "type": "callout",
           "tone": "tip",
           "title": "Merkhilfe",
-          "text": "Modell + Instruktionen + Werkzeuge + Speicher = Agent. Fehlt ein Baustein vollständig, ist das Ergebnis meist nur ein einfacher Chatbot."
+          "text": "Modell + Instruktionen + Werkzeuge + Speicher = Agent. Fehlt der Baustein 'Werkzeuge' vollständig, kann das System nur reden, aber nichts bewirken – dann ist es nur ein Chatbot."
         }
       ]
     },
@@ -105,7 +110,7 @@
       "blocks": [
         {
           "type": "text",
-          "text": "Das Herzstück eines Agenten ist ein Kreislauf (Loop). Er wiederholt sich so lange, bis das Ziel erreicht ist – oder eine maximale Schrittzahl als Sicherheitsnetz greift."
+          "text": "Das Herzstück jedes Agenten ist ein Kreislauf (Loop). Er wiederholt sich so lange, bis das Ziel erreicht ist – oder bis eine maximale Schrittzahl als Sicherheitsnetz greift. Dieses Muster ist bei praktisch allen Agenten gleich, unabhängig vom eingesetzten Werkzeug oder Framework."
         },
         {
           "type": "diagram",
@@ -113,111 +118,113 @@
           "nodes": [
             { "id": "start", "type": "start", "emoji": "🎯", "label": "Ziel", "sublabel": "wird übergeben" },
             { "id": "reason", "type": "step", "emoji": "🤔", "label": "Denken", "sublabel": "Was ist der nächste Schritt?" },
-            { "id": "act", "type": "step", "emoji": "⚡", "label": "Handeln", "sublabel": "Tool aufrufen oder antworten" },
-            { "id": "observe", "type": "step", "emoji": "👁", "label": "Beobachten", "sublabel": "Ergebnis in Kontext aufnehmen" },
-            { "id": "end", "type": "end", "emoji": "✅", "label": "Fertig", "sublabel": "Antwort ausgeben" }
+            { "id": "act", "type": "step", "emoji": "⚡", "label": "Handeln", "sublabel": "Werkzeug aufrufen oder antworten" },
+            { "id": "observe", "type": "step", "emoji": "👁", "label": "Beobachten", "sublabel": "Ergebnis in den Kontext aufnehmen" },
+            { "id": "end", "type": "end", "emoji": "✅", "label": "Fertig", "sublabel": "Ziel erreicht, Antwort ausgeben" }
           ],
           "loop": {
-            "label": "Wenn das Ziel noch nicht erreicht ist → zurück zu Denken"
+            "label": "Solange das Ziel noch nicht erreicht ist → zurück zu Denken"
           },
-          "note": "Der Loop endet, wenn der Agent eine Antwort ausgibt (Ziel erreicht) oder MAX_SCHRITTE überschritten sind."
+          "note": "Der Loop endet, wenn der Agent das Ziel als erreicht meldet oder die maximale Schrittzahl überschritten wird."
         },
         {
           "type": "code",
           "language": "python",
-          "caption": "Stark vereinfachter Agent-Loop in Python",
-          "text": "ziel = \"Wie ist das Wetter in München?\"\nkontext = [system_prompt, ziel]\n\nfor schritt in range(MAX_SCHRITTE):\n    antwort = llm(kontext)              # 1. Denken\n\n    if antwort.will_tool_aufrufen:\n        ergebnis = tool_ausfuehren(antwort.tool)  # 2. Handeln\n        kontext.append(ergebnis)        # 3. Beobachten → nächster Durchlauf\n    else:\n        return antwort.text             # Ziel erreicht – Schleife verlassen"
+          "caption": "Der Agent-Loop als Pseudocode – das Grundmuster",
+          "text": "ziel = \"Fasse die drei neuesten Fehlermeldungen im Log zusammen.\"\nkontext = [system_prompt, ziel]\n\nfor schritt in range(MAX_SCHRITTE):\n    entscheidung = llm(kontext)              # 1. DENKEN\n\n    if entscheidung.will_werkzeug_nutzen:\n        ergebnis = werkzeug_ausfuehren(entscheidung.werkzeug)  # 2. HANDELN\n        kontext.append(ergebnis)             # 3. BEOBACHTEN -> naechster Durchlauf\n    else:\n        print(entscheidung.text)             # Ziel erreicht -> Loop verlassen\n        break"
         },
         {
           "type": "callout",
           "tone": "warn",
-          "title": "Wichtig: Abbruchbedingung nicht vergessen",
-          "text": "Ohne ein Limit für die Schrittanzahl (MAX_SCHRITTE) kann ein Agent in eine Endlosschleife geraten. Eine Abbruchbedingung ist Pflicht – und sie sollte niedrig starten (z. B. 10 Schritte)."
+          "title": "Ohne Abbruchbedingung kein Agent",
+          "text": "Ohne ein Limit für die Schrittzahl (MAX_SCHRITTE) kann ein Agent in einer Endlosschleife hängen bleiben und dabei fortlaufend Kosten verursachen. Eine Abbruchbedingung ist Pflicht – und sollte niedrig starten (z. B. 8–10 Schritte)."
         }
       ]
     },
     {
-      "id": "l4-tools",
-      "title": "Werkzeuge (Tools) definieren und einsetzen",
+      "id": "l4-autonomie",
+      "title": "Autonomiegrade: Wie viel Selbstständigkeit ist sinnvoll?",
       "blocks": [
         {
           "type": "text",
-          "text": "Werkzeuge geben dem Agenten Fähigkeiten, die das Sprachmodell allein nicht hat: aktuelle Daten abrufen, rechnen, Dateien lesen oder in Datenbanken suchen. Ein gutes Werkzeug besteht aus drei Teilen:"
+          "text": "Ein Agent muss nicht alles allein entscheiden. In der Praxis gibt es ein Spektrum – von einem reinen Assistenten, der nur Vorschläge macht, bis zum vollautonomen Agenten, der eigenständig handelt. Die richtige Stufe hängt vom Risiko der Aufgabe ab."
         },
         {
           "type": "steps",
-          "title": "Aufbau eines Werkzeugs",
+          "title": "Vom Assistenten zum autonomen Agenten",
           "items": [
             {
-              "label": "Name",
-              "description": "Ein klarer, eindeutiger Bezeichner. Das Modell wählt das Werkzeug anhand des Namens.",
-              "example": "wetter_abfragen, datenbank_suchen, pdf_lesen"
+              "label": "Stufe 1 – Assistent (Vorschlag)",
+              "description": "Der Agent schlägt vor, führt aber nichts aus. Ein Mensch entscheidet und handelt. Niedrigstes Risiko.",
+              "example": "Der Agent formuliert eine Commit-Nachricht – du übernimmst oder änderst sie."
             },
             {
-              "label": "Beschreibung",
-              "description": "Ein Satz, der erklärt, wann und wofür das Werkzeug eingesetzt wird. Je präziser, desto zuverlässiger die Auswahl.",
-              "example": "\"Gibt das aktuelle Wetter für eine beliebige Stadt zurück.\""
+              "label": "Stufe 2 – Assistent mit Freigabe",
+              "description": "Der Agent bereitet eine Aktion vollständig vor und führt sie erst nach ausdrücklicher Bestätigung aus.",
+              "example": "Der Agent entwirft eine E-Mail-Antwort und sendet sie erst nach deinem Klick."
             },
             {
-              "label": "Eingabe-Parameter",
-              "description": "Klar typisierte Parameter (Name + Typ + Beschreibung). Das Modell erzeugt die Eingabe, also müssen sie eindeutig definiert sein.",
-              "example": "stadt: str – Der Name der Stadt, für die das Wetter abgefragt wird."
+              "label": "Stufe 3 – Halbautonom (Leitplanken)",
+              "description": "Der Agent handelt selbstständig, aber nur innerhalb klar definierter Grenzen. Kritische Aktionen erfordern weiterhin Freigabe.",
+              "example": "Der Agent darf Test-Tickets anlegen, aber keine produktiven Systeme verändern."
+            },
+            {
+              "label": "Stufe 4 – Autonom",
+              "description": "Der Agent verfolgt ein Ziel vollständig eigenständig. Nur für gut abgegrenzte, risikoarme Aufgaben mit sauberer Protokollierung geeignet.",
+              "example": "Der Agent sortiert eingehende Support-Tickets automatisch in Kategorien."
             }
           ]
-        },
-        {
-          "type": "code",
-          "language": "python",
-          "caption": "Ein vollständiges Beispiel-Werkzeug",
-          "text": "def wetter_abfragen(stadt: str) -> str:\n    \"\"\"\n    Gibt das aktuelle Wetter für eine Stadt zurück.\n    Nutze dieses Tool, wenn der Nutzer nach dem aktuellen\n    Wetter in einem bestimmten Ort fragt.\n    \"\"\"\n    # In einer echten Implementierung: API-Aufruf\n    return f\"In {stadt} sind es aktuell 21 °C und sonnig.\""
         },
         {
           "type": "callout",
           "tone": "tip",
-          "title": "Daumenregel",
-          "text": "Wenn du einem neuen Mitarbeiter in einem Satz erklären könntest, wozu das Werkzeug dient – dann ist die Beschreibung gut genug für den Agenten."
+          "title": "Faustregel für den Start",
+          "text": "Beginne immer auf einer niedrigen Autonomiestufe. Erhöhe die Selbstständigkeit erst, wenn du dem Agenten bei einer Aufgabe wiederholt vertrauen konntest. Je höher das Risiko einer Fehlentscheidung, desto mehr menschliche Kontrolle gehört dazu."
         }
       ]
     },
     {
-      "id": "l5-best-practices",
-      "title": "Erste Best Practices",
+      "id": "l5-wo-hilft",
+      "title": "Wo Agenten bei der Automatisierung helfen",
       "blocks": [
         {
           "type": "text",
-          "text": "Mit den Grundlagen im Gepäck gibt es einige Faustregeln, die fast immer helfen – egal ob du deinen ersten oder deinen zehnten Agenten baust."
+          "text": "Nicht jede Aufgabe braucht einen Agenten. Ihre Stärke spielen Agenten dort aus, wo klassische Automatisierung an unstrukturierten Eingaben oder wechselnden Situationen scheitert."
         },
         {
-          "type": "steps",
-          "title": "Schritt für Schritt zum ersten Agenten",
-          "items": [
-            {
-              "label": "Klein anfangen",
-              "description": "Starte mit einem einzigen, klar definierten Ziel und maximal zwei Werkzeugen. Komplexität lässt sich später hinzufügen.",
-              "example": "Ziel: Wetterauskunft geben. Tools: wetter_abfragen, ort_suchen."
-            },
-            {
-              "label": "System-Prompt sorgfältig formulieren",
-              "description": "Gib dem Agenten eine klare Rolle, das Ziel und explizite Grenzen (was er NICHT tun soll).",
-              "example": "\"Du bist ein Wetter-Assistent. Antworte nur auf Fragen zum Wetter. Benutze niemals eigene Annahmen über Temperaturen.\""
-            },
-            {
-              "label": "Abbruchbedingung setzen",
-              "description": "Immer MAX_SCHRITTE definieren – und mit einem niedrigen Wert starten, um Kosten und Endlosschleifen zu vermeiden.",
-              "example": "MAX_SCHRITTE = 8  # Bei Bedarf erhöhen"
-            },
-            {
-              "label": "Jeden Schritt protokollieren",
-              "description": "Logge Denkschritte, Werkzeugaufrufe und Beobachtungen. Ohne Logs ist Debugging bei Agenten nahezu unmöglich.",
-              "example": "print(f\"[Schritt {i}] Tool: {antwort.tool}, Input: {antwort.tool_input}\")"
-            }
-          ]
+          "type": "comparison",
+          "left": {
+            "label": "Gut geeignet für Agenten",
+            "color": "#166534",
+            "items": [
+              "Unstrukturierte Texte verstehen (E-Mails, Tickets, Logs)",
+              "Mehrere Schritte mit Entscheidungen verketten",
+              "Informationen aus verschiedenen Quellen zusammenführen",
+              "Aufgaben mit vielen Sonderfällen"
+            ]
+          },
+          "right": {
+            "label": "Besser klassisch lösen",
+            "color": "#6b7280",
+            "items": [
+              "Exakte, deterministische Berechnungen",
+              "Feste Regeln ohne Interpretationsspielraum",
+              "Höchste Zuverlässigkeit ohne Abweichung nötig",
+              "Sehr hohe Frequenz bei minimalen Kosten"
+            ]
+          }
         },
         {
           "type": "callout",
           "tone": "info",
-          "title": "Du bist bereit für den Test",
-          "text": "Wenn du diese fünf Lektionen verstanden hast, teste jetzt dein Wissen. Nach bestandenem Test steht dir das vollständige Nachschlagewerk mit allen Kernbegriffen zur Verfügung."
+          "title": "Typische Einsatzfelder im Arbeitsalltag",
+          "text": "Ticket-Triage und Klassifizierung, Zusammenfassen langer Dokumente, Code-Reviews vorbereiten, Log-Analysen, Rechercheaufgaben, das Übersetzen zwischen Formaten und das Vorbereiten von Routine-Antworten – überall dort, wo Sprache und Urteilsvermögen gefragt sind."
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Du hast die Grundlage gelegt",
+          "text": "Du kennst jetzt die Bausteine, den Agent-Loop und die Autonomiegrade. Im nächsten Kapitel baust du deinen ersten eigenen, spezialisierten Agenten für eine konkrete Aufgabe."
         }
       ]
     }
@@ -229,21 +236,21 @@
         "id": "q1",
         "type": "single",
         "lessonRef": "l1-was-ist-agent",
-        "question": "Worin unterscheidet sich ein KI-Agent am deutlichsten von einem einfachen Chatbot?",
+        "question": "Was ist der zentrale Unterschied zwischen einem KI-Agenten und klassischer Automatisierung (einem Skript)?",
         "options": [
-          "Er verwendet ein größeres Sprachmodell.",
-          "Er verfolgt ein Ziel über mehrere Schritte und kann Werkzeuge nutzen.",
-          "Er antwortet immer schneller.",
-          "Er benötigt kein Sprachmodell."
+          "Ein Agent läuft schneller als ein Skript.",
+          "Ein Agent entscheidet zur Laufzeit selbst über den nächsten Schritt, ein Skript folgt einem festen Ablauf.",
+          "Ein Skript kann keine Werkzeuge aufrufen.",
+          "Ein Agent benötigt keine Programmierung."
         ],
         "correct": 1,
-        "explanation": "Ein Agent plant über mehrere Schritte, nutzt Werkzeuge und reagiert auf Ergebnisse – ein Chatbot liefert nur eine einzelne Antwort."
+        "explanation": "Ein Skript folgt einem vorab programmierten, festen Ablauf. Ein Agent entscheidet dagegen zur Laufzeit anhand seiner Beobachtungen selbst, welcher Schritt als Nächstes sinnvoll ist."
       },
       {
         "id": "q2",
         "type": "multi",
         "lessonRef": "l2-bausteine",
-        "question": "Welche der folgenden gehören zu den vier Bausteinen eines Agenten? (Mehrfachauswahl)",
+        "question": "Welche vier Bausteine bilden zusammen einen KI-Agenten? (Mehrfachauswahl)",
         "options": [
           "Modell (LLM)",
           "Instruktionen (System-Prompt)",
@@ -258,7 +265,7 @@
         "id": "q3",
         "type": "single",
         "lessonRef": "l3-agent-loop",
-        "question": "In welcher Reihenfolge laufen die drei Phasen des Agent-Loops ab?",
+        "question": "In welcher Reihenfolge laufen die drei Phasen eines Agent-Loop-Durchlaufs ab?",
         "options": [
           "Handeln → Denken → Beobachten",
           "Beobachten → Handeln → Denken",
@@ -266,66 +273,70 @@
           "Denken → Beobachten → Handeln"
         ],
         "correct": 2,
-        "explanation": "Der Loop läuft: Denken (Reason) → Handeln (Act) → Beobachten (Observe) – und beginnt dann erneut, bis das Ziel erreicht ist."
+        "explanation": "Der Loop läuft: Denken (nächsten Schritt bestimmen) → Handeln (Werkzeug aufrufen oder antworten) → Beobachten (Ergebnis aufnehmen) – und beginnt dann erneut, bis das Ziel erreicht ist."
       },
       {
         "id": "q4",
         "type": "single",
-        "lessonRef": "l3-agent-loop",
-        "question": "Warum ist eine Abbruchbedingung (z. B. maximale Schrittzahl) im Agent-Loop wichtig?",
+        "lessonRef": "l4-autonomie",
+        "question": "Welche Autonomiestufe ist für eine risikoreiche Aufgabe der beste Startpunkt?",
         "options": [
-          "Sie macht die Antworten höflicher.",
-          "Sie verhindert eine mögliche Endlosschleife.",
-          "Sie ist nur für Chatbots relevant.",
-          "Sie erhöht die Antwortqualität automatisch."
+          "Sofort vollautonom, um Zeit zu sparen.",
+          "Eine niedrige Stufe – der Agent schlägt vor oder handelt nur nach Freigabe.",
+          "Autonomie spielt keine Rolle, nur das Modell zählt.",
+          "Die höchste Stufe, damit der Agent flexibel bleibt."
         ],
         "correct": 1,
-        "explanation": "Ohne Limit könnte der Agent endlos weiterlaufen. Eine Abbruchbedingung (MAX_SCHRITTE) ist deshalb Pflicht."
+        "explanation": "Je höher das Risiko einer Fehlentscheidung, desto mehr menschliche Kontrolle gehört dazu. Man startet niedrig (Vorschlag oder Freigabe) und erhöht die Autonomie erst mit wachsendem Vertrauen."
       },
       {
         "id": "q5",
-        "type": "text",
-        "lessonRef": "l4-tools",
-        "question": "Erkläre kurz, warum eine präzise Beschreibung eines Werkzeugs entscheidend ist. (Tipp: nenne 'Beschreibung' und 'wählt' oder 'nutzt')",
-        "keywords": ["beschreibung", "wählt", "nutzt"],
-        "minKeywords": 1,
-        "hint": "Denke daran, wie der Agent entscheidet, welches Werkzeug er wann einsetzt.",
-        "explanation": "Das Modell entscheidet anhand von Name und Beschreibung, wann und welches Werkzeug es nutzt. Klare Beschreibungen führen zu zuverlässigerer Werkzeugwahl."
+        "type": "single",
+        "lessonRef": "l5-wo-hilft",
+        "question": "Für welche Art von Aufgabe ist ein KI-Agent typischerweise NICHT die beste Wahl?",
+        "options": [
+          "Das Klassifizieren eingehender Support-Tickets.",
+          "Das Zusammenfassen langer, unstrukturierter Dokumente.",
+          "Eine exakte, deterministische Berechnung mit festen Regeln.",
+          "Das Analysieren von Log-Dateien mit vielen Sonderfällen."
+        ],
+        "correct": 2,
+        "explanation": "Exakte, deterministische Berechnungen mit festen Regeln löst klassische Software zuverlässiger und günstiger. Agenten glänzen bei unstrukturierten Eingaben und Aufgaben mit Interpretationsspielraum."
       }
     ]
   },
   "reference": [
     {
       "term": "KI-Agent",
-      "definition": "Ein System, das ein Sprachmodell nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen – inklusive Planung, Werkzeugnutzung und Reaktion auf Ergebnisse."
+      "definition": "Ein System, das ein Sprachmodell nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen – inklusive Planung, Werkzeugnutzung und Reaktion auf Zwischenergebnisse."
+    },
+    {
+      "term": "Klassische Automatisierung",
+      "definition": "Ein vorab programmierter, fester Ablauf (Skript). Reagiert nur auf einprogrammierte Fälle und bricht bei Unerwartetem ab. Im Gegensatz zum Agenten trifft es keine eigenen Laufzeit-Entscheidungen."
     },
     {
       "term": "Sprachmodell (LLM)",
-      "definition": "Das 'Gehirn' des Agenten: ein Modell, das natürliche Sprache versteht und erzeugt. Beispiel: GPT-Modelle."
-    },
-    {
-      "term": "System-Prompt / Instruktionen",
-      "definition": "Die grundlegenden Anweisungen, die Rolle, Ziel und Grenzen des Agenten festlegen – werden vor dem ersten Schritt übergeben."
+      "definition": "Das 'Gehirn' des Agenten: ein Modell, das natürliche Sprache versteht und erzeugt und entscheidet, ob geantwortet oder ein Werkzeug aufgerufen wird."
     },
     {
       "term": "Werkzeug (Tool)",
-      "definition": "Eine Funktion, mit der ein Agent auf die Außenwelt zugreift, z. B. Websuche, Taschenrechner oder Datenbankabfrage. Besteht aus Name, Beschreibung und definierten Eingabe-Parametern."
+      "definition": "Eine Funktion, mit der ein Agent auf die Außenwelt zugreift, z. B. eine Datei lesen, eine Datenbank abfragen oder ein Ticket anlegen. Ohne Werkzeuge kann ein Agent nur reden, aber nichts bewirken."
     },
     {
       "term": "Speicher (Memory / Kontext)",
-      "definition": "Der bisherige Gesprächsverlauf und die Zwischenergebnisse, die dem Modell bei jedem Schritt als Kontext zur Verfügung stehen."
+      "definition": "Der bisherige Verlauf und die Zwischenergebnisse, die dem Modell bei jedem Schritt als Kontext zur Verfügung stehen, um Entscheidungen zu treffen."
     },
     {
       "term": "Agent-Loop",
-      "definition": "Der Kreislauf aus Denken (Reason), Handeln (Act) und Beobachten (Observe), der sich wiederholt, bis das Ziel erreicht oder die maximale Schrittzahl überschritten ist."
+      "definition": "Der Kreislauf aus Denken (nächsten Schritt bestimmen), Handeln (Werkzeug aufrufen oder antworten) und Beobachten (Ergebnis aufnehmen), der sich wiederholt, bis das Ziel erreicht oder die maximale Schrittzahl überschritten ist."
     },
     {
       "term": "Abbruchbedingung (MAX_SCHRITTE)",
-      "definition": "Eine Regel – meist eine maximale Schrittzahl –, die verhindert, dass der Agent-Loop endlos weiterläuft. Pflichtbestandteil jedes Agenten."
+      "definition": "Eine Regel – meist eine maximale Schrittzahl –, die verhindert, dass der Agent-Loop endlos weiterläuft und dabei Kosten verursacht. Pflichtbestandteil jedes Agenten."
     },
     {
-      "term": "Reason–Act–Observe",
-      "definition": "Die drei Phasen eines Loop-Durchlaufs: überlegen (welcher Schritt als Nächstes), handeln (Werkzeug aufrufen oder antworten), Ergebnis beobachten und in Kontext aufnehmen."
+      "term": "Autonomiegrad",
+      "definition": "Das Maß an Selbstständigkeit eines Agenten – von reinen Vorschlägen (Assistent) über Handeln nach Freigabe bis zu vollautonomem Handeln. Die geeignete Stufe richtet sich nach dem Risiko der Aufgabe."
     }
   ]
 }

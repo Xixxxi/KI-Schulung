@@ -230,7 +230,7 @@ export default function App() {
             <div className={styles.panelWrap}>
               {!activeChapter && !loading && (
                 <div className={`${styles.statusBox} ${styles.statusInfo}`}>
-                  <Lock size={18} /> Unterthema nicht gefunden.
+                  <Lock size={18} /> Kapitel nicht gefunden.
                 </div>
               )}
 

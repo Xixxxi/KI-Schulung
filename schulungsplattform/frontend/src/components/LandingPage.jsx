@@ -34,7 +34,7 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
             <div className={styles.sectionAccent} style={{ background: '#1c69d4' }} />
             <div>
               <h2 className={styles.sectionTitle}>So funktioniert die Plattform</h2>
-              <p className={styles.sectionSub}>Jedes Unterthema besteht aus drei aufeinander aufbauenden Schritten</p>
+              <p className={styles.sectionSub}>Jedes Kapitel besteht aus drei aufeinander aufbauenden Schritten</p>
             </div>
           </div>
 
@@ -67,7 +67,7 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
               <p className={styles.sectionSub}>
                 {topics.length === 0
                   ? 'Noch keine Themen vorhanden.'
-                  : `${topics.length} ${topics.length === 1 ? 'Thema' : 'Themen'} · ${totalSubTopics} ${totalSubTopics === 1 ? 'Unterthema' : 'Unterthemen'} insgesamt`}
+                  : `${topics.length} ${topics.length === 1 ? 'Thema' : 'Themen'} · ${totalSubTopics} ${totalSubTopics === 1 ? 'Kapitel' : 'Kapitel'} insgesamt`}
               </p>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
                   <ul className={styles.tileMeta}>
                     <li className={styles.tileMetaItem}>
                       <Layers size={12} className={styles.tileMetaIcon} />
-                      {topic.subTopicCount} {topic.subTopicCount === 1 ? 'Unterthema' : 'Unterthemen'}
+                      {topic.subTopicCount} {topic.subTopicCount === 1 ? 'Kapitel' : 'Kapitel'}
                     </li>
                     {topic.totalMinutes > 0 && (
                       <li className={styles.tileMetaItem}>

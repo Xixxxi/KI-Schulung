@@ -38,12 +38,12 @@ export default function SubTopicSidebar({
           />
         </div>
         <span className={styles.progressLabel}>
-          {doneCount} von {subs.length} Unterthemen abgeschlossen
+          {doneCount} von {subs.length} Kapiteln abgeschlossen
         </span>
       </div>
 
       {/* ── Unterthemen-Liste ── */}
-      <nav className={styles.subList} aria-label="Unterthemen">
+      <nav className={styles.subList} aria-label="Kapitel">
         {subs.map((sub, i) => {
           const isActive = sub.id === activeChapterId
           const isPassed = passedChapters[sub.id] || sub.passed

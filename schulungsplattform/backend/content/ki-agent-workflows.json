@@ -1,0 +1,338 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst – von den Grundlagen bis zur Integration in Werkzeuge wie Jira und GitHub.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Mehrstufige Arbeitsabläufe automatisieren",
+  "subTopicDescription": "Aufgaben zerlegen, Schritte verketten und mehrere Teilschritte zu einem durchgehenden Ablauf orchestrieren – mit lauffähigem Beispiel-Workflow in VS Code.",
+  "tag": "Allgemein",
+
+  "id": "ki-agent-workflows",
+  "order": 3,
+  "title": "Mehrstufige Arbeitsabläufe automatisieren",
+  "summary": "Wie aus einzelnen Schritten ein durchgehender Arbeitsablauf wird: Aufgaben zerlegen, Schritte sequenziell oder parallel verketten, Ergebnisse zwischen Schritten weiterreichen und einen kompletten mehrstufigen Workflow in Python bauen.",
+  "estimatedMinutes": 26,
+  "lessons": [
+    {
+      "id": "l1-warum-mehrstufig",
+      "title": "Vom Einzelschritt zum Arbeitsablauf",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein einzelner Agentenaufruf löst eine abgegrenzte Aufgabe. Echte Automatisierung entsteht aber erst, wenn mehrere Schritte zusammenspielen: Ein Log wird analysiert, das Ergebnis zusammengefasst und daraus eine Handlungsempfehlung abgeleitet. Solche Ketten nennt man mehrstufige Arbeitsabläufe (Workflows)."
+        },
+        {
+          "type": "text",
+          "text": "Der Schlüssel ist Zerlegung: Eine große, unscharfe Aufgabe wird in kleine, klar definierte Schritte aufgeteilt. Jeder Schritt hat eine Eingabe, eine klare Aufgabe und eine Ausgabe, die zur Eingabe des nächsten Schritts wird. Das macht den Ablauf zuverlässiger, nachvollziehbarer und einfacher zu testen."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Ein großer Aufruf",
+            "color": "#6b7280",
+            "items": [
+              "Eine vage Aufgabe auf einmal",
+              "Ergebnis schwer nachvollziehbar",
+              "Fehler schwer einzugrenzen",
+              "Kaum einzeln testbar"
+            ]
+          },
+          "right": {
+            "label": "Mehrere kleine Schritte",
+            "color": "#1c69d4",
+            "items": [
+              "Jeder Schritt hat ein klares Ziel",
+              "Zwischenergebnisse sind sichtbar",
+              "Fehler lassen sich lokalisieren",
+              "Jeder Schritt einzeln testbar"
+            ]
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Prinzip: Divide and Conquer",
+          "text": "Sprachmodelle liefern bessere Ergebnisse bei kleinen, fokussierten Aufgaben als bei einer einzigen riesigen. Ein Workflow aus klaren Teilschritten ist deshalb fast immer zuverlässiger als ein einzelner überladener Prompt."
+        }
+      ]
+    },
+    {
+      "id": "l2-muster",
+      "title": "Die Grundmuster: Kette, Verzweigung und parallele Schritte",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Mehrstufige Abläufe folgen wenigen wiederkehrenden Mustern. Wer diese kennt, kann fast jeden Automatisierungsbedarf zusammensetzen – wie aus Bausteinen."
+        },
+        {
+          "type": "cards",
+          "title": "Die drei Grundmuster",
+          "items": [
+            {
+              "icon": "➡️",
+              "label": "Kette (sequenziell)",
+              "color": "#1c69d4",
+              "description": "Schritte laufen nacheinander. Die Ausgabe des einen Schritts ist die Eingabe des nächsten. Das häufigste und einfachste Muster."
+            },
+            {
+              "icon": "🔀",
+              "label": "Verzweigung (bedingt)",
+              "color": "#6d28d9",
+              "description": "Ein Zwischenergebnis entscheidet, welcher Schritt als Nächstes läuft – z. B. je nach Kategorie eines Tickets ein anderer Folgeschritt."
+            },
+            {
+              "icon": "⚡",
+              "label": "Parallel (gleichzeitig)",
+              "color": "#0369a1",
+              "description": "Unabhängige Schritte laufen gleichzeitig und werden danach zusammengeführt. Spart Zeit, wenn Schritte nicht aufeinander warten müssen."
+            }
+          ]
+        },
+        {
+          "type": "diagram",
+          "caption": "Beispiel: eine sequenzielle Kette mit drei Schritten",
+          "nodes": [
+            { "id": "in", "type": "start", "emoji": "📄", "label": "Log-Datei", "sublabel": "Rohdaten als Eingabe" },
+            { "id": "s1", "type": "step", "emoji": "🔍", "label": "Schritt 1", "sublabel": "Relevante Fehler extrahieren" },
+            { "id": "s2", "type": "step", "emoji": "📝", "label": "Schritt 2", "sublabel": "Verständlich zusammenfassen" },
+            { "id": "s3", "type": "step", "emoji": "💡", "label": "Schritt 3", "sublabel": "Handlungsempfehlung ableiten" },
+            { "id": "out", "type": "end", "emoji": "✅", "label": "Ergebnis", "sublabel": "Bericht mit Empfehlung" }
+          ],
+          "note": "Jeder Schritt bekommt das Ergebnis des vorigen und reicht sein Ergebnis weiter. Klar, testbar, nachvollziehbar."
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Mit der Kette anfangen",
+          "text": "Die meisten realen Abläufe lassen sich zunächst als einfache sequenzielle Kette bauen. Verzweigung und Parallelität fügst du erst hinzu, wenn du sie wirklich brauchst – das hält den Ablauf einfach und robust."
+        }
+      ]
+    },
+    {
+      "id": "l3-kette-bauen",
+      "title": "Praxis: eine sequenzielle Kette in Python bauen",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Wir bauen den Ablauf aus dem Diagramm: aus einem Rohlog werden relevante Fehler extrahiert, dann zusammengefasst und schließlich eine Handlungsempfehlung abgeleitet. Jeder Schritt ist eine eigene Funktion mit klarer Ein- und Ausgabe – direkt in VS Code ausführbar."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "workflow_kette.py – drei verkettete Schritte",
+          "text": "from dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()\nclient = OpenAI()\n\ndef schritt(system: str, eingabe: str) -> str:\n    \"\"\"Ein einzelner, fokussierter Arbeitsschritt.\"\"\"\n    antwort = client.chat.completions.create(\n        model=\"gpt-4o-mini\",\n        messages=[\n            {\"role\": \"system\", \"content\": system},\n            {\"role\": \"user\",   \"content\": eingabe}\n        ],\n        temperature=0\n    )\n    return antwort.choices[0].message.content\n\n# --- Schritt 1: Relevante Fehler extrahieren ---\ndef extrahiere_fehler(log: str) -> str:\n    return schritt(\n        \"Du extrahierst aus einem Log nur die ERROR- und WARN-Zeilen. \"\n        \"Gib sie als einfache Liste zurueck, ohne Kommentar.\",\n        log\n    )\n\n# --- Schritt 2: Verstaendlich zusammenfassen ---\ndef fasse_zusammen(fehler: str) -> str:\n    return schritt(\n        \"Du fasst technische Fehlermeldungen in 2-3 Saetzen verstaendlich zusammen.\",\n        fehler\n    )\n\n# --- Schritt 3: Handlungsempfehlung ableiten ---\ndef empfehle_massnahme(zusammenfassung: str) -> str:\n    return schritt(\n        \"Du bist ein DevOps-Experte. Leite aus der Zusammenfassung genau \"\n        \"eine konkrete, priorisierte Handlungsempfehlung ab.\",\n        zusammenfassung\n    )\n\nif __name__ == \"__main__\":\n    log = \"\"\"\n2026-07-15 14:23:01 ERROR ConnectionPool: timeout after 30s\n2026-07-15 14:23:01 ERROR DB: max_connections (100) reached\n2026-07-15 14:23:02 WARN RetryHandler: attempt 3/3 failed\n2026-07-15 14:23:05 INFO Request completed in 12ms\n\"\"\"\n\n    # Die Kette: Ausgabe wird jeweils zur Eingabe des naechsten Schritts\n    fehler          = extrahiere_fehler(log)\n    zusammenfassung = fasse_zusammen(fehler)\n    empfehlung      = empfehle_massnahme(zusammenfassung)\n\n    print(\"--- Zusammenfassung ---\")\n    print(zusammenfassung)\n    print(\"\\n--- Empfehlung ---\")\n    print(empfehlung)"
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Das Muster erkennen",
+          "text": "Jeder Schritt ist eine kleine Funktion mit einem eigenen, fokussierten System-Prompt. Die drei Zeilen am Ende bilden die eigentliche Kette – die Ausgabe jedes Schritts fließt direkt in den nächsten. Genau so entsteht ein mehrstufiger Ablauf."
+        }
+      ]
+    },
+    {
+      "id": "l4-orchestrierung",
+      "title": "Orchestrierung: Zwischenergebnisse, Protokoll und Robustheit",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein Workflow, der nur im Idealfall funktioniert, ist kein verlässlicher Workflow. Der Unterschied zwischen einer Demo und einer produktiven Automatisierung liegt in der Orchestrierung: Zwischenergebnisse sichtbar machen, jeden Schritt protokollieren und Fehler abfangen, ohne den ganzen Ablauf abzubrechen."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "Robuster Ablauf mit Protokoll und Fehlerbehandlung",
+          "text": "import time\n\ndef fuehre_workflow_aus(log: str) -> dict:\n    \"\"\"Fuehrt die Kette aus, protokolliert jeden Schritt und faengt Fehler ab.\"\"\"\n    ergebnis = {}\n    schritte = [\n        (\"fehler\",          extrahiere_fehler,   log),\n        (\"zusammenfassung\", fasse_zusammen,      None),\n        (\"empfehlung\",      empfehle_massnahme,  None),\n    ]\n\n    vorige_ausgabe = log\n    for name, funktion, _ in schritte:\n        start = time.time()\n        try:\n            vorige_ausgabe = funktion(vorige_ausgabe)\n            ergebnis[name] = vorige_ausgabe\n            dauer = time.time() - start\n            print(f\"[OK]   {name:16} ({dauer:.1f}s)\")\n        except Exception as e:\n            print(f\"[FEHLER] {name}: {e}\")\n            ergebnis[name] = None\n            break   # Kette abbrechen, aber sauber\n\n    return ergebnis\n\nif __name__ == \"__main__\":\n    ausgabe = fuehre_workflow_aus(\"...LOG-INHALT...\")\n    if ausgabe.get(\"empfehlung\"):\n        print(\"\\nEmpfehlung:\", ausgabe[\"empfehlung\"])"
+        },
+        {
+          "type": "steps",
+          "title": "Checkliste für robuste Workflows",
+          "items": [
+            {
+              "label": "Zwischenergebnisse speichern",
+              "description": "Jedes Teilergebnis in einem Dictionary festhalten – für Nachvollziehbarkeit und spätere Weiterverarbeitung.",
+              "example": "ergebnis['zusammenfassung'] = fasse_zusammen(fehler)"
+            },
+            {
+              "label": "Jeden Schritt protokollieren",
+              "description": "Name, Dauer und Status jedes Schritts ausgeben. Ohne Protokoll ist ein mehrstufiger Ablauf kaum zu debuggen.",
+              "example": "print(f'[OK] {name} ({dauer:.1f}s)')"
+            },
+            {
+              "label": "Fehler pro Schritt abfangen",
+              "description": "Ein Fehler in Schritt 2 soll den Ablauf kontrolliert beenden, nicht das Programm abstürzen lassen.",
+              "example": "try: ... except Exception as e: print(f'[FEHLER] {name}: {e}')"
+            },
+            {
+              "label": "Abbruch- und Wiederhol-Strategie festlegen",
+              "description": "Entscheide bewusst: Bei Fehler abbrechen, überspringen oder erneut versuchen? Das hängt von der Aufgabe ab.",
+              "example": "for versuch in range(3): try: ...; break; except: continue"
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "warn",
+          "title": "Kosten im Blick behalten",
+          "text": "Jeder Schritt eines Workflows ist ein eigener API-Aufruf und verursacht Tokens und Kosten. Ein Ablauf mit fünf Schritten kostet das Fünffache eines Einzelaufrufs. Halte Workflows so kurz wie möglich und so lang wie nötig."
+        }
+      ]
+    },
+    {
+      "id": "l5-workflow-vs-agent",
+      "title": "Fester Workflow oder autonomer Agent?",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Es gibt zwei Wege, mehrere Schritte zu verketten. Beim festen Workflow legst du als Entwickler die Reihenfolge fest – wie in den Beispielen zuvor. Beim autonomen Agenten entscheidet das Modell selbst, welcher Schritt als Nächstes kommt. Beide haben ihren Platz."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Fester Workflow (empfohlen zum Start)",
+            "color": "#166534",
+            "items": [
+              "Du bestimmst die Reihenfolge der Schritte",
+              "Vorhersehbar und einfach zu testen",
+              "Kosten und Ablauf sind klar begrenzt",
+              "Ideal für bekannte, wiederkehrende Abläufe"
+            ]
+          },
+          "right": {
+            "label": "Autonomer Agent",
+            "color": "#6d28d9",
+            "items": [
+              "Das Modell wählt die Schritte selbst",
+              "Flexibel bei unvorhersehbaren Aufgaben",
+              "Schwerer zu testen und zu begrenzen",
+              "Nur mit klaren Leitplanken einsetzen"
+            ]
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Faustregel",
+          "text": "Wenn du die Schritte im Voraus kennst, baue einen festen Workflow – er ist zuverlässiger, günstiger und leichter zu kontrollieren. Einen autonomen Agenten setzt du nur dort ein, wo der Weg zum Ziel wirklich nicht vorhersehbar ist."
+        },
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Wie es weitergeht",
+          "text": "Du kannst jetzt Aufgaben zerlegen und zu mehrstufigen Abläufen verketten. Die nächsten Kapitel dieses Themas zeigen, wie du KI mit Dokumenten, Daten und Werkzeugen verbindest, geeignete Anwendungsfälle erkennst, Ergebnisse kontrollierst und Abläufe an Jira und GitHub anbindest."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l1-warum-mehrstufig",
+        "question": "Warum ist es meist besser, eine große Aufgabe in mehrere kleine Schritte zu zerlegen?",
+        "options": [
+          "Weil ein einzelner großer Prompt technisch nicht möglich ist.",
+          "Weil Modelle bei kleinen, fokussierten Aufgaben zuverlässiger sind und Fehler leichter einzugrenzen sind.",
+          "Weil mehrere Schritte immer günstiger sind als ein Aufruf.",
+          "Weil man dann keinen System-Prompt mehr braucht."
+        ],
+        "correct": 1,
+        "explanation": "Sprachmodelle liefern bei kleinen, klar definierten Aufgaben bessere Ergebnisse. Zusätzlich sind Zwischenergebnisse sichtbar, Fehler lokalisierbar und jeder Schritt einzeln testbar."
+      },
+      {
+        "id": "q2",
+        "type": "single",
+        "lessonRef": "l2-muster",
+        "question": "Was kennzeichnet das sequenzielle Ketten-Muster (Kette)?",
+        "options": [
+          "Alle Schritte laufen gleichzeitig.",
+          "Die Ausgabe eines Schritts ist die Eingabe des nächsten.",
+          "Ein Zwischenergebnis entscheidet über den weiteren Weg.",
+          "Es kommt ganz ohne Zwischenergebnisse aus."
+        ],
+        "correct": 1,
+        "explanation": "Bei der Kette laufen die Schritte nacheinander, und die Ausgabe jedes Schritts wird zur Eingabe des nächsten. Das ist das häufigste und einfachste Muster."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l3-kette-bauen",
+        "question": "Wie wird im Beispiel-Workflow das Ergebnis von Schritt 1 an Schritt 2 übergeben?",
+        "options": [
+          "Über eine globale Variable, die das Modell selbst setzt.",
+          "Die Ausgabe von Schritt 1 wird als Eingabe-Argument an die Funktion von Schritt 2 übergeben.",
+          "Gar nicht – jeder Schritt arbeitet unabhängig.",
+          "Über die OpenAI API, die sich den Verlauf merkt."
+        ],
+        "correct": 1,
+        "explanation": "Die Ausgabe jeder Schritt-Funktion wird direkt als Argument an die nächste übergeben (fehler → fasse_zusammen(fehler) → …). So entsteht die Kette. Die API selbst ist zustandslos."
+      },
+      {
+        "id": "q4",
+        "type": "multi",
+        "lessonRef": "l4-orchestrierung",
+        "question": "Was gehört zu einem robusten, produktiven Workflow? (Mehrfachauswahl)",
+        "options": [
+          "Zwischenergebnisse speichern und nachvollziehbar machen",
+          "Jeden Schritt mit Status und Dauer protokollieren",
+          "Fehler pro Schritt abfangen, statt das Programm abstürzen zu lassen",
+          "Die temperature bei jedem Schritt zufällig ändern"
+        ],
+        "correct": [0, 1, 2],
+        "explanation": "Robuste Workflows speichern Zwischenergebnisse, protokollieren jeden Schritt und fangen Fehler kontrolliert ab. Ein zufälliges Ändern der temperature würde den Ablauf nur unvorhersehbar machen."
+      },
+      {
+        "id": "q5",
+        "type": "single",
+        "lessonRef": "l5-workflow-vs-agent",
+        "question": "Wann ist ein fester Workflow einem autonomen Agenten vorzuziehen?",
+        "options": [
+          "Immer, wenn ein größeres Modell verfügbar ist.",
+          "Wenn die nötigen Schritte im Voraus bekannt sind – dann ist er zuverlässiger, günstiger und leichter zu kontrollieren.",
+          "Nur wenn keine API zur Verfügung steht.",
+          "Autonome Agenten sind in allen Fällen überlegen."
+        ],
+        "correct": 1,
+        "explanation": "Kennst du die Schritte im Voraus, ist ein fester Workflow vorhersehbarer, günstiger und leichter zu testen. Autonome Agenten lohnen sich nur, wenn der Weg zum Ziel nicht vorhersehbar ist."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "Mehrstufiger Arbeitsablauf (Workflow)",
+      "definition": "Eine Kette mehrerer aufeinander aufbauender Schritte, bei der jeder Schritt eine klar definierte Aufgabe erfüllt und sein Ergebnis an den nächsten weiterreicht."
+    },
+    {
+      "term": "Aufgabenzerlegung (Divide and Conquer)",
+      "definition": "Das Aufteilen einer großen, unscharfen Aufgabe in kleine, fokussierte Teilschritte. Erhöht Zuverlässigkeit, Nachvollziehbarkeit und Testbarkeit, weil Modelle bei kleinen Aufgaben bessere Ergebnisse liefern."
+    },
+    {
+      "term": "Sequenzielle Kette",
+      "definition": "Das häufigste Workflow-Muster: Schritte laufen nacheinander, die Ausgabe des einen ist die Eingabe des nächsten."
+    },
+    {
+      "term": "Verzweigung (bedingter Schritt)",
+      "definition": "Ein Muster, bei dem ein Zwischenergebnis entscheidet, welcher Schritt als Nächstes ausgeführt wird – z. B. je nach erkannter Ticket-Kategorie ein anderer Folgeschritt."
+    },
+    {
+      "term": "Parallele Schritte",
+      "definition": "Unabhängige Schritte, die gleichzeitig ausgeführt und danach zusammengeführt werden. Spart Zeit, wenn Schritte nicht aufeinander warten müssen."
+    },
+    {
+      "term": "Orchestrierung",
+      "definition": "Die Steuerung eines Workflows über die reine Schrittabfolge hinaus: Zwischenergebnisse sichern, jeden Schritt protokollieren, Fehler abfangen und eine Abbruch- oder Wiederhol-Strategie festlegen."
+    },
+    {
+      "term": "Fester Workflow vs. autonomer Agent",
+      "definition": "Beim festen Workflow legt der Entwickler die Reihenfolge der Schritte fest (vorhersehbar, günstig, testbar). Beim autonomen Agenten wählt das Modell die Schritte selbst (flexibel, aber schwerer zu kontrollieren)."
+    },
+    {
+      "term": "Kostenskalierung bei Workflows",
+      "definition": "Jeder Schritt ist ein eigener API-Aufruf mit eigenem Token-Verbrauch. Ein Workflow mit fünf Schritten kostet ungefähr das Fünffache eines Einzelaufrufs – Abläufe daher so kurz wie möglich halten."
+    }
+  ]
+}

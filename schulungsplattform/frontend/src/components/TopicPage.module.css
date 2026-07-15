@@ -221,6 +221,32 @@
   border: 1px solid var(--success-border);
 }
 
+/* ── Tag-Chip (Allgemein / BMW-intern / …) ───────────────────────────────── */
+.cardTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.cardTagGeneral {
+  background: var(--bg);
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.cardTagBMW {
+  background: rgba(28, 105, 212, 0.07);
+  color: var(--bmw-blue-dark);
+  border-color: rgba(28, 105, 212, 0.25);
+}
+
 .cardBadgePartial {
   display: inline-flex;
   align-items: center;
