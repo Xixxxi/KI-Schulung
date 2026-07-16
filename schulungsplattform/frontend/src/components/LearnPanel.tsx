@@ -392,50 +392,6 @@ function ContentBlock({ block, blockKey, completed, markDone }: ContentBlockProp
   }
 }
 
-// ── Onboarding-Overlay ────────────────────────────────────────────────────────
-
-interface IntroOverlayProps {
-  data: LearnData
-  lessons: Lesson[]
-  onDismiss: () => void
-}
-
-function IntroOverlay({ data, lessons, onDismiss }: IntroOverlayProps) {
-  const btnRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => { btnRef.current?.focus() }, [])
-  return (
-    <div className={styles.introOverlay} role="dialog" aria-modal="true" aria-label="Kapitel-Übersicht">
-      <div className={styles.introCard}>
-
-        {/* ── Kapitel-Info ── */}
-        <div className={styles.introChapter}>
-          <h2 className={styles.introChapterTitle}>{data.title}</h2>
-          <div className={styles.introChapterMeta}>
-            {data.estimatedMinutes != null && (
-              <span><Clock size={13} /> ca. {data.estimatedMinutes} Min.</span>
-            )}
-            <span><BookOpen size={13} /> {lessons.length} Lektionen</span>
-          </div>
-          {data.summary && (
-            <p className={styles.introChapterSummary}>{data.summary}</p>
-          )}
-        </div>
-
-        {/* ── Ablauf-Hinweise ── */}
-        <ul className={styles.introList}>
-          <li><ChevronRight size={15} /> <span><b>Lektion für Lektion:</b> Mit „Weiter" durch die Lektionen. Die Punkte zeigen deinen Fortschritt.</span></li>
-          <li><MousePointerClick size={15} /> <span><b>Mitmachen:</b> Kleine Checks schalten den nächsten Schritt frei.</span></li>
-          <li><ClipboardCheck size={15} /> <span><b>Abschluss:</b> Am Ende prüfst du dein Wissen im Test.</span></li>
-        </ul>
-
-        <button ref={btnRef} type="button" className={styles.introBtn} onClick={onDismiss}>
-          Los geht&apos;s <ChevronRight size={16} />
-        </button>
-      </div>
-    </div>
-  )
-}
-
 // ── Haupt-Komponente ──────────────────────────────────────────────────────────
 
 interface Props {
@@ -449,7 +405,6 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState('')
   const [lessonIdx, setLessonIdx] = useState(0)
-  const [introOpen, setIntroOpen] = useState(true)
   const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
@@ -457,7 +412,6 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
     setLoading(true)
     setError('')
     setLessonIdx(0)
-    setIntroOpen(true)
     setCompleted({})
     api.getLearn(chapterId)
       .then((d) => { if (active) setData(d) })
@@ -484,8 +438,6 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
   const isFirst  = lessonIdx === 0
   const isLast   = lessonIdx === lessons.length - 1
   const progress = lessons.length > 1 ? ((lessonIdx + 1) / lessons.length) * 100 : 100
-  const showIntro = introOpen && lessonIdx === 0
-
   const cleanTitle = (t = '') => t.replace(/^\d+\.\s*/, '')
 
   const blocks = lesson?.blocks || []
@@ -539,7 +491,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
       {/* ── Lektions-Inhalt ──────────────────────────────────────────────── */}
       {lesson && (
         <section className={styles.lesson}>
-          <div className={showIntro ? styles.lessonBlurred : undefined} aria-hidden={showIntro}>
+          <div>
             <h2 className={styles.lessonTitle}>
               <span className={styles.lessonNum}>{lessonIdx + 1}</span>
               {cleanTitle(lesson.title)}
@@ -561,7 +513,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
             )}
           </div>
 
-          {showIntro && <IntroOverlay data={data} lessons={lessons} onDismiss={() => setIntroOpen(false)} />}
+
         </section>
       )}
 
@@ -586,7 +538,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
           Nachschlagewerk
         </button>
 
-        {!allChecksDone && !showIntro && (
+        {!allChecksDone && (
           <span className={styles.gateHint}>
             <MousePointerClick size={13} /> Löse die Aufgabe, um fortzufahren
           </span>
@@ -596,7 +548,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
           <button
             type="button"
             className={styles.navNext}
-            disabled={!allChecksDone || showIntro}
+            disabled={!allChecksDone}
             onClick={() => setLessonIdx((p) => p + 1)}
           >
             Weiter
@@ -606,7 +558,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: 
           <button
             type="button"
             className={styles.navTest}
-            disabled={!allChecksDone || showIntro}
+            disabled={!allChecksDone}
             onClick={onStartTest}
           >
             <ClipboardCheck size={16} />
