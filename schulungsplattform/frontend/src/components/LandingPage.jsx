@@ -1,11 +1,5 @@
-import { BookOpen, ClipboardCheck, Library, ArrowRight, CheckCircle2, Clock, ChevronRight, Layers } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Clock, Layers } from 'lucide-react'
 import styles from './LandingPage.module.css'
-
-const SCHRITTE = [
-  { icon: BookOpen,       label: 'Lernen',       hint: 'Strukturierter Lerninhalt in Lektionen' },
-  { icon: ClipboardCheck, label: 'Testen',        hint: 'Interaktives Quiz mit intelligentem Feedback' },
-  { icon: Library,        label: 'Nachschlagen',  hint: 'Begriffe & Definitionen jederzeit abrufbar' },
-]
 
 export default function LandingPage({ topics = [], onSelectTopic }) {
   const totalSubTopics = topics.reduce((n, t) => n + (t.subTopicCount || 0), 0)
@@ -28,36 +22,6 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
       </header>
 
       <div className={styles.content}>
-        {/* ── Ablauf-Erklärung ── */}
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div className={styles.sectionAccent} style={{ background: '#1c69d4' }} />
-            <div>
-              <h2 className={styles.sectionTitle}>So funktioniert die Plattform</h2>
-              <p className={styles.sectionSub}>Jedes Kapitel besteht aus drei aufeinander aufbauenden Schritten</p>
-            </div>
-          </div>
-
-          <div className={styles.stepsRow}>
-            {SCHRITTE.map((s, i) => {
-              const Icon = s.icon
-              return (
-                <div key={s.label} className={styles.stepCard}>
-                  <div className={styles.stepNum}>{i + 1}</div>
-                  <div className={styles.stepIconWrap}>
-                    <Icon size={20} style={{ color: '#1c69d4' }} />
-                  </div>
-                  <div className={styles.stepCardLabel}>{s.label}</div>
-                  <div className={styles.stepCardHint}>{s.hint}</div>
-                  {i < SCHRITTE.length - 1 && (
-                    <ChevronRight size={16} className={styles.stepArrow} />
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </section>
-
         {/* ── Themen-Übersicht ── */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   GraduationCap, BookOpen, ClipboardCheck, Library,
-  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight,
+  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Info,
 } from 'lucide-react'
 import styles from './App.module.css'
 import { api } from './api'
 import LandingPage from './components/LandingPage'
+import AboutPage from './components/AboutPage'
 import TopicPage from './components/TopicPage'
 import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
@@ -31,7 +32,7 @@ const STEPS = [
   { id: 'reference', num: 3, label: 'Nachschlagen', hint: 'Begriffe & Definitionen', icon: Library },
 ]
 
-// view: 'landing' | 'topic' | 'chapter'
+// view: 'landing' | 'about' | 'topic' | 'chapter'
 
 export default function App() {
   const [topics, setTopics]                   = useState([])
@@ -83,6 +84,12 @@ export default function App() {
     setActiveChapterId('')
   }
 
+  const goToAbout = () => {
+    setView('about')
+    setActiveTopicId('')
+    setActiveChapterId('')
+  }
+
   const goToTopic = (topicId) => {
     setActiveTopicId(topicId)
     setView('topic')
@@ -102,6 +109,17 @@ export default function App() {
 
   // ── Breadcrumb ────────────────────────────────────────────────────────────
   const renderBreadcrumb = () => {
+    if (view === 'about') {
+      return (
+        <div className={styles.breadcrumb}>
+          <button className={styles.breadcrumbBtn} onClick={goToLanding}>
+            <ArrowLeft size={13} /> Themenübersicht
+          </button>
+          <ChevronRight size={13} className={styles.breadcrumbSep} />
+          <span className={styles.breadcrumbCurrent}>Über die Plattform</span>
+        </div>
+      )
+    }
     if (view === 'topic' && activeTopic) {
       return (
         <div className={styles.breadcrumb}>
@@ -150,7 +168,25 @@ export default function App() {
           <span className={styles.brandSub}>Lernen · Testen · Nachschlagen</span>
         </div>
         <div className={styles.headerSpacer} />
-        {renderBreadcrumb()}
+        {(view === 'landing' || view === 'about') ? (
+          <nav className={styles.headerNav}>
+            <button
+              className={view === 'landing' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              onClick={goToLanding}
+            >
+              Themen
+            </button>
+            <button
+              className={view === 'about' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              onClick={goToAbout}
+            >
+              <Info size={13} />
+              About
+            </button>
+          </nav>
+        ) : (
+          renderBreadcrumb()
+        )}
       </header>
 
       {/* ── Statusmeldungen (Loading / Error) ──────────────────────────────── */}
@@ -170,6 +206,13 @@ export default function App() {
       {!loading && !error && view === 'landing' && (
         <main className={styles.mainFull}>
           <LandingPage topics={topics} onSelectTopic={goToTopic} />
+        </main>
+      )}
+
+      {/* ── About Page ──────────────────────────────────────────────────────── */}
+      {view === 'about' && (
+        <main className={styles.mainFull}>
+          <AboutPage onStart={goToLanding} />
         </main>
       )}
 
