@@ -66,6 +66,8 @@ body,
 #root {
   height: 100%;
   margin: 0;
+  /* Overscroll-Bounce / Rubber-Band-Effekt deaktivieren */
+  overscroll-behavior: none;
 }
 
 body {
@@ -76,6 +78,8 @@ body {
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Scroll nur im erlaubten Bereich – kein Scrollen am body selbst */
+  overflow: hidden;
 }
 
 a {

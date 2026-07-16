@@ -1,7 +1,8 @@
 .app {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Kein Scroll auf der App-Shell selbst */
 }
 
 /* ── Kopfzeile ─────────────────────────────────────────────────────────────── */
@@ -274,7 +275,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  min-height: 0;
 }
 
 /* ── Kapitel-Layout: Sidebar links + Content rechts ───────────────────────── */
@@ -291,6 +294,7 @@
   flex-direction: column;
   min-width: 0;
   overflow-y: auto;
+  overscroll-behavior: none;
 }
 
 .panelWrap {
