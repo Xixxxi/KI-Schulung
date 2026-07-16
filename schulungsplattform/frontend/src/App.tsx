@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import styles from './App.module.css'
 import { api } from './api'
+import type { Topic, SubTopic, StepId } from './types'
 import LandingPage from './components/LandingPage'
 import AboutPage from './components/AboutPage'
 import TopicPage from './components/TopicPage'
@@ -12,6 +13,16 @@ import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
 import TestPanel from './components/TestPanel'
 import ReferencePanel from './components/ReferencePanel'
+
+type View = 'landing' | 'about' | 'topic' | 'chapter'
+
+interface StepDef {
+  id: StepId
+  num: number
+  label: string
+  hint: string
+  icon: React.ComponentType<{ size?: number }>
+}
 
 // ── Custom-Renderer-Registry ──────────────────────────────────────────────────
 // Für Unterthemen, die einen völlig eigenen Lern-Flow benötigen (Escape-Hatch).
@@ -21,28 +32,31 @@ import ReferencePanel from './components/ReferencePanel'
 // Registrierung hier:
 //   import MeinCustomPanel from './components/custom/MeinCustomPanel'
 //   CUSTOM_RENDERERS['mein-custom-renderer'] = MeinCustomPanel
-//
-// Das Custom-Panel erhält dieselben Props wie die Standard-Panels:
-//   { chapterId, passed, onPassed, onBackToLearn, onOpenReference }
-const CUSTOM_RENDERERS = {}
+const CUSTOM_RENDERERS: Record<string, React.ComponentType<CustomPanelProps>> = {}
 
-const STEPS = [
+interface CustomPanelProps {
+  chapterId: string
+  passed: boolean
+  onPassed: () => void
+  onBackToLearn: () => void
+  onOpenReference: () => void
+}
+
+const STEPS: StepDef[] = [
   { id: 'learn',     num: 1, label: 'Lernen',      hint: 'Inhalte verstehen',       icon: BookOpen },
   { id: 'test',      num: 2, label: 'Testen',       hint: 'Wissen prüfen',           icon: ClipboardCheck },
   { id: 'reference', num: 3, label: 'Nachschlagen', hint: 'Begriffe & Definitionen', icon: Library },
 ]
 
-// view: 'landing' | 'about' | 'topic' | 'chapter'
-
 export default function App() {
-  const [topics, setTopics]                   = useState([])
+  const [topics, setTopics]                   = useState<Topic[]>([])
   const [activeTopicId, setActiveTopicId]     = useState('')
   const [activeChapterId, setActiveChapterId] = useState('')
-  const [view, setView]                       = useState('landing')
-  const [step, setStep]                       = useState('learn')
+  const [view, setView]                       = useState<View>('landing')
+  const [step, setStep]                       = useState<StepId>('learn')
   const [loading, setLoading]                 = useState(true)
   const [error, setError]                     = useState('')
-  const [passedChapters, setPassedChapters]   = useState({})
+  const [passedChapters, setPassedChapters]   = useState<Record<string, boolean>>({})
 
   // ── Daten laden ───────────────────────────────────────────────────────────
   const loadTopics = useCallback(async () => {
@@ -52,11 +66,11 @@ export default function App() {
       const data = await api.listTopics()
       const list = Array.isArray(data?.topics) ? data.topics : []
       setTopics(list)
-      const passed = {}
+      const passed: Record<string, boolean> = {}
       list.forEach((t) => t.subTopics?.forEach((s) => { if (s.passed) passed[s.id] = true }))
       setPassedChapters(passed)
     } catch (err) {
-      setError(err?.message || 'Schulungsinhalte konnten nicht geladen werden.')
+      setError((err as Error)?.message || 'Schulungsinhalte konnten nicht geladen werden.')
     } finally {
       setLoading(false)
     }
@@ -66,12 +80,12 @@ export default function App() {
 
   // ── Abgeleitete Werte ─────────────────────────────────────────────────────
   const activeTopic = useMemo(
-    () => topics.find((t) => t.id === activeTopicId) || null,
+    () => topics.find((t) => t.id === activeTopicId) ?? null,
     [topics, activeTopicId],
   )
 
   const activeChapter = useMemo(
-    () => activeTopic?.subTopics?.find((s) => s.id === activeChapterId) || null,
+    () => activeTopic?.subTopics?.find((s: SubTopic) => s.id === activeChapterId) ?? null,
     [activeTopic, activeChapterId],
   )
 
@@ -90,19 +104,19 @@ export default function App() {
     setActiveChapterId('')
   }
 
-  const goToTopic = (topicId) => {
+  const goToTopic = (topicId: string) => {
     setActiveTopicId(topicId)
     setView('topic')
     setActiveChapterId('')
   }
 
-  const goToChapter = (chapterId) => {
+  const goToChapter = (chapterId: string) => {
     setActiveChapterId(chapterId)
     setStep('learn')
     setView('chapter')
   }
 
-  const handleQuizPassed = useCallback((chapterId) => {
+  const handleQuizPassed = useCallback((chapterId: string) => {
     setPassedChapters((prev) => ({ ...prev, [chapterId]: true }))
     loadTopics()
   }, [loadTopics])
@@ -148,8 +162,6 @@ export default function App() {
     }
     return null
   }
-
-  const isFullWidth = view === 'landing' || view === 'topic'
 
   return (
     <div className={styles.app}>
@@ -278,9 +290,8 @@ export default function App() {
               )}
 
               {activeChapter && (() => {
-                // Custom-Renderer-Escape-Hatch: falls das Unterthema einen
-                // eigenen Renderer registriert hat, wird dieser verwendet.
-                const CustomPanel = CUSTOM_RENDERERS[activeChapter.renderer]
+                // Custom-Renderer-Escape-Hatch
+                const CustomPanel = CUSTOM_RENDERERS[(activeChapter as SubTopic & { renderer?: string }).renderer ?? '']
                 if (CustomPanel) {
                   return (
                     <CustomPanel

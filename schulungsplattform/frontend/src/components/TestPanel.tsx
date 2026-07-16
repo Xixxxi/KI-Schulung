@@ -1,17 +1,26 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  Loader2, CheckCircle2, XCircle, Info, Lightbulb, RotateCcw, Library, BookOpen, Send,
+  Loader2, CheckCircle2, XCircle, Lightbulb, RotateCcw, Library, BookOpen, Send,
 } from 'lucide-react'
 import styles from './TestPanel.module.css'
 import { api } from '../api'
+import type { QuizData, QuizQuestion, QuizResult, QuestionResult } from '../types'
 
-export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, onOpenReference }) {
-  const [quiz, setQuiz] = useState(null)
+interface Props {
+  chapterId: string
+  passed: boolean
+  onPassed: () => void
+  onBackToLearn: () => void
+  onOpenReference: () => void
+}
+
+export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, onOpenReference }: Props) {
+  const [quiz, setQuiz] = useState<QuizData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const [answers, setAnswers] = useState({}) // { qId: value }
-  const [result, setResult] = useState(null) // Auswertungsergebnis nach Abgabe
+  const [answers, setAnswers] = useState<Record<string, number | number[] | string>>({})
+  const [result, setResult] = useState<QuizResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
@@ -22,28 +31,17 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
     setAnswers({})
     api
       .getQuiz(chapterId)
-      .then((d) => {
-        if (active) setQuiz(d)
-      })
-      .catch((err) => {
-        if (active) setError(err?.message || 'Quiz konnte nicht geladen werden.')
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
-    return () => {
-      active = false
-    }
+      .then((d) => { if (active) setQuiz(d) })
+      .catch((err: Error) => { if (active) setError(err?.message || 'Quiz konnte nicht geladen werden.') })
+      .finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
   }, [chapterId])
 
-  const questions = useMemo(() => quiz?.questions || [], [quiz])
+  const questions = useMemo<QuizQuestion[]>(() => quiz?.questions || [], [quiz])
 
-  // Ergebnis-Feedback pro Frage (nach Abgabe)
-  const resultById = useMemo(() => {
-    const map = {}
-    ;(result?.results || []).forEach((r) => {
-      map[r.id] = r
-    })
+  const resultById = useMemo<Record<string, QuestionResult>>(() => {
+    const map: Record<string, QuestionResult> = {}
+    ;(result?.results || []).forEach((r) => { map[r.id] = r })
     return map
   }, [result])
 
@@ -58,15 +56,15 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
 
   const allAnswered = questions.length > 0 && answeredCount === questions.length
 
-  function setSingle(qId, optionIndex) {
-    if (result) return // Nach Abgabe gesperrt
+  function setSingle(qId: string, optionIndex: number) {
+    if (result) return
     setAnswers((prev) => ({ ...prev, [qId]: optionIndex }))
   }
 
-  function toggleMulti(qId, optionIndex) {
+  function toggleMulti(qId: string, optionIndex: number) {
     if (result) return
     setAnswers((prev) => {
-      const current = Array.isArray(prev[qId]) ? prev[qId] : []
+      const current = Array.isArray(prev[qId]) ? (prev[qId] as number[]) : []
       const next = current.includes(optionIndex)
         ? current.filter((i) => i !== optionIndex)
         : [...current, optionIndex]
@@ -74,7 +72,7 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
     })
   }
 
-  function setText(qId, value) {
+  function setText(qId: string, value: string) {
     if (result) return
     setAnswers((prev) => ({ ...prev, [qId]: value }))
   }
@@ -88,7 +86,7 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
       if (res?.passed) onPassed?.()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
-      setError(err?.message || 'Auswertung fehlgeschlagen.')
+      setError((err as Error)?.message || 'Auswertung fehlgeschlagen.')
     } finally {
       setSubmitting(false)
     }
@@ -123,9 +121,7 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
 
       {/* Ergebnis-Banner */}
       {result && (
-        <div
-          className={`${styles.resultBanner} ${result.passed ? styles.resultPassed : styles.resultFailed}`}
-        >
+        <div className={`${styles.resultBanner} ${result.passed ? styles.resultPassed : styles.resultFailed}`}>
           <div className={styles.resultIcon}>
             {result.passed ? <CheckCircle2 size={40} /> : <XCircle size={40} />}
           </div>
@@ -203,7 +199,7 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
                   className={styles.textInput}
                   rows={3}
                   placeholder="Deine Antwort…"
-                  value={answers[q.id] || ''}
+                  value={String(answers[q.id] || '')}
                   disabled={Boolean(result)}
                   onChange={(e) => setText(q.id, e.target.value)}
                 />
@@ -216,18 +212,18 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
             ) : (
               <div className={styles.options}>
                 {(q.options || []).map((opt, optIdx) => {
+                  const ans = answers[q.id]
                   const selected =
                     q.type === 'multi'
-                      ? Array.isArray(answers[q.id]) && answers[q.id].includes(optIdx)
-                      : answers[q.id] === optIdx
+                      ? Array.isArray(ans) && (ans as number[]).includes(optIdx)
+                      : ans === optIdx
 
-                  // Nach Abgabe: richtige/falsche Optionen einfärben
                   let stateCls = ''
                   if (feedback) {
                     const correctAns = feedback.correctAnswer
                     const isCorrectOption =
                       q.type === 'multi'
-                        ? Array.isArray(correctAns) && correctAns.includes(opt)
+                        ? Array.isArray(correctAns) && (correctAns as string[]).includes(opt)
                         : correctAns === opt
                     if (isCorrectOption) stateCls = styles.optionCorrect
                     else if (selected) stateCls = styles.optionWrong
@@ -255,17 +251,19 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
 
             {/* Feedback nach Abgabe */}
             {feedback && (
-              <div
-                className={`${styles.feedback} ${feedback.correct ? styles.feedbackCorrect : styles.feedbackWrong}`}
-              >
+              <div className={`${styles.feedback} ${feedback.correct ? styles.feedbackCorrect : styles.feedbackWrong}`}>
                 <div className={styles.feedbackLabel}>
                   {feedback.correct ? <CheckCircle2 size={14} /> : <XCircle size={14} />}
                   {feedback.correct ? 'Richtig' : 'Nicht ganz'}
                 </div>
                 {feedback.explanation && <div>{feedback.explanation}</div>}
-                {!feedback.correct && q.type === 'text' && feedback.correctAnswer?.keywords && (
+                {!feedback.correct && q.type === 'text' &&
+                  feedback.correctAnswer != null &&
+                  typeof feedback.correctAnswer === 'object' &&
+                  !Array.isArray(feedback.correctAnswer) &&
+                  'keywords' in feedback.correctAnswer && (
                   <div className={styles.correctAnswer}>
-                    Erwartete Schlüsselbegriffe: {feedback.correctAnswer.keywords.join(', ')}
+                    Erwartete Schlüsselbegriffe: {(feedback.correctAnswer as { keywords: string[] }).keywords.join(', ')}
                   </div>
                 )}
               </div>

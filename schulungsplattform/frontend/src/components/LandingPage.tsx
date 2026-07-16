@@ -1,7 +1,13 @@
 import { ArrowRight, CheckCircle2, Clock, Layers } from 'lucide-react'
 import styles from './LandingPage.module.css'
+import type { Topic } from '../types'
 
-export default function LandingPage({ topics = [], onSelectTopic }) {
+interface Props {
+  topics: Topic[]
+  onSelectTopic: (id: string) => void
+}
+
+export default function LandingPage({ topics = [], onSelectTopic }: Props) {
   const totalSubTopics = topics.reduce((n, t) => n + (t.subTopicCount || 0), 0)
 
   return (
@@ -31,7 +37,7 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
               <p className={styles.sectionSub}>
                 {topics.length === 0
                   ? 'Noch keine Themen vorhanden.'
-                  : `${topics.length} ${topics.length === 1 ? 'Thema' : 'Themen'} · ${totalSubTopics} ${totalSubTopics === 1 ? 'Kapitel' : 'Kapitel'} insgesamt`}
+                  : `${topics.length} ${topics.length === 1 ? 'Thema' : 'Themen'} · ${totalSubTopics} Kapitel insgesamt`}
               </p>
             </div>
           </div>
@@ -40,14 +46,14 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
             {topics.map((topic) => {
               const accent = topic.accentColor || '#1c69d4'
               const allDone = topic.allPassed
-              const someProgress = topic.passedCount > 0 && !allDone
+              const someProgress = (topic.passedCount ?? 0) > 0 && !allDone
 
               return (
                 <button
                   key={topic.id}
                   className={styles.tile}
                   onClick={() => onSelectTopic(topic.id)}
-                  style={{ '--tile-accent': accent }}
+                  style={{ '--tile-accent': accent } as React.CSSProperties}
                 >
                   <div className={styles.tileTop}>
                     <div
@@ -83,9 +89,9 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
                   <ul className={styles.tileMeta}>
                     <li className={styles.tileMetaItem}>
                       <Layers size={12} className={styles.tileMetaIcon} />
-                      {topic.subTopicCount} {topic.subTopicCount === 1 ? 'Kapitel' : 'Kapitel'}
+                      {topic.subTopicCount} Kapitel
                     </li>
-                    {topic.totalMinutes > 0 && (
+                    {(topic.totalMinutes ?? 0) > 0 && (
                       <li className={styles.tileMetaItem}>
                         <Clock size={12} className={styles.tileMetaIcon} />
                         ca. {topic.totalMinutes} min
@@ -93,13 +99,13 @@ export default function LandingPage({ topics = [], onSelectTopic }) {
                     )}
                   </ul>
 
-                  {/* Fortschrittsbalken wenn teilweise erledigt */}
-                  {topic.subTopicCount > 0 && (
+                  {/* Fortschrittsbalken */}
+                  {(topic.subTopicCount ?? 0) > 0 && (
                     <div className={styles.tileProgressBar}>
                       <div
                         className={styles.tileProgressFill}
                         style={{
-                          width: `${(topic.passedCount / topic.subTopicCount) * 100}%`,
+                          width: `${((topic.passedCount ?? 0) / (topic.subTopicCount ?? 1)) * 100}%`,
                           background: accent,
                         }}
                       />

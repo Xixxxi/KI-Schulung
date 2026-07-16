@@ -1,13 +1,22 @@
 import { CheckCircle2 } from 'lucide-react'
 import styles from './SubTopicSidebar.module.css'
+import type { Topic, StepId } from '../types'
+
+interface Props {
+  topic: Topic | null
+  activeChapterId: string
+  passedChapters: Record<string, boolean>
+  onSelectChapter: (id: string) => void
+  onSelectStep: (step: StepId) => void
+}
 
 export default function SubTopicSidebar({
-  topic,           // { title, icon, accentColor, subTopics: [] }
+  topic,
   activeChapterId,
-  passedChapters,  // { [id]: true }
+  passedChapters,
   onSelectChapter,
-  onSelectStep,    // beim Kapitelwechsel auf 'learn' zurücksetzen
-}) {
+  onSelectStep,
+}: Props) {
   if (!topic) return null
 
   const subs      = topic.subTopics || []
@@ -61,7 +70,7 @@ export default function SubTopicSidebar({
 
               <button
                 className={`${styles.subBtn} ${isActive ? styles.subBtnActive : ''}`}
-                style={isActive ? { '--accent': accent } : {}}
+                style={isActive ? { '--accent': accent } as React.CSSProperties : {}}
                 onClick={() => {
                   onSelectChapter(sub.id)
                   onSelectStep('learn')

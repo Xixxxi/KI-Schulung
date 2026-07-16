@@ -3,9 +3,27 @@ import {
   Layers, CheckCircle2, RotateCcw, MousePointerClick,
   Brain, Trophy, BookMarked, ArrowRight,
 } from 'lucide-react'
+import type { LucideProps } from 'lucide-react'
+import type { ComponentType } from 'react'
 import styles from './AboutPage.module.css'
 
-const SCHRITTE = [
+interface Schritt {
+  num: number
+  icon: ComponentType<LucideProps>
+  color: string
+  label: string
+  title: string
+  desc: string
+  details: string[]
+}
+
+interface Tipp {
+  icon: ComponentType<LucideProps>
+  title: string
+  desc: string
+}
+
+const SCHRITTE: Schritt[] = [
   {
     num: 1,
     icon: BookOpen,
@@ -47,7 +65,7 @@ const SCHRITTE = [
   },
 ]
 
-const TIPPS = [
+const TIPPS: Tipp[] = [
   {
     icon: MousePointerClick,
     title: 'Thema wählen',
@@ -80,7 +98,11 @@ const TIPPS = [
   },
 ]
 
-export default function AboutPage({ onStart }) {
+interface Props {
+  onStart: () => void
+}
+
+export default function AboutPage({ onStart }: Props) {
   return (
     <div className={styles.root}>
       {/* ── Hero ── */}
@@ -118,7 +140,7 @@ export default function AboutPage({ onStart }) {
               const Icon = s.icon
               return (
                 <div key={s.label} className={styles.flowWrap}>
-                  <div className={styles.flowCard} style={{ '--card-color': s.color }}>
+                  <div className={styles.flowCard} style={{ '--card-color': s.color } as React.CSSProperties}>
                     <div className={styles.flowNum} style={{ background: s.color }}>{s.num}</div>
                     <div className={styles.flowIconWrap} style={{ background: `color-mix(in srgb, ${s.color} 12%, transparent)` }}>
                       <Icon size={22} style={{ color: s.color }} />

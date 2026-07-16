@@ -6,25 +6,30 @@ import {
 } from 'lucide-react'
 import styles from './LearnPanel.module.css'
 import { api } from '../api'
+import type { LearnData, Block, Lesson } from '../types'
+
+// Use a permissive alias for block data coming from JSON
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyBlock = Record<string, any>
 
 // ── Statische Block-Renderer ─────────────────────────────────────────────────
 
-function BlockText({ block }) {
+function BlockText({ block }: { block: AnyBlock }) {
   return <p className={styles.blockText}>{block.text}</p>
 }
 
-function BlockList({ block }) {
+function BlockList({ block }: { block: AnyBlock }) {
   return (
     <div className={styles.blockListWrap}>
       {block.title && <div className={styles.blockListTitle}>{block.title}</div>}
       <ul className={styles.blockList}>
-        {(block.items || []).map((item, i) => <li key={i}>{item}</li>)}
+        {(block.items || []).map((item: string, i: number) => <li key={i}>{item}</li>)}
       </ul>
     </div>
   )
 }
 
-function BlockCallout({ block }) {
+function BlockCallout({ block }: { block: AnyBlock }) {
   const tone = block.tone || 'info'
   const cls = tone === 'tip' ? styles.calloutTip : tone === 'warn' ? styles.calloutWarn : styles.calloutInfo
   const Icon = tone === 'tip' ? Lightbulb : tone === 'warn' ? AlertTriangle : Info
@@ -38,7 +43,7 @@ function BlockCallout({ block }) {
   )
 }
 
-function BlockCode({ block }) {
+function BlockCode({ block }: { block: AnyBlock }) {
   return (
     <div className={styles.codeWrap}>
       {block.caption && <div className={styles.codeCaption}>{block.caption}</div>}
@@ -47,35 +52,33 @@ function BlockCode({ block }) {
   )
 }
 
-/** Zwei-Spalten-Vergleich: links vs. rechts */
-function BlockComparison({ block }) {
+function BlockComparison({ block }: { block: AnyBlock }) {
   return (
     <div className={styles.comparison}>
-      <div className={styles.compSide} style={{ '--comp-color': block.left?.color || '#6b7280' }}>
+      <div className={styles.compSide} style={{ '--comp-color': block.left?.color || '#6b7280' } as React.CSSProperties}>
         <div className={styles.compLabel}>{block.left?.label}</div>
         <ul className={styles.compList}>
-          {(block.left?.items || []).map((item, i) => <li key={i}>{item}</li>)}
+          {(block.left?.items || []).map((item: string, i: number) => <li key={i}>{item}</li>)}
         </ul>
       </div>
       <div className={styles.compVs}>VS</div>
-      <div className={styles.compSide} style={{ '--comp-color': block.right?.color || '#1c69d4' }}>
+      <div className={styles.compSide} style={{ '--comp-color': block.right?.color || '#1c69d4' } as React.CSSProperties}>
         <div className={styles.compLabel}>{block.right?.label}</div>
         <ul className={styles.compList}>
-          {(block.right?.items || []).map((item, i) => <li key={i}>{item}</li>)}
+          {(block.right?.items || []).map((item: string, i: number) => <li key={i}>{item}</li>)}
         </ul>
       </div>
     </div>
   )
 }
 
-/** Karten-Raster: icon + label + description */
-function BlockCards({ block }) {
+function BlockCards({ block }: { block: AnyBlock }) {
   return (
     <div className={styles.cardsWrap}>
       {block.title && <div className={styles.blockListTitle}>{block.title}</div>}
       <div className={styles.cardGrid}>
-        {(block.items || []).map((card, i) => (
-          <div key={i} className={styles.card} style={{ '--card-color': card.color || 'var(--primary)' }}>
+        {(block.items || []).map((card: AnyBlock, i: number) => (
+          <div key={i} className={styles.card} style={{ '--card-color': card.color || 'var(--primary)' } as React.CSSProperties}>
             <div className={styles.cardIcon}>{card.icon}</div>
             <div className={styles.cardLabel}>{card.label}</div>
             <div className={styles.cardDesc}>{card.description}</div>
@@ -86,9 +89,8 @@ function BlockCards({ block }) {
   )
 }
 
-/** Visueller Ablauf: Nodes mit Pfeilen + optionaler Schleife */
-function BlockDiagram({ block }) {
-  const nodes = block.nodes || []
+function BlockDiagram({ block }: { block: AnyBlock }) {
+  const nodes: AnyBlock[] = block.nodes || []
   return (
     <div className={styles.diagramWrap}>
       {block.caption && <div className={styles.diagramCaption}>{block.caption}</div>}
@@ -124,13 +126,13 @@ function BlockDiagram({ block }) {
   )
 }
 
-/** Nummerierte Schritt-Liste mit Beschreibungen */
-function BlockSteps({ block }) {
+function BlockSteps({ block }: { block: AnyBlock }) {
+  const items: AnyBlock[] = block.items || []
   return (
     <div className={styles.stepsWrap}>
       {block.title && <div className={styles.blockListTitle}>{block.title}</div>}
       <div className={styles.stepsList}>
-        {(block.items || []).map((step, i) => (
+        {items.map((step, i) => (
           <div key={i} className={styles.stepItem}>
             <div className={styles.stepBadge}>{i + 1}</div>
             <div className={styles.stepBody}>
@@ -143,7 +145,7 @@ function BlockSteps({ block }) {
                 </div>
               )}
             </div>
-            {i < (block.items?.length ?? 0) - 1 && (
+            {i < items.length - 1 && (
               <div className={styles.stepConnector} />
             )}
           </div>
@@ -155,9 +157,14 @@ function BlockSteps({ block }) {
 
 // ── Interaktive Block-Renderer ───────────────────────────────────────────────
 
-/** Wissens-Check: Single-Choice-Frage mit Sofort-Feedback (gated). */
-function BlockQuizCheck({ block, done, onDone }) {
-  const [selected, setSelected] = useState(null)
+interface InteractiveProps {
+  block: AnyBlock
+  done: boolean
+  onDone: () => void
+}
+
+function BlockQuizCheck({ block, done, onDone }: InteractiveProps) {
+  const [selected, setSelected] = useState<number | null>(null)
   const [revealed, setRevealed] = useState(false)
   const isCorrect = revealed && selected === block.correct
 
@@ -176,7 +183,7 @@ function BlockQuizCheck({ block, done, onDone }) {
       </div>
       <div className={styles.checkQuestion}>{block.question}</div>
       <div className={styles.checkOptions}>
-        {(block.options || []).map((opt, i) => {
+        {(block.options || []).map((opt: string, i: number) => {
           const chosen = selected === i
           let cls = styles.checkOption
           if (revealed && i === block.correct) cls = `${styles.checkOption} ${styles.checkOptionCorrect}`
@@ -212,8 +219,7 @@ function BlockQuizCheck({ block, done, onDone }) {
   )
 }
 
-/** Freitext-Aufgabe: Nutzer wendet Gelesenes an, wird auf Länge/Stichwörter geprüft. */
-function BlockTaskInput({ block, done, onDone }) {
+function BlockTaskInput({ block, done, onDone }: InteractiveProps) {
   const [value, setValue] = useState('')
   const [checked, setChecked] = useState(false)
   const [ok, setOk] = useState(false)
@@ -221,8 +227,8 @@ function BlockTaskInput({ block, done, onDone }) {
   function validate() {
     const text = value.trim().toLowerCase()
     const longEnough = text.length >= (block.minLength || 12)
-    const keywords = (block.keywords || []).map((k) => k.toLowerCase())
-    const minKw = block.minKeywords ?? (keywords.length ? 1 : 0)
+    const keywords: string[] = (block.keywords || []).map((k: string) => k.toLowerCase())
+    const minKw: number = block.minKeywords ?? (keywords.length ? 1 : 0)
     const hits = keywords.filter((k) => text.includes(k)).length
     return longEnough && hits >= minKw
   }
@@ -266,13 +272,14 @@ function BlockTaskInput({ block, done, onDone }) {
   )
 }
 
-/** Simuliertes VS-Code-Terminal / Editor à la freeCodeCamp – Nutzer tippt Befehle nach. */
-function BlockSimulation({ block, done, onDone }) {
-  const steps = block.steps || []
+interface HistoryEntry { cmd: string; out: string; err: boolean }
+
+function BlockSimulation({ block, done, onDone }: InteractiveProps) {
+  const steps: AnyBlock[] = block.steps || []
   const [stepIdx, setStepIdx] = useState(0)
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState<HistoryEntry[]>([])
   const [input, setInput] = useState('')
-  const scrollRef = useRef(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const finished = stepIdx >= steps.length
   const current = finished ? null : steps[stepIdx]
@@ -281,7 +288,7 @@ function BlockSimulation({ block, done, onDone }) {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   }, [history])
 
-  const norm = (s) => (s || '').trim().toLowerCase().replace(/\s+/g, ' ')
+  const norm = (s: string) => (s || '').trim().toLowerCase().replace(/\s+/g, ' ')
 
   function run() {
     if (!current || !input.trim()) return
@@ -328,7 +335,7 @@ function BlockSimulation({ block, done, onDone }) {
         )}
       </div>
 
-      {!finished && (
+      {!finished && current && (
         <div className={styles.simInputRow}>
           <div className={styles.simHint}>
             <CornerDownLeft size={12} /> {current.instruction}
@@ -357,30 +364,44 @@ function BlockSimulation({ block, done, onDone }) {
 
 const INTERACTIVE_TYPES = ['quizCheck', 'taskInput', 'simulation']
 
-function ContentBlock({ block, blockKey, completed, markDone }) {
+interface ContentBlockProps {
+  block: Block
+  blockKey: string
+  completed: Record<string, boolean>
+  markDone: (key: string) => void
+}
+
+function ContentBlock({ block, blockKey, completed, markDone }: ContentBlockProps) {
   if (!block || typeof block !== 'object') return null
+  const b = block as AnyBlock
   const done = !!completed[blockKey]
   const onDone = () => markDone(blockKey)
-  switch (block.type) {
-    case 'text':       return <BlockText block={block} />
-    case 'list':       return <BlockList block={block} />
-    case 'callout':    return <BlockCallout block={block} />
-    case 'code':       return <BlockCode block={block} />
-    case 'comparison': return <BlockComparison block={block} />
-    case 'cards':      return <BlockCards block={block} />
-    case 'diagram':    return <BlockDiagram block={block} />
-    case 'steps':      return <BlockSteps block={block} />
-    case 'quizCheck':  return <BlockQuizCheck block={block} done={done} onDone={onDone} />
-    case 'taskInput':  return <BlockTaskInput block={block} done={done} onDone={onDone} />
-    case 'simulation': return <BlockSimulation block={block} done={done} onDone={onDone} />
+  switch (b.type) {
+    case 'text':       return <BlockText block={b} />
+    case 'list':       return <BlockList block={b} />
+    case 'callout':    return <BlockCallout block={b} />
+    case 'code':       return <BlockCode block={b} />
+    case 'comparison': return <BlockComparison block={b} />
+    case 'cards':      return <BlockCards block={b} />
+    case 'diagram':    return <BlockDiagram block={b} />
+    case 'steps':      return <BlockSteps block={b} />
+    case 'quizCheck':  return <BlockQuizCheck block={b} done={done} onDone={onDone} />
+    case 'taskInput':  return <BlockTaskInput block={b} done={done} onDone={onDone} />
+    case 'simulation': return <BlockSimulation block={b} done={done} onDone={onDone} />
     default:           return null
   }
 }
 
-// ── Onboarding-Overlay (erste Lektion jedes Kapitels) ────────────────────────
+// ── Onboarding-Overlay ────────────────────────────────────────────────────────
 
-function IntroOverlay({ data, lessons, onDismiss }) {
-  const btnRef = useRef(null)
+interface IntroOverlayProps {
+  data: LearnData
+  lessons: Lesson[]
+  onDismiss: () => void
+}
+
+function IntroOverlay({ data, lessons, onDismiss }: IntroOverlayProps) {
+  const btnRef = useRef<HTMLButtonElement>(null)
   useEffect(() => { btnRef.current?.focus() }, [])
   return (
     <div className={styles.introOverlay} role="dialog" aria-modal="true" aria-label="Kapitel-Übersicht">
@@ -417,13 +438,19 @@ function IntroOverlay({ data, lessons, onDismiss }) {
 
 // ── Haupt-Komponente ──────────────────────────────────────────────────────────
 
-export default function LearnPanel({ chapterId, onStartTest, onOpenReference }) {
-  const [data, setData]           = useState(null)
+interface Props {
+  chapterId: string
+  onStartTest: () => void
+  onOpenReference: () => void
+}
+
+export default function LearnPanel({ chapterId, onStartTest, onOpenReference }: Props) {
+  const [data, setData]           = useState<LearnData | null>(null)
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState('')
   const [lessonIdx, setLessonIdx] = useState(0)
   const [introOpen, setIntroOpen] = useState(true)
-  const [completed, setCompleted] = useState({})  // `${lessonIdx}:${blockIdx}` -> true
+  const [completed, setCompleted] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     let active = true
@@ -434,12 +461,12 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }) 
     setCompleted({})
     api.getLearn(chapterId)
       .then((d) => { if (active) setData(d) })
-      .catch((err) => { if (active) setError(err?.message || 'Lerninhalt konnte nicht geladen werden.') })
+      .catch((err: Error) => { if (active) setError(err?.message || 'Lerninhalt konnte nicht geladen werden.') })
       .finally(() => { if (active) setLoading(false) })
     return () => { active = false }
   }, [chapterId])
 
-  const markDone = (key) => setCompleted((prev) => (prev[key] ? prev : { ...prev, [key]: true }))
+  const markDone = (key: string) => setCompleted((prev) => (prev[key] ? prev : { ...prev, [key]: true }))
 
   if (loading) {
     return (
@@ -453,7 +480,7 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }) 
   if (!data)  return null
 
   const lessons  = data.lessons || []
-  const lesson   = lessons[lessonIdx] || null
+  const lesson   = lessons[lessonIdx] ?? null
   const isFirst  = lessonIdx === 0
   const isLast   = lessonIdx === lessons.length - 1
   const progress = lessons.length > 1 ? ((lessonIdx + 1) / lessons.length) * 100 : 100
@@ -461,17 +488,15 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }) 
 
   const cleanTitle = (t = '') => t.replace(/^\d+\.\s*/, '')
 
-  // Pflicht-Checks der aktuellen Lektion (interaktive Blöcke, sofern nicht optional)
   const blocks = lesson?.blocks || []
   const requiredKeys = blocks
     .map((b, i) => ({ b, i }))
-    .filter(({ b }) => INTERACTIVE_TYPES.includes(b.type) && b.required !== false)
+    .filter(({ b }) => INTERACTIVE_TYPES.includes(b.type) && (b as AnyBlock).required !== false)
     .map(({ i }) => `${lessonIdx}:${i}`)
   const allChecksDone = requiredKeys.every((k) => completed[k])
   const isLab = lesson?.layout === 'lab'
 
-  // Blöcke rendern (mit stabilem Key je Lektion+Index)
-  const renderBlock = (block, i) => (
+  const renderBlock = (block: Block, i: number) => (
     <ContentBlock
       key={`${lessonIdx}:${i}`}
       block={block}
@@ -483,7 +508,6 @@ export default function LearnPanel({ chapterId, onStartTest, onOpenReference }) 
 
   return (
     <div className={styles.panel}>
-
 
       {/* ── Fortschrittsleiste ──────────────────────────────────────────── */}
       <div className={styles.progressBar}>

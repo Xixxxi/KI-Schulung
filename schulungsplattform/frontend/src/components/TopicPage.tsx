@@ -1,7 +1,13 @@
 import { BookOpen, ClipboardCheck, Library, ArrowRight, CheckCircle2, Clock, Award } from 'lucide-react'
 import styles from './TopicPage.module.css'
+import type { Topic } from '../types'
 
-export default function TopicPage({ topic, onSelectChapter }) {
+interface Props {
+  topic: Topic
+  onSelectChapter: (id: string) => void
+}
+
+export default function TopicPage({ topic, onSelectChapter }: Props) {
   if (!topic) return null
   const accent = topic.accentColor || '#1c69d4'
   const subs   = topic.subTopics || []
@@ -9,7 +15,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
   return (
     <div className={styles.root}>
       {/* ── Topic-Hero ── */}
-      <header className={styles.hero} style={{ '--topic-accent': accent }}>
+      <header className={styles.hero} style={{ '--topic-accent': accent } as React.CSSProperties}>
         <div className={styles.heroInner}>
           <div className={styles.heroIcon}>{topic.icon || '📚'}</div>
           <div>
@@ -19,7 +25,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
             )}
             <div className={styles.heroMeta}>
               <span>{subs.length} {subs.length === 1 ? 'Kapitel' : 'Kapitel'}</span>
-              {topic.totalMinutes > 0 && <span>· ca. {topic.totalMinutes} min</span>}
+              {(topic.totalMinutes ?? 0) > 0 && <span>· ca. {topic.totalMinutes} min</span>}
               {topic.allPassed && (
                 <span className={styles.heroBadge}>
                   <Award size={13} /> Thema abgeschlossen
@@ -49,7 +55,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
               key={sub.id}
               className={styles.card}
               onClick={() => onSelectChapter(sub.id)}
-              style={{ '--card-accent': accent }}
+              style={{ '--card-accent': accent } as React.CSSProperties}
             >
               {/* Linke Nummerierung */}
               <div className={styles.cardNum} style={{ background: sub.passed ? '#dcfce7' : `color-mix(in srgb, ${accent} 12%, white 88%)`, color: sub.passed ? '#166534' : accent }}>
@@ -70,7 +76,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
                       <CheckCircle2 size={11} /> Abgeschlossen
                     </span>
                   )}
-                  {!sub.passed && sub.bestScorePercent > 0 && (
+                  {!sub.passed && (sub.bestScorePercent ?? 0) > 0 && (
                     <span className={styles.cardBadgePartial}>
                       Bestes Ergebnis: {sub.bestScorePercent}%
                     </span>
@@ -97,7 +103,7 @@ export default function TopicPage({ topic, onSelectChapter }) {
                     <Library size={11} />
                     {sub.referenceCount} Einträge
                   </span>
-                  {sub.estimatedMinutes && (
+                  {sub.estimatedMinutes != null && (
                     <>
                       <span className={styles.cardStepDot}>·</span>
                       <span className={styles.cardStep}>

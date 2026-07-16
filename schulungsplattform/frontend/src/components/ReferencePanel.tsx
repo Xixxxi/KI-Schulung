@@ -2,9 +2,15 @@ import { useEffect, useMemo, useState } from 'react'
 import { Loader2, Search, CheckCircle2, Unlock } from 'lucide-react'
 import styles from './ReferencePanel.module.css'
 import { api } from '../api'
+import type { ReferenceData } from '../types'
 
-export default function ReferencePanel({ chapterId, passed }) {
-  const [data, setData] = useState(null)
+interface Props {
+  chapterId: string
+  passed: boolean
+}
+
+export default function ReferencePanel({ chapterId, passed }: Props) {
+  const [data, setData] = useState<ReferenceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
@@ -16,18 +22,10 @@ export default function ReferencePanel({ chapterId, passed }) {
     setQuery('')
     api
       .getReference(chapterId)
-      .then((d) => {
-        if (active) setData(d)
-      })
-      .catch((err) => {
-        if (active) setError(err?.message || 'Nachschlagewerk konnte nicht geladen werden.')
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
-    return () => {
-      active = false
-    }
+      .then((d) => { if (active) setData(d) })
+      .catch((err: Error) => { if (active) setError(err?.message || 'Nachschlagewerk konnte nicht geladen werden.') })
+      .finally(() => { if (active) setLoading(false) })
+    return () => { active = false }
   }, [chapterId])
 
   const filtered = useMemo(() => {
