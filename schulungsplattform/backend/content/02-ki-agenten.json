@@ -1,0 +1,366 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsablaeufe automatisierst.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Was KI-Agenten sind",
+  "subTopicDescription": "Was einen Agenten ausmacht, seine Bausteine, der Agent Loop und wann sich ein Agent lohnt.",
+  "tag": "Allgemein",
+  "id": "ki-agenten",
+  "order": 2,
+  "title": "Was KI-Agenten sind",
+  "summary": "Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent lohnt.",
+  "estimatedMinutes": 12,
+  "lessons": [
+    {
+      "id": "l1",
+      "title": "Worum geht es in diesem Kapitel?",
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Kapitel-Ueberblick",
+          "text": "Im letzten Kapitel hast du gelernt, was ein LLM ist und wie Tool Calls funktionieren. Jetzt geht es einen Schritt weiter: Was passiert, wenn ein LLM eigenstaendig entscheidet, WELCHES Tool es aufruft und wann es fertig ist?"
+        },
+        {
+          "type": "steps",
+          "title": "Was dich erwartet",
+          "items": [
+            {
+              "label": "Agent vs. Skript",
+              "description": "Der entscheidende Unterschied."
+            },
+            {
+              "label": "Die vier Bausteine",
+              "description": "Woraus jeder Agent besteht."
+            },
+            {
+              "label": "Der Agent Loop",
+              "description": "Wie ein Agent Schritt fuer Schritt arbeitet."
+            },
+            {
+              "label": "Wann lohnt sich ein Agent?",
+              "description": "Nicht jede Aufgabe braucht einen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "title": "Was ist ein KI-Agent?",
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Die einfache Definition",
+          "text": "Ein KI-Agent ist ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen. Es entscheidet bei jedem Schritt eigenstaendig, was als Naechstes zu tun ist."
+        },
+        {
+          "type": "diagram",
+          "caption": "Agent = LLM + eigenstaendige Entscheidungen + Tools",
+          "nodes": [
+            {
+              "id": "task",
+              "type": "start",
+              "emoji": "🎯",
+              "label": "Aufgabe",
+              "sublabel": "Nutzer gibt Ziel vor"
+            },
+            {
+              "id": "dec",
+              "type": "step",
+              "emoji": "🧠",
+              "label": "Agent denkt",
+              "sublabel": "Was muss ich tun?"
+            },
+            {
+              "id": "act",
+              "type": "step",
+              "emoji": "⚡",
+              "label": "Agent handelt",
+              "sublabel": "Tool Call oder Antwort"
+            },
+            {
+              "id": "done",
+              "type": "end",
+              "emoji": "✅",
+              "label": "Ziel erreicht",
+              "sublabel": "Ergebnis zurueck"
+            }
+          ],
+          "loop": {
+            "label": "Noch nicht fertig"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l3",
+      "title": "Agent vs. Chatbot vs. Skript",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Skript / Chatbot",
+            "items": [
+              "Fester Ablauf - vorab programmiert",
+              "Ein Input, ein Output",
+              "Scheitert bei Unbekanntem"
+            ]
+          },
+          "right": {
+            "label": "KI-Agent",
+            "items": [
+              "Entscheidet den naechsten Schritt selbst",
+              "Mehrere Tool Calls nacheinander",
+              "Reagiert flexibel auf Ergebnisse"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Was macht einen KI-Agenten anders als ein Skript?",
+          "options": [
+            "Er ist immer schneller.",
+            "Er entscheidet zur Laufzeit selbst, was als Naechstes passiert.",
+            "Skripte koennen keine APIs aufrufen."
+          ],
+          "correct": 1,
+          "hint": "Wer entscheidet den naechsten Schritt?"
+        }
+      ]
+    },
+    {
+      "id": "l4",
+      "title": "Die vier Bausteine eines Agenten",
+      "blocks": [
+        {
+          "type": "cards",
+          "items": [
+            {
+              "icon": "🧠",
+              "label": "Modell (LLM)",
+              "description": "Das Gehirn - plant und entscheidet."
+            },
+            {
+              "icon": "📋",
+              "label": "Instruktionen",
+              "description": "System-Prompt - Rolle und Ziel."
+            },
+            {
+              "icon": "🔧",
+              "label": "Werkzeuge",
+              "description": "Tools - Verbindung zur Aussenwelt."
+            },
+            {
+              "icon": "💾",
+              "label": "Speicher",
+              "description": "Kontext - Verlauf und Ergebnisse."
+            }
+          ]
+        },
+        {
+          "type": "quizCheck",
+          "question": "Ein Agent hat Modell, Instruktionen und Speicher - aber keine Tools. Was fehlt?",
+          "options": [
+            "Nichts - er funktioniert vollstaendig.",
+            "Die Verbindung zur Aussenwelt - er kann nur Text erzeugen, nicht handeln.",
+            "Der System-Prompt."
+          ],
+          "correct": 1,
+          "hint": "Tools sind die Haende des Agenten."
+        }
+      ]
+    },
+    {
+      "id": "l5",
+      "title": "Der Agent Loop",
+      "blocks": [
+        {
+          "type": "diagram",
+          "caption": "Reason - Act - Observe: der Kernzyklus",
+          "nodes": [
+            {
+              "id": "goal",
+              "type": "start",
+              "emoji": "🎯",
+              "label": "Aufgabe",
+              "sublabel": "Ziel kommt rein"
+            },
+            {
+              "id": "reason",
+              "type": "step",
+              "emoji": "🤔",
+              "label": "Reason",
+              "sublabel": "Naechsten Schritt planen"
+            },
+            {
+              "id": "act",
+              "type": "step",
+              "emoji": "⚡",
+              "label": "Act",
+              "sublabel": "Tool aufrufen"
+            },
+            {
+              "id": "observe",
+              "type": "step",
+              "emoji": "👁",
+              "label": "Observe",
+              "sublabel": "Ergebnis lesen"
+            },
+            {
+              "id": "done",
+              "type": "end",
+              "emoji": "✅",
+              "label": "Fertig",
+              "sublabel": "Ziel erreicht"
+            }
+          ],
+          "loop": {
+            "label": "Ziel noch nicht erreicht"
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "In welcher Reihenfolge arbeitet ein Agent?",
+          "options": [
+            "Act - Reason - Observe",
+            "Observe - Act - Reason",
+            "Reason - Act - Observe"
+          ],
+          "correct": 2,
+          "hint": "Erst denken, dann handeln, dann schauen."
+        }
+      ]
+    },
+    {
+      "id": "l6",
+      "title": "Wann lohnt sich ein Agent?",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Gut fuer Agenten",
+            "items": [
+              "Unstrukturierte Texte verstehen",
+              "Mehrere Schritte mit Entscheidungen",
+              "Viele Sonderfaelle"
+            ]
+          },
+          "right": {
+            "label": "Besser klassisch loesen",
+            "items": [
+              "Feste Regeln, keine Interpretation",
+              "Exakte Berechnungen",
+              "Hohe Frequenz, minimale Kosten"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Welche Aufgabe passt gut zu einem KI-Agenten?",
+          "options": [
+            "Einen Betrag von EUR in USD umrechnen.",
+            "Support-Tickets lesen und dem richtigen Team zuweisen.",
+            "Jeden Tag um 8 Uhr einen Datenbankexport starten."
+          ],
+          "correct": 1,
+          "hint": "Braucht die Aufgabe Sprachverstaendnis und Urteil?"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l3",
+        "question": "Was unterscheidet einen KI-Agenten von einem Skript?",
+        "options": [
+          "Agenten sind immer schneller.",
+          "Ein Agent entscheidet eigenstaendig den naechsten Schritt.",
+          "Skripte koennen keine APIs aufrufen."
+        ],
+        "correct": 1,
+        "explanation": "Der Kern: autonome Entscheidung bei jedem Schritt."
+      },
+      {
+        "id": "q2",
+        "type": "multi",
+        "lessonRef": "l4",
+        "question": "Welche vier Elemente bilden einen KI-Agenten? (Mehrfachauswahl)",
+        "options": [
+          "Modell (LLM)",
+          "Instruktionen (System-Prompt)",
+          "Grafikkarte",
+          "Werkzeuge (Tools)",
+          "Speicher (Memory)"
+        ],
+        "correct": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "explanation": "Modell, Instruktionen, Werkzeuge und Speicher."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l5",
+        "question": "In welcher Reihenfolge arbeitet der Agent Loop?",
+        "options": [
+          "Act - Reason - Observe",
+          "Observe - Act - Reason",
+          "Reason - Act - Observe"
+        ],
+        "correct": 2,
+        "explanation": "Reason, Act, Observe - wiederholen."
+      },
+      {
+        "id": "q4",
+        "type": "single",
+        "lessonRef": "l6",
+        "question": "Welche Aufgabe eignet sich am besten fuer einen KI-Agenten?",
+        "options": [
+          "Commits nach Zeitstempel sortieren.",
+          "Support-Tickets kategorisieren und priorisieren.",
+          "Einen Datenbankexport starten."
+        ],
+        "correct": 1,
+        "explanation": "Kategorisierung erfordert Sprachverstaendnis und Urteil."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "KI-Agent",
+      "definition": "Ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen."
+    },
+    {
+      "term": "Agent Loop",
+      "definition": "Reason (planen), Act (handeln), Observe (Ergebnis lesen) - wiederholen bis Ziel erreicht."
+    },
+    {
+      "term": "Modell (LLM)",
+      "definition": "Das Gehirn des Agenten: plant, entscheidet und erzeugt Tool Calls."
+    },
+    {
+      "term": "Instruktionen",
+      "definition": "Der System-Prompt - legt Rolle, Ziel und Grenzen fest."
+    },
+    {
+      "term": "Werkzeuge (Tools)",
+      "definition": "Funktionen fuer den Zugriff auf die Aussenwelt."
+    },
+    {
+      "term": "Speicher (Memory)",
+      "definition": "Gespraechsverlauf und Tool-Ergebnisse im Kontext-Fenster."
+    }
+  ]
+}

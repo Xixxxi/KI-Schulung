@@ -1,0 +1,576 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsabläufe automatisierst.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Mehrstufige Arbeitsabläufe automatisieren",
+  "subTopicDescription": "Aufgaben zerlegen, Schritte verketten, Architekturen wählen und Agenten deployen.",
+  "tag": "Allgemein",
+  "id": "workflows-deployment",
+  "order": 4,
+  "title": "Mehrstufige Arbeitsabläufe automatisieren",
+  "summary": "Wie aus einzelnen Agenten-Aufrufen robuste Workflows werden – und wie Architekturen und Deployment-Muster entschieden werden.",
+  "estimatedMinutes": 30,
+  "lessons": [
+    {
+      "id": "l0",
+      "title": "Worum geht es in diesem Kapitel?",
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Kapitel-Ueberblick",
+          "text": "Du kannst jetzt einzelne Agenten bauen. Aber was, wenn eine Aufgabe zu gross fuer einen einzelnen Agenten ist? In diesem Kapitel lernst du, wie du Aufgaben zerlegst, Agenten verkettst und Workflows robust betreibst."
+        },
+        {
+          "type": "steps",
+          "title": "Was dich erwartet",
+          "items": [
+            {
+              "label": "Aufgaben zerlegen",
+              "description": "Grosse Probleme in kleine Schritte aufteilen."
+            },
+            {
+              "label": "Workflow-Muster",
+              "description": "Pipeline, Router, Orchestrator."
+            },
+            {
+              "label": "Fehlerbehandlung",
+              "description": "Was tun wenn ein Schritt fehlschlaegt?"
+            },
+            {
+              "label": "Deployment",
+              "description": "Agenten zuverlaessig betreiben."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l1",
+      "title": "Große Aufgabe, kleine Schritte",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Ein großer Aufruf",
+            "color": "#6b7280",
+            "items": [
+              "Ergebnis schwer nachvollziehbar",
+              "Fehler kaum einzugrenzen",
+              "Einzelne Teile nicht testbar"
+            ]
+          },
+          "right": {
+            "label": "Mehrere fokussierte Schritte",
+            "color": "#1c69d4",
+            "items": [
+              "Jeder Schritt: ein klar definiertes Ziel",
+              "Zwischenergebnis sichtbar und prüfbar",
+              "Fehler lassen sich lokalisieren"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Warum ist es besser, eine komplexe Aufgabe in mehrere kleine Schritte zu zerlegen?",
+          "options": [
+            "Weil ein einzelner Prompt technisch nicht möglich ist.",
+            "Weil Modelle bei kleinen, fokussierten Aufgaben zuverlässiger sind und Fehler sich leichter einkreisen lassen.",
+            "Weil mehrere Schritte immer günstiger sind."
+          ],
+          "correct": 1,
+          "explanation": "Fokus verbessert Qualität. Außerdem macht Zerlegung Zwischenergebnisse sichtbar und jeden Schritt einzeln testbar.",
+          "hint": "Was ändert sich am Modell, wenn die Aufgabe kleiner wird?"
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "title": "Die drei Workflow-Muster",
+      "blocks": [
+        {
+          "type": "cards",
+          "items": [
+            {
+              "icon": "➡️",
+              "label": "Kette (sequenziell)",
+              "color": "#1c69d4",
+              "description": "Schritte laufen nacheinander. Ausgabe von Schritt 1 ist Eingabe von Schritt 2. Das häufigste Muster."
+            },
+            {
+              "icon": "🔀",
+              "label": "Verzweigung (bedingt)",
+              "color": "#6d28d9",
+              "description": "Ein Zwischenergebnis entscheidet, welcher Pfad als Nächstes läuft – z. B. je nach Ticket-Kategorie."
+            },
+            {
+              "icon": "⚡",
+              "label": "Parallel",
+              "color": "#0369a1",
+              "description": "Unabhängige Schritte laufen gleichzeitig, Ergebnisse werden danach zusammengeführt. Spart Zeit."
+            }
+          ]
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Jira-Tickets sollen gelesen, kategorisiert und je nach Kategorie unterschiedlich weitergeleitet werden. Welches Muster passt?",
+          "options": [
+            "Kette (sequenziell) – es sind mehrere Schritte.",
+            "Verzweigung – das Ergebnis der Kategorisierung bestimmt den nächsten Schritt.",
+            "Parallel – alle Tickets gleichzeitig verarbeiten."
+          ],
+          "correct": 1,
+          "explanation": "Ein Zwischenergebnis (Kategorie) entscheidet über den weiteren Weg – das ist das Verzweigungsmuster.",
+          "hint": "Was passiert, wenn das Kategorie-Ergebnis 'Bug' lautet vs. 'Feature Request'?"
+        }
+      ]
+    },
+    {
+      "id": "l3",
+      "title": "Kette bauen und ausführen",
+      "layout": "lab",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Drei verkettete Schritte: Fehler aus einem Log extrahieren, zusammenfassen, Handlungsempfehlung ableiten."
+        },
+        {
+          "type": "code",
+          "language": "python",
+          "caption": "workflow_kette.py – drei Schritte, ein Durchlauf",
+          "text": "from dotenv import load_dotenv\nfrom openai import OpenAI\n\nload_dotenv()\nclient = OpenAI()\n\ndef schritt(system, eingabe):\n    r = client.chat.completions.create(\n        model=\"gpt-4o-mini\",\n        messages=[{\"role\": \"system\", \"content\": system},\n                  {\"role\": \"user\",   \"content\": eingabe}],\n        temperature=0\n    )\n    return r.choices[0].message.content\n\nlog = \"ERROR: DB max_connections (100) reached\\nWARN: RetryHandler failed 3x\"\n\n# Kette: Ausgabe fliesst als Eingabe in den naechsten Schritt\ns1 = schritt(\"Extrahiere nur ERROR/WARN-Zeilen als Liste.\", log)\ns2 = schritt(\"Fasse diese Fehler in 2 Saetzen zusammen.\", s1)\ns3 = schritt(\"Leite eine konkrete Handlungsempfehlung ab.\", s2)\nprint(s3)"
+        },
+        {
+          "type": "quizCheck",
+          "title": "Verstanden?",
+          "question": "Wie kommt das Ergebnis von Schritt 1 in Schritt 2?",
+          "options": [
+            "Die OpenAI API merkt sich den Verlauf automatisch.",
+            "Die Ausgabe von Schritt 1 wird als Eingabe-Argument an die Funktion von Schritt 2 übergeben.",
+            "Über eine globale Variable, die das Modell setzt."
+          ],
+          "correct": 1,
+          "explanation": "Die API ist zustandslos. Die Kette entsteht rein im Code: s1 wird als Eingabe an den zweiten Schritt übergeben.",
+          "hint": "Sieh dir die letzten drei Zeilen des Skripts an."
+        },
+        {
+          "type": "simulation",
+          "title": "VS Code – Terminal",
+          "tool": "terminal",
+          "prompt": "(.venv) PS C:\\agent-werkstatt>",
+          "intro": "workflow_kette.py ist gespeichert. Starte den dreistufigen Workflow.",
+          "done": "Drei Schritte, ein Ergebnis: Log, Zusammenfassung, Empfehlung. Das ist eine sequenzielle Kette.",
+          "steps": [
+            {
+              "instruction": "Workflow starten:",
+              "expected": "python workflow_kette.py",
+              "response": "Priorisiert: max_connections erhoehen (z. B. auf 200) und Connection-Pool-Monitoring einrichten, um kuenftige Auslastungen fruehzeitig zu erkennen.",
+              "error": "Starte mit: python workflow_kette.py"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l4",
+      "title": "Fester Workflow oder autonomer Agent?",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Fester Workflow (empfohlen zum Start)",
+            "color": "#166534",
+            "items": [
+              "Du bestimmst die Schrittfolge",
+              "Vorhersehbar, testbar, kostenkontrolliert",
+              "Ideal für bekannte, wiederkehrende Abläufe"
+            ]
+          },
+          "right": {
+            "label": "Autonomer Agent",
+            "color": "#6d28d9",
+            "items": [
+              "Das Modell wählt Schritte selbst",
+              "Flexibel, aber schwerer zu begrenzen",
+              "Nur wenn der Weg wirklich unbekannt ist"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "title": "Szenario",
+          "question": "Jira-Tickets sollen gelesen, in 5 Kategorien sortiert und dem passenden Team zugewiesen werden. Der Ablauf ist immer gleich. Was passt besser?",
+          "options": [
+            "Autonomer Agent – er ist flexibler.",
+            "Fester Workflow – der Ablauf ist bekannt, also vorhersehbar und günstiger.",
+            "Beides ist gleichwertig."
+          ],
+          "correct": 1,
+          "explanation": "Wenn die Schritte im Voraus feststehen, ist ein fester Workflow zuverlässiger, günstiger und leichter zu kontrollieren.",
+          "hint": "Ist der Weg zum Ziel hier vorhersehbar?"
+        }
+      ]
+    },
+    {
+      "id": "l5",
+      "title": "Agent Architectures – Single vs. Multi-Agent",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Single Agent",
+            "color": "#1c69d4",
+            "items": [
+              "Ein LLM mit einem Toolset",
+              "Einfach zu bauen und zu debuggen",
+              "Gut wenn Aufgabe ins Kontext-Fenster passt",
+              "Start-Empfehlung für neue Anwendungsfälle"
+            ]
+          },
+          "right": {
+            "label": "Multi-Agent",
+            "color": "#6d28d9",
+            "items": [
+              "Mehrere spezialisierte Agenten",
+              "Parallelisierung spart Zeit",
+              "Skaliert über Kontext-Fenster-Grenzen hinaus",
+              "Komplexer – erst wenn Single Agent nicht reicht"
+            ]
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Faustformel",
+          "text": "Starte immer mit einem Single Agent. Wechsle zu Multi-Agent, wenn (1) die Aufgabe zu groß für ein Kontext-Fenster wird, (2) Parallelisierung Zeit spart oder (3) Spezialisierung die Qualität deutlich verbessert."
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Du willst monatlich Berichte für 12 Projekte erstellen. Welche Architektur passt?",
+          "options": [
+            "Single Agent – er arbeitet alle 12 Projekte nacheinander ab.",
+            "Multi-Agent – 12 Sub-Agents laufen parallel, ein Orchestrator fasst zusammen.",
+            "Kein Agent nötig – das ist ein klassischer Skript-Fall."
+          ],
+          "correct": 1,
+          "explanation": "12 parallele Sub-Agents sparen Zeit und halten den Kontext jedes Agenten überschaubar. Der Orchestrator koordiniert und aggregiert.",
+          "hint": "Parallelisierbarkeit spricht für Multi-Agent."
+        }
+      ]
+    },
+    {
+      "id": "l6",
+      "title": "Hierarchical Architecture & Agent Communication",
+      "blocks": [
+        {
+          "type": "diagram",
+          "caption": "Hierarchical Multi-Agent Architecture",
+          "nodes": [
+            {
+              "id": "user",
+              "type": "start",
+              "emoji": "👤",
+              "label": "Trigger",
+              "sublabel": "Gesamtaufgabe"
+            },
+            {
+              "id": "orch",
+              "type": "step",
+              "emoji": "🎯",
+              "label": "Orchestrator",
+              "sublabel": "Zerlegt und delegiert"
+            },
+            {
+              "id": "sub1",
+              "type": "step",
+              "emoji": "🤖",
+              "label": "Sub-Agent A",
+              "sublabel": "Teilaufgabe 1"
+            },
+            {
+              "id": "sub2",
+              "type": "step",
+              "emoji": "🤖",
+              "label": "Sub-Agent B",
+              "sublabel": "Teilaufgabe 2"
+            },
+            {
+              "id": "result",
+              "type": "end",
+              "emoji": "✅",
+              "label": "Ergebnis",
+              "sublabel": "Aggregiert und ausgegeben"
+            }
+          ],
+          "note": "Sub-Agents kommunizieren in der Regel über den Orchestrator – nicht direkt miteinander."
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Wer koordiniert die Sub-Agents in einer hierarchischen Architektur?",
+          "options": [
+            "Sub-Agents koordinieren sich selbst direkt.",
+            "Der Orchestrator zerlegt, delegiert und aggregiert die Ergebnisse.",
+            "Der Nutzer koordiniert jeden Sub-Agent manuell."
+          ],
+          "correct": 1,
+          "explanation": "Der Orchestrator ist der zentrale Koordinator: er zerlegt, delegiert, wartet auf Ergebnisse und aggregiert sie.",
+          "hint": "Es gibt eine zentrale koordinierende Instanz."
+        }
+      ]
+    },
+    {
+      "id": "l7",
+      "title": "Deployment – Chatbot oder Pipeline?",
+      "blocks": [
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Interactive Chatbot Frontend",
+            "color": "#1c69d4",
+            "items": [
+              "Nutzer initiiert jede Aufgabe manuell",
+              "Interaktiv – Rückfragen möglich",
+              "Läuft auf Anfrage",
+              "Beispiel: PR-Zusammenfassung auf Knopfdruck"
+            ]
+          },
+          "right": {
+            "label": "Automation Pipeline",
+            "color": "#6d28d9",
+            "items": [
+              "Trigger startet den Agenten automatisch",
+              "Kein Mensch im Loop nötig",
+              "Läuft nach Zeitplan oder Ereignis",
+              "Beispiel: Jede Nacht Bugs triagieren"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Jede Nacht sollen neue Jira-Bugs automatisch kategorisiert werden. Welches Muster passt?",
+          "options": [
+            "Chatbot Frontend – ein Mitarbeiter startet manuell.",
+            "Automation Pipeline – ein Cron-Job startet den Agenten automatisch.",
+            "Multi-Agent ohne Orchestrator."
+          ],
+          "correct": 1,
+          "explanation": "Zeitgesteuert und ohne Nutzerinteraktion bedeutet Automation Pipeline mit Cron-Trigger.",
+          "hint": "Gibt es einen Zeitplan und keine manuelle Interaktion?"
+        }
+      ]
+    },
+    {
+      "id": "l8",
+      "title": "Automation Pipeline – Aufbau und Monitoring",
+      "blocks": [
+        {
+          "type": "steps",
+          "title": "Die vier Stationen einer Automation Pipeline",
+          "items": [
+            {
+              "label": "Trigger",
+              "description": "Cron-Job, Webhook, Message Queue oder manueller API-Call starten den Agenten.",
+              "example": "GitHub Webhook: neuer PR geöffnet, Agent startet."
+            },
+            {
+              "label": "Agent-Ausführung",
+              "description": "Der Agent läuft autonom durch seinen Loop – liest, analysiert, handelt.",
+              "example": "Agent liest PR-Diff, analysiert Code, postet Review-Kommentare."
+            },
+            {
+              "label": "Output / Notification",
+              "description": "Ergebnis persistieren oder weiterleiten: Datenbank, E-Mail, Ticket, nächste Pipeline.",
+              "example": "Zusammenfassung in Confluence + Slack-Nachricht ans Team."
+            },
+            {
+              "label": "Monitoring und Fehlerbehandlung",
+              "description": "Pipelines laufen unbeaufsichtigt – Logging, Alerting und Retry-Logik sind Pflicht.",
+              "example": "Bei Fehler: Slack-Alert, Error-Log-Eintrag, automatischer Retry nach 5 Min."
+            }
+          ]
+        },
+        {
+          "type": "quizCheck",
+          "title": "Kurzer Check",
+          "question": "Was ist bei unbeaufsichtigten Automation Pipelines besonders wichtig?",
+          "options": [
+            "Eine schönere UI.",
+            "Robustes Monitoring, Logging, Alerting und Fehlerbehandlung.",
+            "Mehr Tools zur Verfügung stellen."
+          ],
+          "correct": 1,
+          "explanation": "In einer Automation Pipeline gibt es niemanden, der sofort eingreift. Monitoring und Fehlerbehandlung sind deshalb kritisch.",
+          "hint": "Was fehlt, wenn kein Mensch zuschaut?"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l1",
+        "question": "Was ist der Hauptvorteil, eine komplexe Aufgabe in mehrere kleine Schritte zu zerlegen?",
+        "options": [
+          "Es ist technisch die einzige Möglichkeit.",
+          "Modelle liefern bei fokussierten Aufgaben bessere Ergebnisse und Fehler sind leichter einzugrenzen.",
+          "Es ist immer günstiger."
+        ],
+        "correct": 1,
+        "explanation": "Fokus verbessert Qualität. Zerlegung macht Zwischenergebnisse sichtbar und jeden Schritt testbar."
+      },
+      {
+        "id": "q2",
+        "type": "single",
+        "lessonRef": "l2",
+        "question": "Was kennzeichnet das sequenzielle Ketten-Muster?",
+        "options": [
+          "Alle Schritte laufen gleichzeitig.",
+          "Ein Zwischenergebnis entscheidet den weiteren Weg.",
+          "Die Ausgabe eines Schritts ist die Eingabe des nächsten."
+        ],
+        "correct": 2,
+        "explanation": "Bei der Kette laufen Schritte nacheinander, jede Ausgabe wird direkt als Eingabe für den nächsten Schritt verwendet."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l3",
+        "question": "Warum muss das Ergebnis jedes Schritts explizit an den nächsten übergeben werden?",
+        "options": [
+          "Weil Python keine Rückgabewerte kennt.",
+          "Weil die OpenAI API zustandslos ist und sich nichts merkt.",
+          "Das ist optional."
+        ],
+        "correct": 1,
+        "explanation": "Die API ist vollständig zustandslos. Jeder Aufruf ist unabhängig. Die Kette entsteht rein im Code durch explizite Weitergabe."
+      },
+      {
+        "id": "q4",
+        "type": "single",
+        "lessonRef": "l4",
+        "question": "Wann ist ein fester Workflow einem autonomen Agenten vorzuziehen?",
+        "options": [
+          "Immer – autonome Agenten sind nie sinnvoll.",
+          "Wenn die Schritte im Voraus bekannt sind – er ist vorhersehbarer, günstiger und kontrollierbarer.",
+          "Autonome Agenten sind in allen Fällen überlegen."
+        ],
+        "correct": 1,
+        "explanation": "Sind die Schritte bekannt, schlägt der feste Workflow in Zuverlässigkeit, Kosten und Kontrollierbarkeit."
+      },
+      {
+        "id": "q5",
+        "type": "single",
+        "lessonRef": "l5",
+        "question": "Wann sollte man von einem Single Agent zu Multi-Agent wechseln?",
+        "options": [
+          "Immer – Multi-Agent ist grundsätzlich besser.",
+          "Wenn die Aufgabe zu groß für ein Kontext-Fenster wird, Parallelisierung spart oder Spezialisierung nötig ist.",
+          "Nur wenn das LLM keine Tools unterstützt."
+        ],
+        "correct": 1,
+        "explanation": "Multi-Agent ist mächtiger, aber komplexer. Starte mit Single Agent und wechsle nur wenn nötig."
+      },
+      {
+        "id": "q6",
+        "type": "single",
+        "lessonRef": "l6",
+        "question": "Wer koordiniert Sub-Agents in einer hierarchischen Architektur?",
+        "options": [
+          "Sub-Agents koordinieren sich direkt.",
+          "Der Orchestrator – er zerlegt, delegiert und aggregiert.",
+          "Der Nutzer koordiniert manuell."
+        ],
+        "correct": 1,
+        "explanation": "Der Orchestrator ist zentral: zerlegen, delegieren, warten, aggregieren."
+      },
+      {
+        "id": "q7",
+        "type": "single",
+        "lessonRef": "l7",
+        "question": "Ein Agent soll Entwicklern auf Anfrage GitHub-PRs zusammenfassen. Welches Deployment passt?",
+        "options": [
+          "Automation Pipeline.",
+          "Interactive Chatbot Frontend – interaktiv, auf Anfrage.",
+          "Multi-Agent System."
+        ],
+        "correct": 1,
+        "explanation": "Auf Anfrage, interaktiv, durch den Nutzer gesteuert bedeutet Chatbot Frontend.",
+        "hint": "Gibt es direkte Nutzerinteraktion?"
+      },
+      {
+        "id": "q8",
+        "type": "single",
+        "lessonRef": "l8",
+        "question": "Was ist bei Automation Pipelines besonders wichtig, das Chatbots weniger brauchen?",
+        "options": [
+          "Eine bessere UI.",
+          "Robustes Monitoring, Logging und Fehlerbehandlung – niemand schaut zu.",
+          "Mehr RAM."
+        ],
+        "correct": 1,
+        "explanation": "Automation Pipelines laufen unbeaufsichtigt. Monitoring und Fehlerbehandlung sind deshalb kritisch."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "Mehrstufiger Workflow",
+      "definition": "Eine Kette mehrerer Agenten-Aufrufe, bei der jeder Schritt ein klar definiertes Ziel hat und sein Ergebnis an den nächsten weiterreicht."
+    },
+    {
+      "term": "Sequenzielle Kette",
+      "definition": "Schritte laufen nacheinander, die Ausgabe jedes Schritts ist die Eingabe des nächsten. Das häufigste Workflow-Muster."
+    },
+    {
+      "term": "Verzweigung",
+      "definition": "Ein Zwischenergebnis entscheidet, welcher Schritt als Nächstes ausgeführt wird – z. B. je nach erkannter Ticket-Kategorie."
+    },
+    {
+      "term": "Parallele Ausführung",
+      "definition": "Unabhängige Schritte laufen gleichzeitig und werden danach zusammengeführt. Reduziert Latenz bei voneinander unabhängigen Teilaufgaben."
+    },
+    {
+      "term": "Zustandslosigkeit der API",
+      "definition": "Jeder OpenAI-API-Aufruf ist unabhängig. Das Modell merkt sich nichts zwischen Aufrufen. Zwischenergebnisse müssen explizit weitergegeben werden."
+    },
+    {
+      "term": "Fester Workflow vs. autonomer Agent",
+      "definition": "Sind die Schritte bekannt: fester Workflow (vorhersehbar, günstig, kontrollierbar). Ist der Weg unbekannt: autonomer Agent (flexibel, aber schwerer zu begrenzen)."
+    },
+    {
+      "term": "Single Agent",
+      "definition": "Ein einzelnes LLM mit einem Toolset. Einfach zu bauen, gut für Aufgaben die in ein Kontext-Fenster passen."
+    },
+    {
+      "term": "Multi-Agent System",
+      "definition": "Mehrere Agenten arbeiten zusammen – parallel oder hierarchisch. Sinnvoll wenn Aufgaben zu groß, zu parallelisierbar oder zu spezialisiert sind."
+    },
+    {
+      "term": "Orchestrator",
+      "definition": "Der übergeordnete Agent in einer hierarchischen Multi-Agent-Architektur – zerlegt, delegiert und aggregiert."
+    },
+    {
+      "term": "Interactive Chatbot Frontend",
+      "definition": "Deployment-Muster: Nutzer kommunizieren direkt mit dem Agenten über ein Chat-Interface. Für on-demand, interaktive Aufgaben."
+    },
+    {
+      "term": "Automation Pipeline",
+      "definition": "Deployment-Muster: ein Trigger (Cron, Webhook, Queue) startet den Agenten vollautomatisch – ohne Nutzerinteraktion."
+    },
+    {
+      "term": "Kostenskalierung",
+      "definition": "Jeder Schritt eines Workflows ist ein eigener API-Aufruf. Ein 5-stufiger Workflow kostet ca. fünfmal so viel wie ein einzelner Aufruf."
+    }
+  ]
+}
