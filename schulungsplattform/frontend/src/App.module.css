@@ -7,27 +7,28 @@
 
 /* ── Kopfzeile ─────────────────────────────────────────────────────────────── */
 .header {
-  background: var(--nav-bg);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding: 0 32px;
-  height: 56px;
+  background: var(--ds-color-surface-invert);
+  border-bottom: 1px solid var(--ds-color-border-invert);
+  padding: 0 var(--ds-space-8x);
+  height: var(--ds-space-14x); /* 56 px */
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--ds-space-4x);
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: var(--ds-elevation-navigation);
 }
 
 .logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: var(--ds-space-9x);  /* 36 px */
+  height: var(--ds-space-9x);
   border-radius: 50%;
-  background: var(--bmw-blue);
-  color: #fff;
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
   border: none;
   cursor: pointer;
   flex-shrink: 0;
@@ -35,7 +36,7 @@
 }
 
 .logo:hover {
-  background: var(--bmw-blue-dark);
+  background: var(--ds-color-surface-action-hover);
 }
 
 .brand {
@@ -45,14 +46,16 @@
 }
 
 .brandTitle {
-  font-weight: 700;
-  font-size: 14px;
-  color: #FFFFFF;
-  letter-spacing: 0.01em;
+  font-family: var(--ds-typography-family-brand);
+  font-weight: 500;
+  font-size: var(--ds-typography-size-05); /* 16 px */
+  color: var(--ds-color-typography-invert);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .brandSub {
-  font-size: 11px;
+  font-size: var(--ds-typography-size-02); /* 11 px */
   color: rgba(255,255,255,0.45);
   letter-spacing: 0.02em;
   font-weight: 400;
@@ -72,28 +75,29 @@
 .navLink {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 14px;
+  gap: var(--ds-space-1x);
+  padding: var(--ds-space-1x) var(--ds-space-4x);
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--ds-radius-lg);
   background: transparent;
-  color: rgba(255,255,255,0.55);
-  font-size: 13px;
+  color: rgba(255,255,255,0.60);
+  font-size: var(--ds-typography-size-03); /* 12 px */
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
-  font-family: inherit;
-  letter-spacing: 0.01em;
+  font-family: var(--ds-typography-family-system);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .navLink:hover {
   background: rgba(255,255,255,0.08);
-  color: #fff;
+  color: var(--ds-color-typography-invert);
 }
 
 .navLinkActive {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
+  background: rgba(255,255,255,0.10);
+  color: var(--ds-color-typography-invert);
   font-weight: 600;
 }
 
@@ -210,11 +214,11 @@
 }
 
 .stepBtnActive {
-  background: var(--card-bg);
-  color: var(--bmw-blue);
-  border-color: var(--border);
-  border-bottom-color: var(--card-bg);
-  box-shadow: 0 -2px 0 0 var(--bmw-blue) inset;
+  background: var(--ds-color-surface-base);
+  color: var(--ds-color-typography-action);
+  border-color: var(--ds-color-border-base);
+  border-bottom-color: var(--ds-color-surface-base);
+  box-shadow: 0 -2px 0 0 var(--ds-color-surface-action) inset;
 }
 
 .stepBtn:disabled {
@@ -229,16 +233,16 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(28, 105, 212, 0.1);
-  color: var(--bmw-blue);
-  font-size: 12px;
+  background: var(--ds-color-surface-action-mild);
+  color: var(--ds-color-typography-action);
+  font-size: var(--ds-typography-size-03);
   font-weight: 700;
   flex-shrink: 0;
 }
 
 .stepBtnActive .stepNum {
-  background: var(--bmw-blue);
-  color: #fff;
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
 }
 
 .stepLabel {
@@ -322,15 +326,15 @@
 }
 
 .statusInfo {
-  background: rgba(28, 105, 212, 0.06);
-  color: var(--bmw-blue-dark);
-  border-color: rgba(28, 105, 212, 0.18);
+  background: var(--ds-color-surface-info);
+  color: var(--ds-color-typography-info);
+  border-color: var(--ds-color-border-info);
 }
 
 .statusError {
-  background: var(--danger-bg);
-  color: var(--danger);
-  border-color: var(--danger-border);
+  background: var(--ds-color-surface-critical);
+  color: var(--ds-color-typography-critical);
+  border-color: var(--ds-color-border-critical);
 }
 
 .spin {
@@ -344,11 +348,11 @@
 
 .footer {
   text-align: center;
-  padding: 16px;
-  font-size: 11px;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  background: var(--card-bg);
+  padding: var(--ds-space-4x);
+  font-size: var(--ds-typography-size-02); /* 11 px */
+  color: var(--ds-color-typography-disabled);
+  border-top: 1px solid var(--ds-color-border-base);
+  background: var(--ds-color-surface-base);
   letter-spacing: 0.02em;
 }
 

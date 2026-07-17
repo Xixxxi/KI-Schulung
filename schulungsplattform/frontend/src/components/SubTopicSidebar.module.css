@@ -18,10 +18,10 @@
 .topicHeader {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 16px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  background: var(--nav-bg);
+  gap: var(--ds-space-2x);
+  padding: var(--ds-space-4x) var(--ds-space-4x);
+  border-bottom: 1px solid var(--ds-color-border-invert);
+  background: var(--ds-color-surface-invert);
   position: relative;
 }
 
@@ -32,7 +32,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--bmw-blue) 0%, transparent 70%);
+  background: linear-gradient(90deg, var(--ds-color-surface-action) 0%, transparent 70%);
 }
 
 .topicIcon {
@@ -50,20 +50,23 @@
 }
 
 .topicLabel {
-  font-size: 9px;
+  font-size: var(--ds-typography-size-01); /* 10 px */
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.10em;
   color: rgba(255, 255, 255, 0.35);
-  margin-bottom: 2px;
+  margin-bottom: var(--ds-space-05x);
 }
 
 .topicTitle {
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
+  font-family: var(--ds-typography-family-brand);
+  font-size: var(--ds-typography-size-04); /* 14 px */
+  font-weight: 500;
+  color: var(--ds-color-typography-invert);
   line-height: 1.3;
   word-break: break-word;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 /* ── Fortschritts-Zusammenfassung ────────────────────────────────────────── */
@@ -136,11 +139,11 @@
 }
 
 .subBtn:hover {
-  background: rgba(28, 105, 212, 0.04);
+  background: var(--ds-color-surface-action-mild);
 }
 
 .subBtnActive {
-  background: rgba(28, 105, 212, 0.06);
+  background: var(--ds-color-surface-action-mild);
 }
 
 .subBtnActive::before {
@@ -150,7 +153,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--accent, var(--bmw-blue));
+  background: var(--ds-color-surface-action);
   border-radius: 0 2px 2px 0;
 }
 

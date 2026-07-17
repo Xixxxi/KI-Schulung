@@ -18,7 +18,7 @@
 
 .progressFill {
   height: 100%;
-  background: var(--bmw-blue);
+  background: var(--ds-color-surface-action);
   border-radius: 0 2px 2px 0;
   transition: width 0.4s ease;
 }
@@ -58,17 +58,17 @@
   color: transparent;
 }
 
-.dot:hover { border-color: var(--bmw-blue); }
+.dot:hover { border-color: var(--ds-color-border-action); }
 
 .dotActive {
-  background: var(--bmw-blue);
-  border-color: var(--bmw-blue);
+  background: var(--ds-color-surface-action);
+  border-color: var(--ds-color-border-action);
 }
 
 .dotDone {
-  background: var(--success-bg);
-  border-color: var(--success-border);
-  color: var(--success);
+  background: var(--ds-color-surface-positive);
+  border-color: var(--ds-color-border-positive);
+  color: var(--ds-color-typography-positive);
 }
 
 /* ── Lesson Area ──────────────────────────────────────────────────────────── */
@@ -79,14 +79,16 @@
 }
 
 .lessonTitle {
-  font-size: 15px;
-  font-weight: 700;
-  margin: 0 0 14px;
-  color: var(--text);
+  font-family: var(--ds-typography-family-brand);
+  font-size: var(--ds-typography-size-07); /* 20 px */
+  font-weight: 500;
+  margin: 0 0 var(--ds-space-4x);
+  color: var(--ds-color-typography-base);
   display: flex;
   align-items: center;
-  gap: 10px;
-  letter-spacing: -0.01em;
+  gap: var(--ds-space-2x);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .lessonNum {
@@ -96,11 +98,14 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--bmw-blue);
-  color: #fff;
-  font-size: 13px;
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
+  font-size: var(--ds-typography-size-03);
   font-weight: 700;
   flex-shrink: 0;
+  font-family: var(--ds-typography-family-system);
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .lessonBody {
@@ -153,41 +158,41 @@
   transition: color 0.15s;
 }
 
-.navRef:hover { color: var(--bmw-blue); }
+.navRef:hover { color: var(--ds-color-typography-action); }
 
 .navNext {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 9px 20px;
+  gap: var(--ds-space-1x);
+  padding: var(--ds-space-2x) var(--ds-space-5x);
   border: none;
-  border-radius: var(--radius);
-  background: var(--bmw-blue);
-  color: #fff;
-  font-size: 13px;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
+  font-size: var(--ds-typography-size-03);
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.navNext:hover { background: var(--bmw-blue-dark); }
+.navNext:hover { background: var(--ds-color-surface-action-hover); }
 
 .navTest {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 20px;
+  gap: var(--ds-space-2x);
+  padding: var(--ds-space-2x) var(--ds-space-5x);
   border: none;
-  border-radius: var(--radius);
-  background: var(--success);
-  color: #fff;
-  font-size: 13px;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-surface-positive-strong);
+  color: var(--ds-color-typography-invert);
+  font-size: var(--ds-typography-size-03);
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.navTest:hover { background: #08582a; }
+.navTest:hover { background: #085c26; }
 
 .navNext:disabled,
 .navTest:disabled { opacity: 0.45; cursor: not-allowed; }

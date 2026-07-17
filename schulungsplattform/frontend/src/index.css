@@ -1,61 +1,7 @@
-/* ── BMW Density Design System ─────────────────────────────────────────── */
-:root {
-  /* Brand */
-  --bmw-blue:        #1C69D4;
-  --bmw-blue-dark:   #0653B6;
-  --bmw-blue-light:  #3D8EF0;
-
-  /* Surfaces */
-  --bg:              #F2F2F2;
-  --card-bg:         #FFFFFF;
-  --nav-bg:          #1A1A1A;
-  --nav-bg-alt:      #262626;
-  --surface-raised:  #FFFFFF;
-
-  /* Text */
-  --text:            #1A1A1A;
-  --text-secondary:  #4A4A4A;
-  --text-muted:      #767676;
-  --text-inverse:    #FFFFFF;
-
-  /* Borders */
-  --border:          #D5D5D5;
-  --border-strong:   #A0A0A0;
-
-  /* Semantic */
-  --primary:         var(--bmw-blue);
-  --primary-dark:    var(--bmw-blue-dark);
-  --success:         #0A6E2E;
-  --success-bg:      #E8F5EE;
-  --success-border:  #52B76B;
-  --warn:            #7A4100;
-  --warn-bg:         #FDF3E3;
-  --danger:          #C0001A;
-  --danger-bg:       #FDE8EC;
-  --danger-border:   #F4547B;
-
-  /* Elevation */
-  --shadow:          0 1px 2px rgba(0,0,0,0.07);
-  --shadow-1:        0 4px 12px rgba(0,0,0,0.09);
-  --shadow-2:        0 8px 24px rgba(0,0,0,0.12);
-
-  /* Radius */
-  --radius-sm:       4px;
-  --radius:          6px;
-  --radius-lg:       8px;
-  --radius-xl:       12px;
-
-  /* Spacing scale */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-}
+/* ── BMW Density Design System – Basis-Stile ──────────────────────────────── */
+/* Tokens zuerst importieren – alle --ds-* und Bridge-Variablen werden hier    */
+/* definiert. Alle weiteren CSS-Module bauen darauf auf.                        */
+@import './density-tokens.css';
 
 * {
   box-sizing: border-box;
@@ -66,31 +12,50 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  /* Overscroll-Bounce / Rubber-Band-Effekt deaktivieren */
   overscroll-behavior: none;
 }
 
 body {
-  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.55;
-  font-size: 15px;
+  /* DS-konformer System-Font-Stack: Segoe UI (Windows), SF (macOS), Roboto (Android) */
+  font-family: var(--ds-typography-family-system);
+  background: var(--ds-color-surface-page);
+  color: var(--ds-color-typography-base);
+  font-size: var(--ds-typography-size-04);           /* 14 px */
+  line-height: var(--ds-typography-line-height-04);  /* 20 px */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Scroll nur im erlaubten Bereich – kein Scrollen am body selbst */
   overflow: hidden;
 }
 
 a {
-  color: var(--primary);
+  color: var(--ds-color-typography-action);
   text-decoration: none;
 }
 
 a:hover {
+  color: var(--ds-color-typography-action-hover);
   text-decoration: underline;
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--ds-typography-family-system);
+}
+
+/* ── Reset für heading-Elemente (DS-Defaults) ──────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: var(--ds-color-typography-base);
+}
+
+/* ── Scrollbar-Styling (subtile, DS-kompatibel) ────────────────────────────── */
+::-webkit-scrollbar         { width: 6px; height: 6px; }
+::-webkit-scrollbar-track   { background: transparent; }
+::-webkit-scrollbar-thumb   { background: var(--ds-color-border-neutral-medium); border-radius: var(--ds-radius-md); }
+::-webkit-scrollbar-thumb:hover { background: var(--ds-color-border-neutral-strong); }
+
+/* ── Focus-Ring (DS-Accessibility-Standard) ────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--ds-color-border-action-strong);
+  outline-offset: 2px;
+  border-radius: var(--ds-radius-sm);
 }

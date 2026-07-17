@@ -55,21 +55,21 @@
 }
 
 .calloutInfo {
-  background: rgba(28, 105, 212, 0.05);
-  border-color: rgba(28, 105, 212, 0.2);
-  color: var(--bmw-blue-dark);
+  background: var(--ds-color-surface-info);
+  border-color: var(--ds-color-border-info);
+  color: var(--ds-color-typography-info);
 }
 
 .calloutTip {
-  background: var(--success-bg);
-  border-color: var(--success-border);
-  color: var(--success);
+  background: var(--ds-color-surface-positive);
+  border-color: var(--ds-color-border-positive);
+  color: var(--ds-color-typography-positive);
 }
 
 .calloutWarn {
-  background: var(--warn-bg);
-  border-color: #f0c060;
-  color: var(--warn);
+  background: var(--ds-color-surface-caution);
+  border-color: var(--ds-color-border-caution);
+  color: var(--ds-color-typography-caution);
 }
 
 /* ── Code ─────────────────────────────────────────────────────────────────── */
@@ -235,21 +235,21 @@
 }
 
 .diagramNode_start {
-  background: #f0fdf4;
-  border-color: #86efac;
-  color: #166534;
+  background: var(--ds-color-surface-positive);
+  border-color: var(--ds-color-border-positive);
+  color: var(--ds-color-typography-positive);
 }
 
 .diagramNode_step {
-  background: rgba(28, 105, 212, 0.07);
-  border-color: rgba(28, 105, 212, 0.25);
-  color: var(--bmw-blue-dark);
+  background: var(--ds-color-surface-action-mild);
+  border-color: var(--ds-color-border-action-mild);
+  color: var(--ds-color-typography-action);
 }
 
 .diagramNode_end {
-  background: #f0fdf4;
-  border-color: #86efac;
-  color: #166534;
+  background: var(--ds-color-surface-positive);
+  border-color: var(--ds-color-border-positive);
+  color: var(--ds-color-typography-positive);
 }
 
 .diagramEmoji { font-size: 20px; line-height: 1; }
@@ -264,16 +264,16 @@
 }
 
 .diagramLoopBox {
-  margin-top: 12px;
-  padding: 8px 14px;
-  background: #fffbeb;
-  border: 1px dashed #fcd34d;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #92400e;
+  margin-top: var(--ds-space-3x);
+  padding: var(--ds-space-2x) var(--ds-space-4x);
+  background: var(--ds-color-surface-caution);
+  border: 1px dashed var(--ds-color-border-caution);
+  border-radius: var(--ds-radius-md);
+  font-size: var(--ds-typography-size-03);
+  color: var(--ds-color-typography-caution);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--ds-space-2x);
   font-weight: 500;
 }
 
@@ -320,9 +320,9 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--bmw-blue);
-  color: #fff;
-  font-size: 12px;
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
+  font-size: var(--ds-typography-size-03);
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -337,15 +337,16 @@
 .stepDesc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
 
 .stepExample {
-  font-size: 12px;
-  color: var(--primary-dark);
-  background: rgba(28, 105, 212, 0.07);
-  border-radius: var(--radius);
-  padding: 4px 9px;
-  margin-top: 4px;
+  font-size: var(--ds-typography-size-03);
+  color: var(--ds-color-typography-action);
+  background: var(--ds-color-surface-action-mild);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-1x) var(--ds-space-2x);
+  margin-top: var(--ds-space-1x);
   line-height: 1.45;
   white-space: pre;
-  font-family: 'Cascadia Code', Consolas, monospace;
+  font-family: var(--ds-typography-family-mono);
+  border: 1px solid var(--ds-color-border-action-mild);
 }
 
 .stepExampleLabel { font-weight: 700; }
@@ -353,31 +354,31 @@
 /* ── QuizCheck ───────────────────────────────────────────────────────────── */
 .checkBox,
 .taskBox {
-  border: 1px solid rgba(28, 105, 212, 0.28);
-  background: rgba(28, 105, 212, 0.035);
-  border-radius: var(--radius-lg);
-  padding: 13px 16px;
-  margin: 0 0 12px;
+  border: 1px solid var(--ds-color-border-action-mild);
+  background: var(--ds-color-surface-action-mild);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-3x) var(--ds-space-4x);
+  margin: 0 0 var(--ds-space-3x);
 }
 
 .checkBoxDone {
-  border-color: var(--success-border);
-  background: var(--success-bg);
+  border-color: var(--ds-color-border-positive);
+  background: var(--ds-color-surface-positive);
 }
 
 .checkHead {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: var(--ds-space-2x);
+  font-size: var(--ds-typography-size-02);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--bmw-blue-dark);
-  margin-bottom: 10px;
+  color: var(--ds-color-typography-action);
+  margin-bottom: var(--ds-space-2x);
 }
 
-.checkBoxDone .checkHead { color: var(--success); }
+.checkBoxDone .checkHead { color: var(--ds-color-typography-positive); }
 
 .checkDoneTag {
   display: inline-flex;
@@ -421,46 +422,46 @@
   width: 100%;
 }
 
-.checkOption:hover:not(:disabled) { border-color: var(--bmw-blue); }
+.checkOption:hover:not(:disabled) { border-color: var(--ds-color-border-action); }
 .checkOption:disabled { cursor: default; }
-.checkRadio { color: var(--bmw-blue); font-size: 12px; flex-shrink: 0; }
+.checkRadio { color: var(--ds-color-typography-action); font-size: 12px; flex-shrink: 0; }
 
-.checkOptionChosen { border-color: var(--bmw-blue); background: rgba(28,105,212,0.07); }
-.checkOptionCorrect { border-color: var(--success-border); background: var(--success-bg); color: var(--success); }
-.checkOptionWrong { border-color: var(--danger-border); background: var(--danger-bg); color: var(--danger); }
+.checkOptionChosen  { border-color: var(--ds-color-border-action); background: var(--ds-color-surface-action-mild); }
+.checkOptionCorrect { border-color: var(--ds-color-border-positive); background: var(--ds-color-surface-positive); color: var(--ds-color-typography-positive); }
+.checkOptionWrong   { border-color: var(--ds-color-border-critical); background: var(--ds-color-surface-critical); color: var(--ds-color-typography-critical); }
 
 .checkSubmit {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--bmw-blue);
-  color: #fff;
+  gap: var(--ds-space-1x);
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
   border: none;
-  border-radius: var(--radius);
-  padding: 8px 16px;
-  font-size: 13px;
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-2x) var(--ds-space-4x);
+  font-size: var(--ds-typography-size-03);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.checkSubmit:hover:not(:disabled) { background: var(--bmw-blue-dark); }
+.checkSubmit:hover:not(:disabled) { background: var(--ds-color-surface-action-hover); }
 .checkSubmit:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .checkFeedback {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
-  margin-top: 12px;
-  padding: 10px 13px;
-  border-radius: var(--radius);
-  font-size: 13px;
+  gap: var(--ds-space-2x);
+  margin-top: var(--ds-space-3x);
+  padding: var(--ds-space-2x) var(--ds-space-3x);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-typography-size-03);
   line-height: 1.5;
 }
 
 .checkFeedback svg { flex-shrink: 0; margin-top: 1px; }
-.checkFeedbackOk { background: var(--success-bg); color: var(--success); }
-.checkFeedbackNo { background: var(--warn-bg); color: var(--warn); }
+.checkFeedbackOk { background: var(--ds-color-surface-positive); color: var(--ds-color-typography-positive); }
+.checkFeedbackNo { background: var(--ds-color-surface-caution);  color: var(--ds-color-typography-caution); }
 
 /* ── TaskInput ────────────────────────────────────────────────────────────── */
 .taskInput {
@@ -478,8 +479,8 @@
   box-sizing: border-box;
 }
 
-.taskInput:focus { outline: none; border-color: var(--bmw-blue); }
-.taskInput:disabled { background: rgba(0,0,0,0.02); }
+.taskInput:focus { outline: none; border-color: var(--ds-color-border-action-strong); box-shadow: 0 0 0 2px var(--ds-color-surface-action-mild); }
+.taskInput:disabled { background: var(--ds-color-surface-disabled); }
 
 /* ── Simulation ───────────────────────────────────────────────────────────── */
 .sim {
@@ -610,18 +611,18 @@
 
 .simRun {
   flex-shrink: 0;
-  background: var(--bmw-blue);
-  color: #fff;
+  background: var(--ds-color-surface-action);
+  color: var(--ds-color-typography-invert);
   border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
-  font-size: 12px;
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-1x) var(--ds-space-3x);
+  font-size: var(--ds-typography-size-03);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
 }
 
-.simRun:hover { background: var(--bmw-blue-dark); }
+.simRun:hover { background: var(--ds-color-surface-action-hover); }
 
 /* ── Lab-Layout ───────────────────────────────────────────────────────────── */
 .labLayout {
