@@ -1,0 +1,653 @@
+/* ── Text ─────────────────────────────────────────────────────────────────── */
+.blockText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+/* ── List ─────────────────────────────────────────────────────────────────── */
+.blockListWrap { margin: 0 0 18px; }
+
+.blockListTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.blockList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.blockList li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* ── Callout ─────────────────────────────────────────────────────────────── */
+.callout {
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin: 0 0 12px;
+  border: 1px solid transparent;
+}
+
+.calloutTitle {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.calloutText {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.calloutInfo {
+  background: rgba(28, 105, 212, 0.05);
+  border-color: rgba(28, 105, 212, 0.2);
+  color: var(--bmw-blue-dark);
+}
+
+.calloutTip {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
+}
+
+.calloutWarn {
+  background: var(--warn-bg);
+  border-color: #f0c060;
+  color: var(--warn);
+}
+
+/* ── Code ─────────────────────────────────────────────────────────────────── */
+.codeWrap { margin: 0 0 14px; }
+
+.codeCaption {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.code {
+  background: #111827;
+  color: #d1d5db;
+  border-radius: var(--radius-lg);
+  padding: 13px 18px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 280px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 0;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  border: 1px solid #1f2937;
+}
+
+/* ── Comparison ──────────────────────────────────────────────────────────── */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  margin: 0 0 12px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.compSide {
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--comp-color) 5%, var(--bg) 95%);
+  border-top: 3px solid var(--comp-color);
+}
+
+.compLabel {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--comp-color);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.compList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compList li {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.compList li::before {
+  content: '•';
+  color: var(--comp-color);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.compVs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.cardsWrap { margin: 0 0 12px; }
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 9px;
+  margin-top: 8px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--card-color, var(--bmw-blue));
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.cardIcon { font-size: 24px; line-height: 1; }
+.cardLabel { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.cardDesc { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+/* ── Diagram ─────────────────────────────────────────────────────────────── */
+.diagramWrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px 10px;
+  margin: 0 0 12px;
+}
+
+.diagramCaption {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.diagramFlow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  row-gap: 10px;
+}
+
+.diagramEntry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.diagramNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border-radius: 10px;
+  padding: 10px 14px;
+  border: 2px solid transparent;
+  min-width: 80px;
+  text-align: center;
+}
+
+.diagramNode_start {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.diagramNode_step {
+  background: rgba(28, 105, 212, 0.07);
+  border-color: rgba(28, 105, 212, 0.25);
+  color: var(--bmw-blue-dark);
+}
+
+.diagramNode_end {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.diagramEmoji { font-size: 20px; line-height: 1; }
+.diagramNodeLabel { font-size: 13px; font-weight: 700; line-height: 1.2; }
+.diagramNodeSub { font-size: 10.5px; opacity: 0.7; font-weight: 500; }
+
+.diagramArrow {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.diagramLoopBox {
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: #fffbeb;
+  border: 1px dashed #fcd34d;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.diagramLoopIcon { font-size: 16px; }
+
+.diagramNote {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Steps ───────────────────────────────────────────────────────────────── */
+.stepsWrap { margin: 0 0 12px; }
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  position: relative;
+}
+
+.stepItem {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.stepItem:last-child { padding-bottom: 0; }
+
+.stepItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 30px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.stepBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bmw-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stepBody { flex: 1; padding-top: 4px; }
+.stepLabel { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.stepDesc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+
+.stepExample {
+  font-size: 12px;
+  color: var(--primary-dark);
+  background: rgba(28, 105, 212, 0.07);
+  border-radius: var(--radius);
+  padding: 4px 9px;
+  margin-top: 4px;
+  line-height: 1.45;
+  white-space: pre;
+  font-family: 'Cascadia Code', Consolas, monospace;
+}
+
+.stepExampleLabel { font-weight: 700; }
+
+/* ── QuizCheck ───────────────────────────────────────────────────────────── */
+.checkBox,
+.taskBox {
+  border: 1px solid rgba(28, 105, 212, 0.28);
+  background: rgba(28, 105, 212, 0.035);
+  border-radius: var(--radius-lg);
+  padding: 13px 16px;
+  margin: 0 0 12px;
+}
+
+.checkBoxDone {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+
+.checkHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bmw-blue-dark);
+  margin-bottom: 10px;
+}
+
+.checkBoxDone .checkHead { color: var(--success); }
+
+.checkDoneTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11px;
+  color: var(--success);
+}
+
+.checkQuestion {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.checkOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.checkOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  font-size: 13.5px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  width: 100%;
+}
+
+.checkOption:hover:not(:disabled) { border-color: var(--bmw-blue); }
+.checkOption:disabled { cursor: default; }
+.checkRadio { color: var(--bmw-blue); font-size: 12px; flex-shrink: 0; }
+
+.checkOptionChosen { border-color: var(--bmw-blue); background: rgba(28,105,212,0.07); }
+.checkOptionCorrect { border-color: var(--success-border); background: var(--success-bg); color: var(--success); }
+.checkOptionWrong { border-color: var(--danger-border); background: var(--danger-bg); color: var(--danger); }
+
+.checkSubmit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bmw-blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.checkSubmit:hover:not(:disabled) { background: var(--bmw-blue-dark); }
+.checkSubmit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.checkFeedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 10px 13px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.checkFeedback svg { flex-shrink: 0; margin-top: 1px; }
+.checkFeedbackOk { background: var(--success-bg); color: var(--success); }
+.checkFeedbackNo { background: var(--warn-bg); color: var(--warn); }
+
+/* ── TaskInput ────────────────────────────────────────────────────────────── */
+.taskInput {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  line-height: 1.55;
+  resize: vertical;
+  margin-bottom: 12px;
+  color: var(--text);
+  background: var(--card-bg);
+  box-sizing: border-box;
+}
+
+.taskInput:focus { outline: none; border-color: var(--bmw-blue); }
+.taskInput:disabled { background: rgba(0,0,0,0.02); }
+
+/* ── Simulation ───────────────────────────────────────────────────────────── */
+.sim {
+  border: 1px solid #1f2937;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0f1621;
+  box-shadow: var(--shadow-1);
+  margin: 0 0 12px;
+}
+
+.simDone { border-color: var(--success-border); }
+
+.simBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  background: #1a2432;
+  border-bottom: 1px solid #0b1119;
+}
+
+.simDot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+
+.simTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #c7d2e0;
+}
+
+.simBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 600;
+  color: #52e08b;
+}
+
+.simBody {
+  padding: 11px 14px;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #d1d9e6;
+  max-height: 240px;
+  overflow-y: auto;
+  min-height: 80px;
+}
+
+.simIntro {
+  color: #8fa3bd;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #263243;
+  white-space: pre-wrap;
+}
+
+.simLine { margin-bottom: 10px; }
+.simCmd { color: #eaf1fb; }
+.simPrompt { color: #52e08b; user-select: none; }
+.simOut { color: #a7b6cc; white-space: pre-wrap; margin-top: 2px; }
+.simOutErr { color: #ff9aa8; white-space: pre-wrap; margin-top: 2px; }
+
+.simFinished {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #52e08b;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.simInputRow {
+  border-top: 1px solid #0b1119;
+  background: #131c28;
+  padding: 10px 14px 12px;
+}
+
+.simHint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  color: #9fb0c7;
+  margin-bottom: 9px;
+}
+
+.simExpected {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 11.5px;
+  background: #0b1119;
+  color: #7fd6ff;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #24303f;
+}
+
+.simEntry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0b1119;
+  border: 1px solid #24303f;
+  border-radius: var(--radius);
+  padding: 7px 10px;
+}
+
+.simField {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #eaf1fb;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 12.5px;
+}
+
+.simField::placeholder { color: #52627a; }
+
+.simRun {
+  flex-shrink: 0;
+  background: var(--bmw-blue);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.simRun:hover { background: var(--bmw-blue-dark); }
+
+/* ── Lab-Layout ───────────────────────────────────────────────────────────── */
+.labLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.labLeft { min-width: 0; }
+
+.labRight {
+  min-width: 0;
+  position: sticky;
+  top: 16px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .labLayout { grid-template-columns: 1fr; }
+  .labRight { position: static; }
+}
+
+@media (max-width: 640px) {
+  .comparison { grid-template-columns: 1fr; }
+  .compVs { padding: 10px; border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .diagramFlow { flex-direction: column; align-items: flex-start; }
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
+}

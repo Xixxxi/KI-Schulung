@@ -14,6 +14,30 @@ import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
 import TestPanel from './components/TestPanel'
 
+// ── Kapitel-Lern-Panels (TSX-Dateien pro Kapitel) ─────────────────────────────
+import LlmGrundlagen from './chapters/ki-agenten/01-LlmGrundlagen'
+import ToolCalling from './chapters/ki-agenten/02-ToolCalling'
+import WasIstAgent from './chapters/ki-agenten/03-WasIstAgent'
+import AgentenBauen from './chapters/ki-agenten/04-AgentenBauen'
+import WorkflowsDeployment from './chapters/ki-agenten/05-WorkflowsDeployment'
+
+interface ChapterLearnProps {
+  onStartTest: () => void
+  onOpenReference: () => void
+}
+
+/**
+ * Registry: chapterId → eigenständige Kapitel-Komponente.
+ * Neue Kapitel hier eintragen – der generische LearnPanel bleibt als Fallback.
+ */
+const CHAPTER_LEARN: Record<string, React.ComponentType<ChapterLearnProps>> = {
+  'llm-grundlagen':       LlmGrundlagen,
+  'tool-calling':         ToolCalling,
+  'ki-agenten':           WasIstAgent,
+  'agenten-bauen':        AgentenBauen,
+  'workflows-deployment': WorkflowsDeployment,
+}
+
 type View = 'landing' | 'about' | 'glossary' | 'topic' | 'chapter'
 
 interface StepDef {
@@ -337,13 +361,24 @@ export default function App() {
                 // Standard-Flow: Lernen / Testen
                 return (
                   <>
-                    {step === 'learn' && (
-                      <LearnPanel
-                        chapterId={activeChapterId}
-                        onStartTest={() => setStep('test')}
-                        onOpenReference={() => goToGlossary()}
-                      />
-                    )}
+                    {step === 'learn' && (() => {
+                      const ChapterLearn = CHAPTER_LEARN[activeChapterId]
+                      if (ChapterLearn) {
+                        return (
+                          <ChapterLearn
+                            onStartTest={() => setStep('test')}
+                            onOpenReference={goToGlossary}
+                          />
+                        )
+                      }
+                      return (
+                        <LearnPanel
+                          chapterId={activeChapterId}
+                          onStartTest={() => setStep('test')}
+                          onOpenReference={goToGlossary}
+                        />
+                      )
+                    })()}
                     {step === 'test' && (
                       <TestPanel
                         chapterId={activeChapterId}
