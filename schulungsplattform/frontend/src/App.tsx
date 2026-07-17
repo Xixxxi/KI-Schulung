@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   GraduationCap, BookOpen, ClipboardCheck,
-  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Info,
+  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Info, Settings,
 } from 'lucide-react'
 import styles from './App.module.css'
 import { api } from './api'
@@ -13,6 +13,7 @@ import TopicPage from './components/TopicPage'
 import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
 import TestPanel from './components/TestPanel'
+import SettingsPage, { type Theme } from './components/SettingsPage'
 
 // ── Kapitel-Lern-Panels (TSX-Dateien pro Kapitel) ─────────────────────────────
 import LlmGrundlagen from './chapters/ki-agenten/01-LlmGrundlagen'
@@ -38,7 +39,7 @@ const CHAPTER_LEARN: Record<string, React.ComponentType<ChapterLearnProps>> = {
   'workflows-deployment': WorkflowsDeployment,
 }
 
-type View = 'landing' | 'about' | 'glossary' | 'topic' | 'chapter'
+type View = 'landing' | 'about' | 'glossary' | 'settings' | 'topic' | 'chapter'
 
 interface StepDef {
   id: StepId
@@ -80,6 +81,16 @@ export default function App() {
   const [loading, setLoading]                 = useState(true)
   const [error, setError]                     = useState('')
   const [passedChapters, setPassedChapters]   = useState<Record<string, boolean>>({})
+
+  // ── Theme ─────────────────────────────────────────────────────────────────
+  const [theme, setTheme] = useState<Theme>(() => {
+    return (localStorage.getItem('ki-es-theme') as Theme) || 'light'
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('ki-es-theme', theme)
+  }, [theme])
 
   // ── Daten laden ───────────────────────────────────────────────────────────
   const loadTopics = useCallback(async () => {
@@ -133,6 +144,12 @@ export default function App() {
     setActiveChapterId('')
   }
 
+  const goToSettings = () => {
+    setView('settings')
+    setActiveTopicId('')
+    setActiveChapterId('')
+  }
+
   const goToTopic = (topicId: string) => {
     setActiveTopicId(topicId)
     setView('topic')
@@ -171,6 +188,17 @@ export default function App() {
           </button>
           <ChevronRight size={13} className={styles.breadcrumbSep} />
           <span className={styles.breadcrumbCurrent}>Nachschlagewerk</span>
+        </div>
+      )
+    }
+    if (view === 'settings') {
+      return (
+        <div className={styles.breadcrumb}>
+          <button className={styles.breadcrumbBtn} onClick={goToLanding}>
+            <ArrowLeft size={13} /> Themenübersicht
+          </button>
+          <ChevronRight size={13} className={styles.breadcrumbSep} />
+          <span className={styles.breadcrumbCurrent}>Einstellungen</span>
         </div>
       )
     }
@@ -216,11 +244,11 @@ export default function App() {
           <GraduationCap size={22} />
         </button>
         <div className={styles.brand}>
-          <span className={styles.brandTitle}>KI-Schulung</span>
+          <span className={styles.brandTitle}>KI @ ES</span>
           <span className={styles.brandSub}>Lernen · Testen · Nachschlagen</span>
         </div>
         <div className={styles.headerSpacer} />
-        {(view === 'landing' || view === 'about' || view === 'glossary') ? (
+        {(view === 'landing' || view === 'about' || view === 'glossary' || view === 'settings') ? (
           <nav className={styles.headerNav}>
             <button
               className={view === 'landing' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
@@ -241,6 +269,14 @@ export default function App() {
             >
               <Info size={13} />
               About
+            </button>
+            <button
+              className={view === 'settings' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              onClick={goToSettings}
+              aria-label="Einstellungen"
+            >
+              <Settings size={13} />
+              Einstellungen
             </button>
           </nav>
         ) : (
@@ -279,6 +315,13 @@ export default function App() {
       {view === 'glossary' && (
         <main className={styles.mainFull}>
           <GlossaryPage />
+        </main>
+      )}
+
+      {/* ── Settings Page ───────────────────────────────────────────────────── */}
+      {view === 'settings' && (
+        <main className={styles.mainFull}>
+          <SettingsPage theme={theme} onThemeChange={setTheme} />
         </main>
       )}
 
@@ -397,7 +440,7 @@ export default function App() {
       )}
 
       <footer className={styles.footer}>
-        KI-Schulungsplattform · Digital Learning · React + Flask
+        KI @ ES · Digital Learning · React + Flask
       </footer>
     </div>
   )

@@ -1,0 +1,201 @@
+/* ── Root ─────────────────────────────────────────────────────────────────── */
+.root {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  background: var(--ds-color-surface-page);
+  padding: var(--ds-space-12x) var(--ds-space-12x) var(--ds-space-16x);
+}
+
+.container {
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-12x);
+}
+
+/* ── Page Header ─────────────────────────────────────────────────────────── */
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-4x);
+}
+
+.pageHeaderAccent {
+  width: 3px;
+  height: 40px;
+  background: var(--ds-color-surface-action);
+  flex-shrink: 0;
+  margin-top: 2px;
+  border-radius: var(--ds-radius-sm);
+}
+
+.pageTitle {
+  font-family: var(--ds-typography-family-brand);
+  font-size: var(--ds-typography-size-09); /* 26px */
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--ds-color-typography-base);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.pageSub {
+  font-size: var(--ds-typography-size-04); /* 14px */
+  color: var(--ds-color-typography-neutral);
+  margin-top: var(--ds-space-1x);
+  font-weight: 400;
+}
+
+/* ── Section ─────────────────────────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4x);
+  background: var(--ds-color-surface-base);
+  border: 1px solid var(--ds-color-border-base);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-8x);
+}
+
+.sectionTitle {
+  font-family: var(--ds-typography-family-system);
+  font-size: var(--ds-typography-size-05); /* 16px */
+  font-weight: 600;
+  color: var(--ds-color-typography-base);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.sectionDesc {
+  font-size: var(--ds-typography-size-04);
+  color: var(--ds-color-typography-neutral);
+  font-weight: 400;
+  margin-top: calc(-1 * var(--ds-space-2x));
+}
+
+/* ── Theme Cards ─────────────────────────────────────────────────────────── */
+.themeCards {
+  display: flex;
+  gap: var(--ds-space-4x);
+  margin-top: var(--ds-space-2x);
+}
+
+.themeCard {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3x);
+  padding: var(--ds-space-4x);
+  border: 2px solid var(--ds-color-border-neutral);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-surface-neutral);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  text-align: left;
+}
+
+.themeCard:hover {
+  border-color: var(--ds-color-border-action);
+  box-shadow: var(--ds-elevation-component);
+}
+
+.themeCardActive {
+  border-color: var(--ds-color-border-action-strong);
+  box-shadow: 0 0 0 1px var(--ds-color-border-action-strong);
+}
+
+.themeCardActive:hover {
+  border-color: var(--ds-color-border-action-strong);
+}
+
+/* ── Theme Preview Mockup ─────────────────────────────────────────────────── */
+.themePreview {
+  border-radius: var(--ds-radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--ds-color-border-neutral-medium);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light preview */
+.previewBar[data-preview="light"] {
+  height: 12px;
+  background: #1A1A1C;
+}
+
+.previewContent[data-preview="light"] {
+  background: #F4F4F4;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 56px;
+}
+
+.previewLine {
+  height: 5px;
+  background: #1A1A1A;
+  border-radius: 2px;
+}
+
+/* Dark preview */
+.previewBar[data-preview="dark"] {
+  height: 12px;
+  background: #1A1A1C;
+}
+
+.previewContent[data-preview="dark"] {
+  background: #111111;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 56px;
+}
+
+.previewLineDark {
+  height: 5px;
+  background: #EBEBEB;
+  border-radius: 2px;
+}
+
+/* ── Card Label & Check ──────────────────────────────────────────────────── */
+.themeCardLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2x);
+  font-size: var(--ds-typography-size-04);
+  font-weight: 600;
+  color: var(--ds-color-typography-base);
+}
+
+.themeIcon {
+  color: var(--ds-color-typography-action);
+  flex-shrink: 0;
+}
+
+.themeCardCheck {
+  position: absolute;
+  top: var(--ds-space-3x);
+  right: var(--ds-space-3x);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ds-color-surface-action);
+  border: 2px solid var(--ds-color-surface-action);
+}
+
+.themeCardCheck::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}

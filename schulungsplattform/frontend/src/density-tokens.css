@@ -272,6 +272,104 @@
   --space-8:  var(--ds-space-8x);
   --space-10: var(--ds-space-10x);
   --space-12: var(--ds-space-12x);
+
+  /* ── App-spezifische Tokens ───────────────────────────────────────────── */
+  /* Hero-Hintergrund: BMW-Blau im Lightmode (statt schwarzem Invert-Surface) */
+  --app-hero-bg: #1C69D4;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE OVERRIDES  [data-theme="dark"]
+   Setzt alle relevanten Oberflächen-, Rand- und Typografie-Tokens für den
+   Dunkelmodus. Wird via JavaScript auf <html data-theme="dark"> aktiviert.
+───────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Surfaces */
+  --ds-color-surface-page:                  #111111;
+  --ds-color-surface-base:                  #1C1C1E;
+  --ds-color-surface-neutral:               #242424;
+  --ds-color-surface-neutral-hover:         #2C2C2C;
+  --ds-color-surface-neutral-mild:          #303030;
+  --ds-color-surface-neutral-medium:        #484848;
+  --ds-color-surface-neutral-strong:        #686868;
+  --ds-color-surface-action:                #1C69D4;
+  --ds-color-surface-action-hover:          #4D8EE0;
+  --ds-color-surface-action-active:         #1457B3;
+  --ds-color-surface-action-mild:           #0D2040;
+  --ds-color-surface-action-mild-hover:     #112848;
+  --ds-color-surface-action-strong:         #4D8EE0;
+  --ds-color-surface-action-strong-hover:   #7AAEE8;
+  --ds-color-surface-action-strong-active:  #5B9BE8;
+  --ds-color-surface-invert:                #1A1A1C; /* bleibt dunkel für Header/Nav */
+  --ds-color-surface-disabled:              #2C2C2C;
+  --ds-color-surface-backdrop:              rgba(0,0,0,0.65);
+  --ds-color-surface-info:                  #0D2040;
+  --ds-color-surface-info-hover:            #112848;
+  --ds-color-surface-info-mild:             #1C3A6B;
+  --ds-color-surface-info-strong:           #4D8EE0;
+  --ds-color-surface-positive:              #0A2110;
+  --ds-color-surface-positive-hover:        #0E2E17;
+  --ds-color-surface-positive-mild:         #163D20;
+  --ds-color-surface-positive-strong:       #52B76B;
+  --ds-color-surface-caution:               #221600;
+  --ds-color-surface-caution-hover:         #2E1E00;
+  --ds-color-surface-caution-mild:          #3A2500;
+  --ds-color-surface-caution-strong:        #EEB84A;
+  --ds-color-surface-critical:              #2A0008;
+  --ds-color-surface-critical-hover:        #38000C;
+  --ds-color-surface-critical-mild:         #480011;
+  --ds-color-surface-critical-strong:       #F4547B;
+
+  /* Borders */
+  --ds-color-border-base:                   #2E2E2E;
+  --ds-color-border-invert:                 rgba(255,255,255,0.08);
+  --ds-color-border-neutral:                #2A2A2A;
+  --ds-color-border-neutral-mild:           #252525;
+  --ds-color-border-neutral-medium:         #444444;
+  --ds-color-border-neutral-strong:         #666666;
+  --ds-color-border-action:                 #4D8EE0;
+  --ds-color-border-action-mild:            #1C3A6B;
+  --ds-color-border-action-strong:          #4D8EE0;
+  --ds-color-border-action-strong-hover:    #7AAEE8;
+  --ds-color-border-action-strong-active:   #5B9BE8;
+  --ds-color-border-disabled:               #2E2E2E;
+  --ds-color-border-info:                   #1C3A6B;
+  --ds-color-border-info-mild:              #243F72;
+  --ds-color-border-info-strong:            #4D8EE0;
+  --ds-color-border-positive:               #1A5C2A;
+  --ds-color-border-positive-mild:          #236633;
+  --ds-color-border-positive-strong:        #52B76B;
+  --ds-color-border-caution:                #6B3800;
+  --ds-color-border-caution-mild:           #7A4100;
+  --ds-color-border-caution-strong:         #EEB84A;
+  --ds-color-border-critical:               #6B000F;
+  --ds-color-border-critical-mild:          #7B0011;
+  --ds-color-border-critical-strong:        #F4547B;
+
+  /* Typography */
+  --ds-color-typography-base:               #EBEBEB;
+  --ds-color-typography-neutral:            #A8A8A8;
+  --ds-color-typography-action:             #5B9BE8;
+  --ds-color-typography-action-hover:       #7AAEE8;
+  --ds-color-typography-action-active:      #4D8EE0;
+  --ds-color-typography-info:               #5B9BE8;
+  --ds-color-typography-positive:           #52B76B;
+  --ds-color-typography-caution:            #EEB84A;
+  --ds-color-typography-critical:           #F4547B;
+  --ds-color-typography-critical-hover:     #F77090;
+  --ds-color-typography-critical-active:    #F4547B;
+  --ds-color-typography-disabled:           #666666;
+  --ds-color-typography-invert:             #FFFFFF; /* Text auf dunklem Invert-Surface */
+
+  /* Bridge overrides */
+  --nav-bg:     #1A1A1C;
+  --nav-bg-alt: #1F1F21;
+  --bg:         var(--ds-color-surface-page);
+  --card-bg:    var(--ds-color-surface-base);
+  --border:     var(--ds-color-border-base);
+
+  /* App-Hero: tiefes Navy-Blau im Darkmode */
+  --app-hero-bg: #0A1628;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────

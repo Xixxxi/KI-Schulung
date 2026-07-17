@@ -19,7 +19,7 @@ export default function LandingPage({ topics = [], onSelectTopic }: Props) {
             <div className={styles.heroEyebrowLine} />
             <span className={styles.heroEyebrowText}>Digital Learning Platform</span>
           </div>
-          <h1 className={styles.heroTitle}>KI-Schulung</h1>
+          <h1 className={styles.heroTitle}>KI @ ES</h1>
           <p className={styles.heroSub}>
             Lerne Schritt für Schritt, teste dein Wissen und schlage Begriffe nach —
             wähle ein Thema aus, um zu starten.
