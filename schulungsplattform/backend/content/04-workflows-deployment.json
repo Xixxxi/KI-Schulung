@@ -9,7 +9,7 @@
   "subTopicDescription": "Aufgaben zerlegen, Schritte verketten, Architekturen wählen und Agenten deployen.",
   "tag": "Allgemein",
   "id": "workflows-deployment",
-  "order": 4,
+  "order": 5,
   "title": "Mehrstufige Arbeitsabläufe automatisieren",
   "summary": "Wie aus einzelnen Agenten-Aufrufen robuste Workflows werden – und wie Architekturen und Deployment-Muster entschieden werden.",
   "estimatedMinutes": 30,

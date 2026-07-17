@@ -1,4 +1,4 @@
-import type { LearnData, QuizData, QuizResult, ReferenceData, Topic } from './types'
+import type { LearnData, QuizData, QuizResult, ReferenceData, GlobalReferenceData, Topic } from './types'
 
 const SESSION_KEY = 'schulung.sessionId'
 
@@ -45,4 +45,5 @@ export const api = {
       body: JSON.stringify({ answers }),
     }),
   getReference: (id: string) => request<ReferenceData>(`/api/chapters/${id}/reference`),
+  getAllReference: () => request<GlobalReferenceData>('/api/reference'),
 }

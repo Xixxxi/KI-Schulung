@@ -249,6 +249,57 @@ def get_chapter_reference(chapter_id: str) -> dict[str, Any] | None:
     }
 
 
+def get_all_references() -> list[dict[str, Any]]:
+    """Alle Nachschlagewerk-Einträge aller Kapitel, gruppiert nach Topic → Kapitel.
+
+    Rückgabe-Struktur::
+
+        [
+          {
+            "topicId": "ki-agenten",
+            "topicTitle": "KI-Agenten und Automatisierung",
+            "topicIcon": "🤖",
+            "topicAccentColor": "#1c69d4",
+            "chapters": [
+              {
+                "chapterId": "llm-grundlagen",
+                "chapterTitle": "Was LLMs sind und wie sie arbeiten",
+                "entries": [{"term": "...", "definition": "..."}]
+              }
+            ]
+          }
+        ]
+    """
+    chapters = _load_raw_chapters()
+    topics: dict[str, dict[str, Any]] = {}
+
+    for chapter in chapters:
+        entries = chapter.get("reference") or []
+        if not entries:
+            continue
+        tid = chapter.get("topicId", "general")
+        if tid not in topics:
+            topics[tid] = {
+                "topicId": tid,
+                "topicTitle": chapter.get("topicTitle", "Allgemein"),
+                "topicIcon": chapter.get("topicIcon", "📚"),
+                "topicAccentColor": chapter.get("topicAccentColor", "#6b7280"),
+                "topicOrder": chapter.get("topicOrder", 999),
+                "chapters": [],
+            }
+        topics[tid]["chapters"].append({
+            "chapterId": chapter.get("id"),
+            "chapterTitle": chapter.get("subTopicTitle") or chapter.get("title", ""),
+            "chapterOrder": chapter.get("order", 999),
+            "entries": entries,
+        })
+
+    result = sorted(topics.values(), key=lambda t: (t["topicOrder"], t["topicTitle"]))
+    for topic in result:
+        topic["chapters"].sort(key=lambda c: (c["chapterOrder"], c["chapterTitle"]))
+    return result
+
+
 # ── Quiz-Auswertung (serverseitig) ────────────────────────────────────────────
 
 def _evaluate_single(question: dict[str, Any], answer: Any) -> bool:

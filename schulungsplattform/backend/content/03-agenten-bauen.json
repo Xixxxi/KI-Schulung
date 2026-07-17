@@ -9,7 +9,7 @@
   "subTopicDescription": "Vom Bauplan zum lauffähigen Agenten – System-Prompt, Setup, Praxis, Context Engineering und Autonomie.",
   "tag": "Allgemein",
   "id": "agenten-bauen",
-  "order": 3,
+  "order": 4,
   "title": "Eigene spezialisierte Agenten erstellen",
   "summary": "Einen fokussierten Fach-Agenten entwerfen, einrichten und im VS-Code-Terminal ausführen – und verstehen, wie Kontext und Autonomie gesteuert werden.",
   "estimatedMinutes": 28,

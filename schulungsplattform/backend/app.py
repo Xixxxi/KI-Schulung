@@ -144,13 +144,22 @@ def create_app() -> Flask:
         PROGRESS.set_chapter_result(_session_id(), chapter_id, result)
         return jsonify(result)
 
-    # ── API: Nachschlagewerk ─────────────────────────────────────────────────
+    # ── API: Nachschlagewerk (Kapitel) ──────────────────────────────────────
     @app.get("/api/chapters/<chapter_id>/reference")
     def chapter_reference(chapter_id: str):
         data = content_store.get_chapter_reference(chapter_id)
         if not data:
             return jsonify({"error": "Kapitel nicht gefunden"}), 404
         return jsonify(data)
+
+    # ── API: Zentrales Nachschlagewerk (alle Kapitel) ────────────────────────
+    @app.get("/api/reference")
+    def all_reference():
+        try:
+            data = content_store.get_all_references()
+        except content_store.ContentError as exc:
+            return jsonify({"error": str(exc)}), 500
+        return jsonify({"topics": data})
 
     # ── API: Fortschritt ─────────────────────────────────────────────────────
     @app.get("/api/progress")

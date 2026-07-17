@@ -1,6 +1,6 @@
 // ── Shared Domain Types ────────────────────────────────────────────────────
 
-export type StepId = 'learn' | 'test' | 'reference'
+export type StepId = 'learn' | 'test'
 
 export interface SubTopic {
   id: string
@@ -100,4 +100,24 @@ export interface ReferenceData {
   chapterId: string
   title: string
   entries: ReferenceEntry[]
+}
+
+export interface GlobalReferenceChapter {
+  chapterId: string
+  chapterTitle: string
+  chapterOrder: number
+  entries: ReferenceEntry[]
+}
+
+export interface GlobalReferenceTopic {
+  topicId: string
+  topicTitle: string
+  topicIcon: string
+  topicAccentColor: string
+  topicOrder: number
+  chapters: GlobalReferenceChapter[]
+}
+
+export interface GlobalReferenceData {
+  topics: GlobalReferenceTopic[]
 }

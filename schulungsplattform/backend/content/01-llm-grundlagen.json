@@ -5,17 +5,15 @@
   "topicIcon": "🤖",
   "topicAccentColor": "#1c69d4",
   "topicOrder": 1,
-  "subTopicTitle": "Wie LLMs und Tool Calls funktionieren",
-  "subTopicDescription": "Das Fundament: Was ein LLM ist, wie es denkt und wie es ueber Tool Calls die Aussenwelt erreicht.",
+  "subTopicTitle": "Was LLMs sind und wie sie arbeiten",
+  "subTopicDescription": "Das Grundprinzip: Text rein, Text raus – Tokens, Kontext-Fenster und warum LLMs keine Gedanken haben.",
   "tag": "Allgemein",
-
   "id": "llm-grundlagen",
   "order": 1,
-  "title": "Wie LLMs und Tool Calls funktionieren",
-  "summary": "Alles ist Text, Tokens, Kontext-Fenster und der Tool-Call-Flow.",
-  "estimatedMinutes": 12,
+  "title": "Was LLMs sind und wie sie arbeiten",
+  "summary": "LLMs als Text-Vorhersage-Systeme, Tokens, Kontext-Fenster und das Prinzip 'alles ist Text'.",
+  "estimatedMinutes": 10,
   "lessons": [
-
     {
       "id": "l1",
       "title": "Worum geht es in diesem Kapitel?",
@@ -24,68 +22,81 @@
           "type": "callout",
           "tone": "info",
           "title": "Willkommen",
-          "text": "In diesem Kapitel lernst du die Grundlagen, auf denen alle KI-Agenten aufbauen. Am Ende wirst du verstehen, wie ein LLM denkt, was Tokens sind und wie ein Agent ueber Tool Calls mit der echten Welt interagiert."
+          "text": "Bevor wir Agenten bauen, muessen wir verstehen, womit wir bauen. Dieses Kapitel legt das Fundament: Was ist ein LLM, wie 'denkt' es und warum ist alles fuer ein LLM einfach nur Text?"
         },
         {
           "type": "steps",
           "title": "Was dich erwartet",
           "items": [
-            { "label": "Was ist ein LLM?", "description": "Das Grundprinzip: Text rein, Text raus." },
-            { "label": "Tokens und Kontext", "description": "Wie das LLM Text liest und sich erinnert." },
-            { "label": "Tool Calls", "description": "Wie ein LLM die echte Welt erreicht." }
+            { "label": "Wie LLMs arbeiten", "description": "Text rein, Text raus – das Grundprinzip." },
+            { "label": "Alles ist Text", "description": "Warum PDFs, Code und APIs alle gleich aussehen." },
+            { "label": "Tokens und Kontext", "description": "Die Masseinheit des LLM und sein 'Arbeitsgedaechtnis'." },
+            { "label": "Vorhersagen statt Verstehen", "description": "Was ein LLM wirklich macht, wenn es antwortet." }
           ]
         }
       ]
     },
-
     {
       "id": "l2",
-      "title": "Was ist ein LLM?",
+      "title": "Wie LLMs arbeiten",
       "blocks": [
+        {
+          "type": "text",
+          "text": "Im Kern sind Large Language Models (LLMs) hochentwickelte Text-Vorhersage-Systeme. Sie empfangen eine Eingabe und erzeugen eine Ausgabe – basierend auf Mustern, die sie beim Training gelernt haben."
+        },
         {
           "type": "diagram",
           "caption": "Das Grundprinzip eines LLM",
           "nodes": [
-            { "id": "in",  "type": "start", "emoji": "📝", "label": "Text rein",  "sublabel": "Frage, Anweisung, Code" },
-            { "id": "llm", "type": "step",  "emoji": "🧠", "label": "LLM",        "sublabel": "Verarbeitet den Text" },
-            { "id": "out", "type": "end",   "emoji": "💬", "label": "Text raus",  "sublabel": "Antwort, Code, JSON" }
+            { "id": "in",  "type": "start", "emoji": "📝", "label": "Text / Bild",   "sublabel": "Eingabe: Frage, Code, Daten" },
+            { "id": "llm", "type": "step",  "emoji": "🧠", "label": "LLM",           "sublabel": "z. B. langchain-bmw" },
+            { "id": "out", "type": "end",   "emoji": "💬", "label": "Text / Bild",   "sublabel": "Ausgabe: Antwort, Code, JSON" }
+          ]
+        },
+        {
+          "type": "steps",
+          "title": "Was der Ablauf bedeutet",
+          "items": [
+            { "label": "Eingabe", "description": "Du gibst Text (einen Prompt) oder Bilder an das LLM." },
+            { "label": "Verarbeitung", "description": "Das LLM analysiert die Eingabe mit seinem trainierten neuronalen Netz (z. B. ueber langchain-bmw)." },
+            { "label": "Ausgabe", "description": "Das Modell erzeugt eine Antwort – entweder Text oder Bilder." }
           ]
         },
         {
           "type": "quizCheck",
           "question": "Was macht ein LLM im Kern?",
           "options": [
-            "Es empfaengt Text und erzeugt Text.",
             "Es speichert Daten in einer Datenbank.",
-            "Es fuehrt Programme aus."
+            "Es empfaengt Text und erzeugt Text.",
+            "Es fuehrt Programme direkt aus."
           ],
-          "correct": 0,
-          "hint": "Denk an das Diagramm: Was geht rein, was kommt raus?"
+          "correct": 1,
+          "hint": "Schau auf das Diagramm: Was geht rein, was kommt raus?"
         }
       ]
     },
-
     {
       "id": "l3",
-      "title": "Alles ist Text",
+      "title": "Alles ist Text (oder unterstuetzte Modalitaeten)",
       "blocks": [
         {
           "type": "callout",
           "tone": "tip",
-          "title": "Eine wichtige Erkenntnis",
-          "text": "Fuer ein LLM gibt es keinen Unterschied zwischen einer Frage auf Deutsch, einem Python-Skript oder einer JSON-Datei. Es sieht immer nur Text – eine Folge von Zeichen."
+          "title": "Wichtig",
+          "text": "LLMs verstehen nur Text – oder bei multimodalen Modellen die spezifischen Formate, die sie unterstuetzen (z. B. Bilder). Das bedeutet: Alle Daten, die ein LLM verarbeiten soll, muessen zuerst in Text umgewandelt werden."
         },
         {
           "type": "cards",
           "items": [
-            { "icon": "💬", "label": "Sprache", "description": "Fragen und Antworten" },
-            { "icon": "💻", "label": "Code", "description": "Python, SQL, JavaScript" },
-            { "icon": "📄", "label": "Daten", "description": "JSON, XML, CSV" }
+            { "icon": "📄", "label": "PDFs, Word-Dokumente", "description": "→ extrahierter Text" },
+            { "icon": "🗄️", "label": "Datenbanken", "description": "→ als Text serialisiert (JSON, CSV, …)" },
+            { "icon": "🔌", "label": "API-Antworten", "description": "→ in Textformat konvertiert" },
+            { "icon": "💻", "label": "Code", "description": "→ ist bereits Text ✓" }
           ]
         },
         {
           "type": "quizCheck",
-          "question": "Wie sieht ein LLM eine JSON-Datei?",
+          "question": "Wie sieht ein LLM eine JSON-Datei aus einer API-Antwort?",
           "options": [
             "Als strukturierte Daten mit speziellem Parser.",
             "Als ganz normalen Text – wie einen Satz.",
@@ -96,7 +107,6 @@
         }
       ]
     },
-
     {
       "id": "l4",
       "title": "Tokens – die Bausteine",
@@ -105,7 +115,7 @@
           "type": "callout",
           "tone": "info",
           "title": "Was ist ein Token?",
-          "text": "Ein LLM liest Text nicht buchstabenweise, sondern in Stuecken – sogenannten Tokens. Ein Token ist oft ein Wort oder Wortteil. Beispiel: 'Automatisierung' wird zu 'Auto' + 'mat' + 'isierung' (3 Tokens)."
+          "text": "Ein LLM liest Text nicht buchstabenweise, sondern in Stuecken – sogenannten Tokens. Ein Token ist oft ein Wort oder Wortteil. Beispiel: 'Automatisierung' wird zu 'Auto' + 'mat' + 'isierung' (3 Tokens). Modellgrenzen und API-Kosten werden in Tokens gemessen."
         },
         {
           "type": "comparison",
@@ -115,14 +125,14 @@
           },
           "right": {
             "label": "Lange Woerter",
-            "items": ["'Automatisierung' = 3 Tokens", "'Entwicklung' = 2 Tokens", "'Schulung' = 2 Tokens"]
+            "items": ["'Automatisierung' = 3 Tokens", "'Entwicklung' = 2 Tokens", "'Schulungsplattform' = 4 Tokens"]
           }
         },
         {
           "type": "quizCheck",
           "question": "Warum sind Tokens wichtig?",
           "options": [
-            "Sie bestimmen die Kosten und das Limit eines LLM.",
+            "Sie bestimmen die Kosten und das Limit einer LLM-Anfrage.",
             "Sie sind nur ein technisches Detail ohne praktische Bedeutung.",
             "Tokens sind dasselbe wie Buchstaben."
           ],
@@ -131,19 +141,22 @@
         }
       ]
     },
-
     {
       "id": "l5",
       "title": "Das Kontext-Fenster",
       "blocks": [
         {
+          "type": "text",
+          "text": "Das Kontext-Fenster ist das 'Arbeitsgedaechtnis' des LLM. Alles, was das Modell bei einer Anfrage sieht, steht darin – nicht mehr, nicht weniger. Zwischen zwei Anfragen erinnert sich das LLM an nichts."
+        },
+        {
           "type": "diagram",
           "caption": "Was das LLM bei jeder Anfrage sieht",
           "nodes": [
             { "id": "sys",  "type": "start", "emoji": "📋", "label": "System-Prompt", "sublabel": "Deine Anweisungen" },
-            { "id": "hist", "type": "step",  "emoji": "💬", "label": "Verlauf",       "sublabel": "Bisherige Nachrichten" },
-            { "id": "new",  "type": "step",  "emoji": "✏️", "label": "Neue Frage",    "sublabel": "Aktuelle Eingabe" },
-            { "id": "out",  "type": "end",   "emoji": "🧠", "label": "LLM antwortet", "sublabel": "Basierend auf allem oben" }
+            { "id": "hist", "type": "step",  "emoji": "💬", "label": "Verlauf",        "sublabel": "Bisherige Nachrichten" },
+            { "id": "new",  "type": "step",  "emoji": "✏️", "label": "Neue Frage",     "sublabel": "Aktuelle Eingabe" },
+            { "id": "out",  "type": "end",   "emoji": "🧠", "label": "LLM antwortet",  "sublabel": "Basierend auf allem oben" }
           ]
         },
         {
@@ -159,66 +172,48 @@
         }
       ]
     },
-
     {
       "id": "l6",
-      "title": "Warum braucht ein LLM Werkzeuge?",
+      "title": "Vorhersagen statt Verstehen",
       "blocks": [
         {
           "type": "callout",
-          "tone": "info",
-          "title": "Das Problem",
-          "text": "Ein LLM kann nur Text erzeugen. Es kann nicht googeln, keine E-Mail senden und keine Datenbank abfragen. Um mit der echten Welt zu interagieren, braucht es Werkzeuge (Tools)."
+          "tone": "warn",
+          "title": "Eine wichtige Erkenntnis",
+          "text": "LLMs 'verstehen' nicht im menschlichen Sinn – sie sagen das wahrscheinlichste naechste Token voraus, basierend auf dem Kontext. Die Qualitaet deiner Eingabe bestimmt direkt die Qualitaet der Ausgabe."
         },
         {
           "type": "comparison",
           "left": {
-            "label": "Ohne Tools",
-            "items": ["Kann nur antworten", "Kein Zugriff auf aktuelle Daten", "Keine Aktionen moeglich"]
+            "label": "Was es aussieht wie",
+            "items": [
+              "Das LLM versteht die Frage",
+              "Es denkt nach und weiss die Antwort",
+              "Es hat echte Erfahrung"
+            ]
           },
           "right": {
-            "label": "Mit Tools",
-            "items": ["Kann Daten nachschlagen", "Kann Tickets anlegen", "Kann Systeme steuern"]
+            "label": "Was wirklich passiert",
+            "items": [
+              "Es berechnet die wahrscheinlichste Wortfolge",
+              "Es interpoliert aus Trainingsmustern",
+              "Es hat keine eigene Meinung oder Erfahrung"
+            ]
           }
         },
         {
           "type": "quizCheck",
-          "question": "Was kann ein LLM OHNE Werkzeuge?",
+          "question": "Was tut ein LLM tatsaechlich, wenn es antwortet?",
           "options": [
-            "Aktuelle Aktienkurse abrufen.",
-            "Nur Text erzeugen – basierend auf seinem Training.",
-            "E-Mails versenden."
+            "Es schlaegt im Internet nach und gibt die Antwort zurueck.",
+            "Es sagt das wahrscheinlichste naechste Token basierend auf dem Kontext voraus.",
+            "Es denkt wie ein Mensch und formuliert eine Meinung."
           ],
           "correct": 1,
-          "hint": "Ohne Tools ist ein LLM auf reinen Text beschraenkt."
-        }
-      ]
-    },
-
-    {
-      "id": "l7",
-      "title": "Der Tool Call – Schritt fuer Schritt",
-      "blocks": [
-        {
-          "type": "diagram",
-          "caption": "So laeuft ein Tool Call ab",
-          "nodes": [
-            { "id": "ask",  "type": "start", "emoji": "👤", "label": "Nutzer fragt",   "sublabel": "Wie ist das Wetter?" },
-            { "id": "llm",  "type": "step",  "emoji": "🧠", "label": "LLM denkt nach", "sublabel": "Ich brauche ein Tool!" },
-            { "id": "call", "type": "step",  "emoji": "📤", "label": "Tool Call",       "sublabel": "get_weather(Berlin)" },
-            { "id": "exec", "type": "step",  "emoji": "⚙️", "label": "Ausfuehrung",    "sublabel": "Framework ruft API" },
-            { "id": "ans",  "type": "end",   "emoji": "💬", "label": "Antwort",         "sublabel": "22 Grad, sonnig" }
-          ]
-        },
-        {
-          "type": "callout",
-          "tone": "tip",
-          "title": "Merke",
-          "text": "Das LLM fuehrt das Tool nicht selbst aus! Es erzeugt nur einen Aufruf. Das Framework uebernimmt die eigentliche Ausfuehrung und gibt das Ergebnis zurueck."
+          "hint": "LLMs sind Vorhersage-Systeme, keine denkenden Entitaeten."
         }
       ]
     }
-
   ],
   "quiz": {
     "passThreshold": 0.7,
@@ -231,13 +226,27 @@
         "options": [
           "Es speichert Daten in einer Datenbank.",
           "Es empfaengt Text und erzeugt Text.",
-          "Es fuehrt Programme aus."
+          "Es fuehrt Programme direkt aus."
         ],
         "correct": 1,
         "explanation": "Ein LLM ist im Kern eine Text-zu-Text-Maschine."
       },
       {
         "id": "q2",
+        "type": "multi",
+        "lessonRef": "l3",
+        "question": "Welche Formate muss ein LLM als Text erhalten? (Mehrfachauswahl)",
+        "options": [
+          "PDFs (als extrahierter Text)",
+          "Bilder direkt als Pixel-Array",
+          "Datenbankinhalte (z. B. als JSON/CSV)",
+          "API-Antworten (als Text konvertiert)"
+        ],
+        "correct": [0, 2, 3],
+        "explanation": "PDFs, Datenbankinhalte und API-Antworten muessen in Text umgewandelt werden. Bilder sind nur bei multimodalen Modellen direkt verarbeitbar."
+      },
+      {
+        "id": "q3",
         "type": "single",
         "lessonRef": "l5",
         "question": "Erinnert sich ein LLM automatisch an fruehere Gespraeche?",
@@ -250,37 +259,24 @@
         "explanation": "LLMs sind zustandslos. Alles muss explizit im Kontext-Fenster mitgegeben werden."
       },
       {
-        "id": "q3",
-        "type": "single",
-        "lessonRef": "l6",
-        "question": "Was kann ein LLM ohne Werkzeuge (Tools) NICHT?",
-        "options": [
-          "Text erzeugen.",
-          "Fragen beantworten.",
-          "Aktuelle Daten aus dem Internet abrufen."
-        ],
-        "correct": 2,
-        "explanation": "Ohne Tools kann ein LLM nur Text aus seinem Training erzeugen – kein Zugriff auf externe Systeme."
-      },
-      {
         "id": "q4",
         "type": "single",
-        "lessonRef": "l7",
-        "question": "Wer fuehrt die Funktion aus, nachdem das LLM einen Tool Call erzeugt hat?",
+        "lessonRef": "l6",
+        "question": "Was passiert wirklich, wenn ein LLM eine Antwort erzeugt?",
         "options": [
-          "Das LLM selbst.",
-          "Das Agent-Framework.",
-          "Der Nutzer manuell."
+          "Es denkt wie ein Mensch und formuliert eine eigene Meinung.",
+          "Es sagt das wahrscheinlichste naechste Token basierend auf dem Kontext voraus.",
+          "Es schlaegt die Antwort in einer Datenbank nach."
         ],
         "correct": 1,
-        "explanation": "Das LLM erzeugt nur den Aufruf. Das Framework fuehrt die Funktion aus und gibt das Ergebnis zurueck."
+        "explanation": "LLMs sind Vorhersage-Systeme. Die Qualitaet der Eingabe bestimmt die Qualitaet der Ausgabe."
       }
     ]
   },
   "reference": [
     {
       "term": "LLM (Large Language Model)",
-      "definition": "Ein Sprachmodell, das Text empfaengt und Text erzeugt. Intern wird alles als Tokens dargestellt."
+      "definition": "Ein Sprachmodell, das Text (oder Bilder) empfaengt und Text erzeugt. Intern wird alles als Tokens dargestellt."
     },
     {
       "term": "Token",
@@ -291,16 +287,16 @@
       "definition": "Alles, was das LLM bei einer Anfrage sieht: System-Prompt, Verlauf und Tool-Ergebnisse. Zwischen Anfragen ist alles vergessen."
     },
     {
-      "term": "Tool / Werkzeug",
-      "definition": "Eine Funktion, die dem LLM zur Verfuegung steht, um die Aussenwelt zu erreichen – APIs, Datenbanken, Dateisystem."
-    },
-    {
-      "term": "Tool Call",
-      "definition": "Ein strukturierter Aufruf (JSON mit Funktionsname + Argumente), den das LLM erzeugt. Das Framework fuehrt die Funktion dann aus."
-    },
-    {
       "term": "System-Prompt",
       "definition": "Die erste Nachricht im Kontext-Fenster – legt Rolle, Verhalten und Grenzen des LLM fest."
+    },
+    {
+      "term": "Multimodal",
+      "definition": "LLMs, die nicht nur Text, sondern auch Bilder (oder andere Medien) als Eingabe verarbeiten koennen."
+    },
+    {
+      "term": "Token-Vorhersage",
+      "definition": "Das Kernprinzip eines LLM: Es berechnet das wahrscheinlichste naechste Token auf Basis des aktuellen Kontexts – kein echtes Verstehen."
     }
   ]
 }

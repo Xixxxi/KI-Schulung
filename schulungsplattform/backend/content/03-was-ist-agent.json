@@ -1,0 +1,378 @@
+{
+  "topicId": "ki-agenten",
+  "topicTitle": "KI-Agenten und Automatisierung",
+  "topicDescription": "Wie KI-Agenten funktionieren, wie du eigene spezialisierte Agenten baust und mehrstufige Arbeitsablaeufe automatisierst.",
+  "topicIcon": "🤖",
+  "topicAccentColor": "#1c69d4",
+  "topicOrder": 1,
+  "subTopicTitle": "Was ist ein Agent und wie arbeitet er?",
+  "subTopicDescription": "Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent lohnt.",
+  "tag": "Allgemein",
+  "id": "ki-agenten",
+  "order": 3,
+  "title": "Was ist ein Agent und wie arbeitet er?",
+  "summary": "Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent wirklich lohnt.",
+  "estimatedMinutes": 12,
+  "lessons": [
+    {
+      "id": "l1",
+      "title": "Worum geht es in diesem Kapitel?",
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Kapitel-Ueberblick",
+          "text": "Du weisst jetzt, wie ein LLM arbeitet und wie es ueber Tools mit der Aussenwelt kommuniziert. Jetzt geht es einen Schritt weiter: Was passiert, wenn ein LLM eigenstaendig entscheidet, WELCHES Tool es aufruft, in welcher Reihenfolge und wann es fertig ist?"
+        },
+        {
+          "type": "steps",
+          "title": "Was dich erwartet",
+          "items": [
+            { "label": "Was ist ein KI-Agent?", "description": "Die entscheidende Eigenschaft: autonome Entscheidungen." },
+            { "label": "Agent vs. Skript vs. Chatbot", "description": "Der entscheidende Unterschied." },
+            { "label": "Die vier Bausteine", "description": "Woraus jeder Agent besteht." },
+            { "label": "Der Agent Loop", "description": "Wie ein Agent Schritt fuer Schritt arbeitet." },
+            { "label": "Wann lohnt sich ein Agent?", "description": "Nicht jede Aufgabe braucht einen." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "title": "Was ist ein KI-Agent?",
+      "blocks": [
+        {
+          "type": "callout",
+          "tone": "info",
+          "title": "Die einfache Definition",
+          "text": "Ein KI-Agent ist ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen. Es entscheidet bei jedem Schritt eigenstaendig, was als Naechstes zu tun ist – und ob es fertig ist."
+        },
+        {
+          "type": "diagram",
+          "caption": "Agent = LLM + eigenstaendige Entscheidungen + Tools",
+          "nodes": [
+            { "id": "task",   "type": "start", "emoji": "🎯", "label": "Aufgabe",       "sublabel": "Nutzer gibt Ziel vor" },
+            { "id": "decide", "type": "step",  "emoji": "🧠", "label": "Agent denkt",   "sublabel": "Was muss ich als Naechstes tun?" },
+            { "id": "act",    "type": "step",  "emoji": "⚡", "label": "Agent handelt", "sublabel": "Tool Call oder Antwort" },
+            { "id": "done",   "type": "end",   "emoji": "✅", "label": "Ziel erreicht", "sublabel": "Ergebnis zurueck zum Nutzer" }
+          ],
+          "loop": {
+            "label": "Noch nicht fertig – naechster Schritt"
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Was macht einen KI-Agenten besonders gegenueber einem einfachen LLM mit Tool Calling?",
+          "options": [
+            "Er ist immer schneller.",
+            "Er entscheidet eigenstaendig, welche Tools er aufruft und wann er fertig ist.",
+            "Er benoetigt keine Tools."
+          ],
+          "correct": 1,
+          "hint": "Wer entscheidet den naechsten Schritt – und das Ziel?"
+        }
+      ]
+    },
+    {
+      "id": "l3",
+      "title": "Agent vs. Chatbot vs. Skript",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Nicht jede KI-Anwendung ist ein Agent. Die Unterschiede in Flexibilitaet und Autonomie sind entscheidend fuer die Wahl des richtigen Werkzeugs."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Skript / Chatbot",
+            "color": "#6b7280",
+            "items": [
+              "Fester Ablauf – vorab programmiert",
+              "Ein Input, ein Output",
+              "Scheitert bei unerwarteten Situationen",
+              "Einfach zu debuggen und zu testen"
+            ]
+          },
+          "right": {
+            "label": "KI-Agent",
+            "color": "#1c69d4",
+            "items": [
+              "Entscheidet den naechsten Schritt selbst",
+              "Mehrere Tool Calls nacheinander moeglich",
+              "Reagiert flexibel auf Ergebnisse",
+              "Schwerer vorhersehbar – braucht Leitplanken"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Was macht einen KI-Agenten anders als ein klassisches Skript?",
+          "options": [
+            "Er ist immer schneller.",
+            "Er entscheidet zur Laufzeit selbst, was als Naechstes passiert.",
+            "Skripte koennen keine APIs aufrufen."
+          ],
+          "correct": 1,
+          "hint": "Wer entscheidet den naechsten Schritt?"
+        }
+      ]
+    },
+    {
+      "id": "l4",
+      "title": "Die vier Bausteine eines Agenten",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Jeder KI-Agent besteht aus denselben vier Grundelementen – egal ob er Jira-Tickets anlegt, Code reviewed oder Support-Anfragen bearbeitet."
+        },
+        {
+          "type": "cards",
+          "items": [
+            {
+              "icon": "🧠",
+              "label": "Modell (LLM)",
+              "color": "#1c69d4",
+              "description": "Das Gehirn – plant, entscheidet und erzeugt Tool Calls."
+            },
+            {
+              "icon": "📋",
+              "label": "Instruktionen",
+              "color": "#6d28d9",
+              "description": "Der System-Prompt – legt Rolle, Ziel und Grenzen fest."
+            },
+            {
+              "icon": "🔧",
+              "label": "Werkzeuge (Tools)",
+              "color": "#0369a1",
+              "description": "Die Haende – Verbindung zur Aussenwelt (Jira, GitHub, APIs)."
+            },
+            {
+              "icon": "💾",
+              "label": "Speicher (Memory)",
+              "color": "#166534",
+              "description": "Das Kurzzeitgedaechtnis – Kontext, Verlauf und Tool-Ergebnisse."
+            }
+          ]
+        },
+        {
+          "type": "diagram",
+          "caption": "Zusammenspiel der vier Bausteine",
+          "nodes": [
+            { "id": "inst",  "type": "start", "emoji": "📋", "label": "Instruktionen", "sublabel": "Was soll der Agent tun?" },
+            { "id": "mem",   "type": "step",  "emoji": "💾", "label": "Speicher",      "sublabel": "Was weiss er schon?" },
+            { "id": "llm",   "type": "step",  "emoji": "🧠", "label": "LLM entscheidet","sublabel": "Welches Tool als Naechstes?" },
+            { "id": "tools", "type": "end",   "emoji": "🔧", "label": "Tools",          "sublabel": "Jira, GitHub, APIs..." }
+          ],
+          "loop": {
+            "label": "Ergebnis fliesst zurueck in den Speicher"
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Ein Agent hat Modell, Instruktionen und Speicher – aber keine Tools. Was fehlt?",
+          "options": [
+            "Nichts – er funktioniert vollstaendig.",
+            "Die Verbindung zur Aussenwelt – er kann nur Text erzeugen, nicht handeln.",
+            "Der System-Prompt."
+          ],
+          "correct": 1,
+          "hint": "Tools sind die Haende des Agenten."
+        }
+      ]
+    },
+    {
+      "id": "l5",
+      "title": "Der Agent Loop: Reason – Act – Observe",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein Agent arbeitet nicht einmalig – er durchlaeuft einen Zyklus, bis das Ziel erreicht ist. Dieser Kernzyklus heisst Reason-Act-Observe."
+        },
+        {
+          "type": "diagram",
+          "caption": "Reason – Act – Observe: der Kernzyklus",
+          "nodes": [
+            { "id": "goal",    "type": "start", "emoji": "🎯", "label": "Aufgabe",   "sublabel": "Ziel kommt rein" },
+            { "id": "reason",  "type": "step",  "emoji": "🤔", "label": "Reason",    "sublabel": "Naechsten Schritt planen" },
+            { "id": "act",     "type": "step",  "emoji": "⚡", "label": "Act",       "sublabel": "Tool aufrufen" },
+            { "id": "observe", "type": "step",  "emoji": "👁",  "label": "Observe",   "sublabel": "Ergebnis analysieren" },
+            { "id": "done",    "type": "end",   "emoji": "✅", "label": "Fertig",    "sublabel": "Ziel erreicht" }
+          ],
+          "loop": {
+            "label": "Ziel noch nicht erreicht – erneut Reason"
+          }
+        },
+        {
+          "type": "steps",
+          "title": "Was passiert in jedem Schritt?",
+          "items": [
+            {
+              "label": "Reason – Planen",
+              "description": "Das LLM ueberlegt: Was weiss ich bisher? Was ist der beste naechste Schritt?"
+            },
+            {
+              "label": "Act – Handeln",
+              "description": "Der Agent ruft ein Tool auf – z. B. 'suche_jira_tickets()' oder 'lese_pull_request()'."
+            },
+            {
+              "label": "Observe – Beobachten",
+              "description": "Das Ergebnis des Tool Calls kommt zurueck und wird in den Kontext aufgenommen."
+            }
+          ]
+        },
+        {
+          "type": "quizCheck",
+          "question": "In welcher Reihenfolge arbeitet ein Agent?",
+          "options": [
+            "Act – Reason – Observe",
+            "Observe – Act – Reason",
+            "Reason – Act – Observe"
+          ],
+          "correct": 2,
+          "hint": "Erst denken, dann handeln, dann schauen."
+        }
+      ]
+    },
+    {
+      "id": "l6",
+      "title": "Wann lohnt sich ein Agent?",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Ein KI-Agent ist maechtiger als ein einfaches Skript – aber auch komplexer, schwerer zu debuggen und teurer im Betrieb. Nicht jede Aufgabe rechtfertigt einen Agenten."
+        },
+        {
+          "type": "comparison",
+          "left": {
+            "label": "Gut fuer Agenten",
+            "color": "#1c69d4",
+            "items": [
+              "Unstrukturierte Texte verstehen und klassifizieren",
+              "Mehrere Schritte mit Entscheidungen dazwischen",
+              "Viele Sonderfaelle und Ausnahmen",
+              "Systeme kombinieren (z. B. GitHub + Jira)"
+            ]
+          },
+          "right": {
+            "label": "Besser klassisch loesen",
+            "color": "#6b7280",
+            "items": [
+              "Feste Regeln ohne Interpretation",
+              "Exakte Berechnungen (Buchhaltung, Maths)",
+              "Hohe Frequenz mit minimalen Kosten",
+              "Sicherheitskritische Kernprozesse"
+            ]
+          }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Welche Aufgabe passt gut zu einem KI-Agenten?",
+          "options": [
+            "Einen Betrag von EUR in USD umrechnen.",
+            "Support-Tickets lesen und dem richtigen Team zuweisen.",
+            "Jeden Tag um 8 Uhr einen Datenbankexport starten."
+          ],
+          "correct": 1,
+          "hint": "Braucht die Aufgabe Sprachverstaendnis und Urteilsvermoegen?"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "passThreshold": 0.7,
+    "questions": [
+      {
+        "id": "q1",
+        "type": "single",
+        "lessonRef": "l3",
+        "question": "Was unterscheidet einen KI-Agenten von einem Skript?",
+        "options": [
+          "Agenten sind immer schneller.",
+          "Ein Agent entscheidet eigenstaendig den naechsten Schritt.",
+          "Skripte koennen keine APIs aufrufen."
+        ],
+        "correct": 1,
+        "explanation": "Der Kern: autonome Entscheidung bei jedem Schritt."
+      },
+      {
+        "id": "q2",
+        "type": "multi",
+        "lessonRef": "l4",
+        "question": "Welche vier Elemente bilden einen KI-Agenten? (Mehrfachauswahl)",
+        "options": [
+          "Modell (LLM)",
+          "Instruktionen (System-Prompt)",
+          "Grafikkarte",
+          "Werkzeuge (Tools)",
+          "Speicher (Memory)"
+        ],
+        "correct": [0, 1, 3, 4],
+        "explanation": "Modell, Instruktionen, Werkzeuge und Speicher – das sind die vier Bausteine."
+      },
+      {
+        "id": "q3",
+        "type": "single",
+        "lessonRef": "l5",
+        "question": "In welcher Reihenfolge arbeitet der Agent Loop?",
+        "options": [
+          "Act – Reason – Observe",
+          "Observe – Act – Reason",
+          "Reason – Act – Observe"
+        ],
+        "correct": 2,
+        "explanation": "Reason, Act, Observe – wiederholen bis das Ziel erreicht ist."
+      },
+      {
+        "id": "q4",
+        "type": "single",
+        "lessonRef": "l6",
+        "question": "Welche Aufgabe eignet sich am besten fuer einen KI-Agenten?",
+        "options": [
+          "Commits nach Zeitstempel sortieren.",
+          "Support-Tickets kategorisieren und priorisieren.",
+          "Jeden Tag um 8 Uhr einen Datenbankexport starten."
+        ],
+        "correct": 1,
+        "explanation": "Kategorisierung erfordert Sprachverstaendnis und Urteilsvermoegen – ideal fuer einen Agenten."
+      }
+    ]
+  },
+  "reference": [
+    {
+      "term": "KI-Agent",
+      "definition": "Ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen – eigenstaendige Entscheidungen bei jedem Schritt."
+    },
+    {
+      "term": "Agent Loop",
+      "definition": "Reason (planen), Act (handeln), Observe (Ergebnis analysieren) – wiederholen, bis das Ziel erreicht ist."
+    },
+    {
+      "term": "Reason",
+      "definition": "Erster Schritt im Agent Loop: Das LLM plant den naechsten Schritt basierend auf dem aktuellen Kontext."
+    },
+    {
+      "term": "Act",
+      "definition": "Zweiter Schritt im Agent Loop: Der Agent fuehrt einen Tool Call aus – z. B. Jira-Ticket suchen oder GitHub-PR lesen."
+    },
+    {
+      "term": "Observe",
+      "definition": "Dritter Schritt im Agent Loop: Das Ergebnis des Tool Calls wird in den Kontext aufgenommen und ausgewertet."
+    },
+    {
+      "term": "Modell (LLM)",
+      "definition": "Das Gehirn des Agenten: plant, entscheidet und erzeugt Tool Calls."
+    },
+    {
+      "term": "Instruktionen",
+      "definition": "Der System-Prompt – legt Rolle, Ziel und Grenzen des Agenten fest."
+    },
+    {
+      "term": "Werkzeuge (Tools)",
+      "definition": "Funktionen fuer den Zugriff auf die Aussenwelt (Jira, GitHub, APIs, Datenbanken)."
+    },
+    {
+      "term": "Speicher (Memory)",
+      "definition": "Gespraechsverlauf und Tool-Ergebnisse im Kontext-Fenster – das Kurzzeitgedaechtnis des Agenten."
+    }
+  ]
+}

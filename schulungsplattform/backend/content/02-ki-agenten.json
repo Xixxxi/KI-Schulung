@@ -5,13 +5,13 @@
   "topicIcon": "🤖",
   "topicAccentColor": "#1c69d4",
   "topicOrder": 1,
-  "subTopicTitle": "Was KI-Agenten sind",
-  "subTopicDescription": "Was einen Agenten ausmacht, seine Bausteine, der Agent Loop und wann sich ein Agent lohnt.",
+  "subTopicTitle": "Wie kommunizieren LLMs mit der Außenwelt?",
+  "subTopicDescription": "Tool Calling: Wie ein LLM Jira-Tickets anlegt, GitHub-PRs liest und externe Systeme steuert.",
   "tag": "Allgemein",
-  "id": "ki-agenten",
+  "id": "tool-calling",
   "order": 2,
-  "title": "Was KI-Agenten sind",
-  "summary": "Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent lohnt.",
+  "title": "Wie kommunizieren LLMs mit der Außenwelt?",
+  "summary": "Warum LLMs Werkzeuge brauchen, wie ein Tool Call Schritt fuer Schritt ablaeuft und konkrete Beispiele mit Jira und GitHub.",
   "estimatedMinutes": 12,
   "lessons": [
     {
@@ -22,253 +22,243 @@
           "type": "callout",
           "tone": "info",
           "title": "Kapitel-Ueberblick",
-          "text": "Im letzten Kapitel hast du gelernt, was ein LLM ist und wie Tool Calls funktionieren. Jetzt geht es einen Schritt weiter: Was passiert, wenn ein LLM eigenstaendig entscheidet, WELCHES Tool es aufruft und wann es fertig ist?"
+          "text": "Du weisst jetzt, wie ein LLM intern arbeitet. Aber ein LLM, das nur Text erzeugt, kann keine Tickets anlegen, keine PRs lesen und keine Systeme steuern. In diesem Kapitel lernst du, wie Tool Calling das aendert."
         },
         {
           "type": "steps",
           "title": "Was dich erwartet",
           "items": [
-            {
-              "label": "Agent vs. Skript",
-              "description": "Der entscheidende Unterschied."
-            },
-            {
-              "label": "Die vier Bausteine",
-              "description": "Woraus jeder Agent besteht."
-            },
-            {
-              "label": "Der Agent Loop",
-              "description": "Wie ein Agent Schritt fuer Schritt arbeitet."
-            },
-            {
-              "label": "Wann lohnt sich ein Agent?",
-              "description": "Nicht jede Aufgabe braucht einen."
-            }
+            { "label": "Das Problem", "description": "Warum ein LLM allein nicht mit der Welt interagieren kann." },
+            { "label": "Tool Calling", "description": "Wie ein LLM eine Funktion 'aufruft', ohne sie selbst auszufuehren." },
+            { "label": "Jira-Beispiel", "description": "Ein Ticket anlegen und Aufgaben suchen." },
+            { "label": "GitHub-Beispiel", "description": "Pull Requests lesen und Code-Aenderungen kommentieren." }
           ]
         }
       ]
     },
     {
       "id": "l2",
-      "title": "Was ist ein KI-Agent?",
+      "title": "Das Problem: LLMs koennen nur Text",
       "blocks": [
         {
           "type": "callout",
-          "tone": "info",
-          "title": "Die einfache Definition",
-          "text": "Ein KI-Agent ist ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen. Es entscheidet bei jedem Schritt eigenstaendig, was als Naechstes zu tun ist."
+          "tone": "warn",
+          "title": "Die Grenze eines LLM",
+          "text": "Ein LLM kann nur Text erzeugen. Es kann nicht googeln, keine E-Mail senden, kein Jira-Ticket anlegen und keine Datenbank abfragen. Ohne Erweiterung ist es auf sein Trainings-Wissen beschraenkt."
         },
         {
-          "type": "diagram",
-          "caption": "Agent = LLM + eigenstaendige Entscheidungen + Tools",
-          "nodes": [
-            {
-              "id": "task",
-              "type": "start",
-              "emoji": "🎯",
-              "label": "Aufgabe",
-              "sublabel": "Nutzer gibt Ziel vor"
-            },
-            {
-              "id": "dec",
-              "type": "step",
-              "emoji": "🧠",
-              "label": "Agent denkt",
-              "sublabel": "Was muss ich tun?"
-            },
-            {
-              "id": "act",
-              "type": "step",
-              "emoji": "⚡",
-              "label": "Agent handelt",
-              "sublabel": "Tool Call oder Antwort"
-            },
-            {
-              "id": "done",
-              "type": "end",
-              "emoji": "✅",
-              "label": "Ziel erreicht",
-              "sublabel": "Ergebnis zurueck"
-            }
-          ],
-          "loop": {
-            "label": "Noch nicht fertig"
+          "type": "comparison",
+          "left": {
+            "label": "LLM ohne Tools",
+            "color": "#6b7280",
+            "items": [
+              "Kann nur auf Trainingswissen antworten",
+              "Keine aktuellen Daten abrufbar",
+              "Keine Aktionen in externen Systemen",
+              "Kein Zugriff auf interne Tools"
+            ]
+          },
+          "right": {
+            "label": "LLM mit Tools",
+            "color": "#1c69d4",
+            "items": [
+              "Kann aktuelle Daten nachschlagen",
+              "Kann Jira-Tickets anlegen und suchen",
+              "Kann GitHub-PRs lesen und kommentieren",
+              "Kann Workflows in echten Systemen ausloesen"
+            ]
           }
+        },
+        {
+          "type": "quizCheck",
+          "question": "Was kann ein LLM OHNE Werkzeuge (Tools)?",
+          "options": [
+            "Aktuelle Tickets aus Jira abrufen.",
+            "Nur Text erzeugen – basierend auf seinem Trainings-Wissen.",
+            "E-Mails versenden."
+          ],
+          "correct": 1,
+          "hint": "Ohne Tools ist ein LLM auf reinen Text beschraenkt."
         }
       ]
     },
     {
       "id": "l3",
-      "title": "Agent vs. Chatbot vs. Skript",
+      "title": "Was ist ein Tool Call?",
       "blocks": [
         {
-          "type": "comparison",
-          "left": {
-            "label": "Skript / Chatbot",
-            "items": [
-              "Fester Ablauf - vorab programmiert",
-              "Ein Input, ein Output",
-              "Scheitert bei Unbekanntem"
-            ]
-          },
-          "right": {
-            "label": "KI-Agent",
-            "items": [
-              "Entscheidet den naechsten Schritt selbst",
-              "Mehrere Tool Calls nacheinander",
-              "Reagiert flexibel auf Ergebnisse"
-            ]
-          }
+          "type": "text",
+          "text": "Ein Tool Call ist die Moeglichkeit fuer ein LLM, eine klar definierte Funktion aufzurufen – zum Beispiel 'suche_jira_tickets(projekt=\"ES-212\")'. Das LLM erzeugt dabei nur den Aufruf. Das Framework fuehrt die Funktion aus und gibt das Ergebnis zurueck."
+        },
+        {
+          "type": "diagram",
+          "caption": "Ablauf eines Tool Calls",
+          "nodes": [
+            { "id": "user",  "type": "start", "emoji": "👤", "label": "Nutzer fragt",    "sublabel": "z. B. 'Welche offenen Bugs gibt es?'" },
+            { "id": "think", "type": "step",  "emoji": "🧠", "label": "LLM denkt nach",  "sublabel": "Ich brauche ein Tool!" },
+            { "id": "call",  "type": "step",  "emoji": "📤", "label": "Tool Call",        "sublabel": "suche_jira_tickets(...)" },
+            { "id": "exec",  "type": "step",  "emoji": "⚙️", "label": "Ausfuehrung",     "sublabel": "Framework ruft Jira-API" },
+            { "id": "result","type": "step",  "emoji": "📥", "label": "Ergebnis",         "sublabel": "Liste der Tickets" },
+            { "id": "ans",   "type": "end",   "emoji": "💬", "label": "Antwort",          "sublabel": "LLM fasst zusammen" }
+          ]
+        },
+        {
+          "type": "callout",
+          "tone": "tip",
+          "title": "Merke",
+          "text": "Das LLM fuehrt das Tool nicht selbst aus! Es erzeugt nur einen strukturierten Aufruf (JSON mit Funktionsname + Argumente). Das Framework uebernimmt die eigentliche Ausfuehrung und gibt das Ergebnis zurueck."
         },
         {
           "type": "quizCheck",
-          "question": "Was macht einen KI-Agenten anders als ein Skript?",
+          "question": "Wer fuehrt die Funktion aus, nachdem das LLM einen Tool Call erzeugt hat?",
           "options": [
-            "Er ist immer schneller.",
-            "Er entscheidet zur Laufzeit selbst, was als Naechstes passiert.",
-            "Skripte koennen keine APIs aufrufen."
+            "Das LLM selbst.",
+            "Das Agent-Framework.",
+            "Der Nutzer manuell."
           ],
           "correct": 1,
-          "hint": "Wer entscheidet den naechsten Schritt?"
+          "hint": "Das LLM erzeugt nur den Aufruf – jemand anderes muss ihn ausfuehren."
         }
       ]
     },
     {
       "id": "l4",
-      "title": "Die vier Bausteine eines Agenten",
+      "title": "Beispiel: Jira-Integration",
       "blocks": [
         {
-          "type": "cards",
+          "type": "text",
+          "text": "Jira ist eines der haeufigsten Systeme in Entwicklungsteams. Mit Tool Calling kann ein LLM Tickets anlegen, suchen und aktualisieren – ohne dass der Nutzer die Jira-Oberflaeche oeffnen muss."
+        },
+        {
+          "type": "steps",
+          "title": "Typische Jira-Tools fuer ein LLM",
           "items": [
             {
-              "icon": "🧠",
-              "label": "Modell (LLM)",
-              "description": "Das Gehirn - plant und entscheidet."
+              "label": "erstelle_ticket(titel, beschreibung, typ)",
+              "description": "Legt ein neues Jira-Ticket an.",
+              "example": "erstelle_ticket('Login-Fehler', 'Passwort-Validierung fehlt', 'Bug')"
             },
             {
-              "icon": "📋",
-              "label": "Instruktionen",
-              "description": "System-Prompt - Rolle und Ziel."
+              "label": "suche_tickets(projekt, status, zugewiesen_an)",
+              "description": "Gibt eine Liste passender Tickets zurueck.",
+              "example": "suche_tickets(projekt='ES-212', status='Offen')"
             },
             {
-              "icon": "🔧",
-              "label": "Werkzeuge",
-              "description": "Tools - Verbindung zur Aussenwelt."
-            },
-            {
-              "icon": "💾",
-              "label": "Speicher",
-              "description": "Kontext - Verlauf und Ergebnisse."
+              "label": "aktualisiere_ticket(ticket_id, felder)",
+              "description": "Aendert Status, Prioritaet oder Beschreibung.",
+              "example": "aktualisiere_ticket('ES-42', {'status': 'In Bearbeitung'})"
             }
           ]
         },
         {
+          "type": "diagram",
+          "caption": "Jira-Tool Call: Ticket aus einer Beschreibung anlegen",
+          "nodes": [
+            { "id": "in",     "type": "start", "emoji": "✉️", "label": "Eingabe",           "sublabel": "Fehlerbeschreibung vom Nutzer" },
+            { "id": "decide", "type": "step",  "emoji": "🧠", "label": "LLM analysiert",    "sublabel": "Typ: Bug, Projekt: ES-212" },
+            { "id": "call",   "type": "step",  "emoji": "📤", "label": "erstelle_ticket()", "sublabel": "Strukturierter API-Aufruf" },
+            { "id": "jira",   "type": "step",  "emoji": "🎯", "label": "Jira API",          "sublabel": "Ticket ES-212-99 erstellt" },
+            { "id": "done",   "type": "end",   "emoji": "✅", "label": "Bestaetigung",       "sublabel": "Link zum Ticket zurueck" }
+          ]
+        },
+        {
           "type": "quizCheck",
-          "question": "Ein Agent hat Modell, Instruktionen und Speicher - aber keine Tools. Was fehlt?",
+          "question": "Ein Nutzer sagt: 'Leg ein Bug-Ticket fuer den Login-Fehler an.' Was macht das LLM als Naechstes?",
           "options": [
-            "Nichts - er funktioniert vollstaendig.",
-            "Die Verbindung zur Aussenwelt - er kann nur Text erzeugen, nicht handeln.",
-            "Der System-Prompt."
+            "Es antwortet mit einer Beschreibung, wie man ein Ticket anlegt.",
+            "Es erzeugt einen Tool Call 'erstelle_ticket(...)' mit den passenden Parametern.",
+            "Es oeffnet die Jira-Oberflaeche im Browser."
           ],
           "correct": 1,
-          "hint": "Tools sind die Haende des Agenten."
+          "hint": "Das LLM erzeugt einen strukturierten Aufruf – das Framework fuehrt ihn aus."
         }
       ]
     },
     {
       "id": "l5",
-      "title": "Der Agent Loop",
+      "title": "Beispiel: GitHub-Integration",
       "blocks": [
         {
-          "type": "diagram",
-          "caption": "Reason - Act - Observe: der Kernzyklus",
-          "nodes": [
+          "type": "text",
+          "text": "GitHub ist die zentrale Plattform fuer Code-Zusammenarbeit. Mit Tool Calling kann ein LLM Pull Requests analysieren, Kommentare verfassen und Code-Aenderungen verarbeiten – direkt im Entwicklungsworkflow."
+        },
+        {
+          "type": "steps",
+          "title": "Typische GitHub-Tools fuer ein LLM",
+          "items": [
             {
-              "id": "goal",
-              "type": "start",
-              "emoji": "🎯",
-              "label": "Aufgabe",
-              "sublabel": "Ziel kommt rein"
+              "label": "lese_pull_request(repo, pr_nummer)",
+              "description": "Gibt Titel, Beschreibung und geaenderte Dateien zurueck.",
+              "example": "lese_pull_request('my-org/backend', 42)"
             },
             {
-              "id": "reason",
-              "type": "step",
-              "emoji": "🤔",
-              "label": "Reason",
-              "sublabel": "Naechsten Schritt planen"
+              "label": "erstelle_kommentar(repo, pr_nummer, kommentar)",
+              "description": "Verfasst einen Review-Kommentar am PR.",
+              "example": "erstelle_kommentar('my-org/backend', 42, 'Bitte Fehlerbehandlung ergaenzen.')"
             },
             {
-              "id": "act",
-              "type": "step",
-              "emoji": "⚡",
-              "label": "Act",
-              "sublabel": "Tool aufrufen"
-            },
-            {
-              "id": "observe",
-              "type": "step",
-              "emoji": "👁",
-              "label": "Observe",
-              "sublabel": "Ergebnis lesen"
-            },
-            {
-              "id": "done",
-              "type": "end",
-              "emoji": "✅",
-              "label": "Fertig",
-              "sublabel": "Ziel erreicht"
+              "label": "lese_datei(repo, pfad, branch)",
+              "description": "Liest den Inhalt einer Datei aus dem Repository.",
+              "example": "lese_datei('my-org/backend', 'src/auth.py', 'main')"
             }
-          ],
-          "loop": {
-            "label": "Ziel noch nicht erreicht"
-          }
+          ]
+        },
+        {
+          "type": "diagram",
+          "caption": "GitHub-Tool Call: PR automatisch zusammenfassen",
+          "nodes": [
+            { "id": "in",    "type": "start", "emoji": "🔀", "label": "Neuer PR",             "sublabel": "PR #42 wurde geoeffnet" },
+            { "id": "read",  "type": "step",  "emoji": "📤", "label": "lese_pull_request()",  "sublabel": "Titel, Diff, Dateien" },
+            { "id": "think", "type": "step",  "emoji": "🧠", "label": "LLM analysiert",       "sublabel": "Was wurde geaendert?" },
+            { "id": "write", "type": "step",  "emoji": "📤", "label": "erstelle_kommentar()", "sublabel": "Zusammenfassung als Kommentar" },
+            { "id": "done",  "type": "end",   "emoji": "✅", "label": "PR kommentiert",        "sublabel": "Team sieht die Zusammenfassung" }
+          ]
         },
         {
           "type": "quizCheck",
-          "question": "In welcher Reihenfolge arbeitet ein Agent?",
+          "question": "Ein LLM soll einen PR-Review-Kommentar schreiben. Welche Tools braucht es mindestens?",
           "options": [
-            "Act - Reason - Observe",
-            "Observe - Act - Reason",
-            "Reason - Act - Observe"
+            "Nur 'erstelle_kommentar()' – es weiss den Inhalt schon.",
+            "Zuerst 'lese_pull_request()' um den PR zu kennen, dann 'erstelle_kommentar()' um zu antworten.",
+            "Kein Tool – es kann direkt auf GitHub zugreifen."
           ],
-          "correct": 2,
-          "hint": "Erst denken, dann handeln, dann schauen."
+          "correct": 1,
+          "hint": "Das LLM muss erst den Kontext lesen, bevor es sinnvoll kommentieren kann."
         }
       ]
     },
     {
       "id": "l6",
-      "title": "Wann lohnt sich ein Agent?",
+      "title": "Mehrere Tools kombinieren",
       "blocks": [
         {
-          "type": "comparison",
-          "left": {
-            "label": "Gut fuer Agenten",
-            "items": [
-              "Unstrukturierte Texte verstehen",
-              "Mehrere Schritte mit Entscheidungen",
-              "Viele Sonderfaelle"
-            ]
-          },
-          "right": {
-            "label": "Besser klassisch loesen",
-            "items": [
-              "Feste Regeln, keine Interpretation",
-              "Exakte Berechnungen",
-              "Hohe Frequenz, minimale Kosten"
-            ]
-          }
+          "type": "callout",
+          "tone": "info",
+          "title": "Der echte Nutzen entsteht durch Kombination",
+          "text": "Die Staerke von Tool Calling liegt nicht im Einzelaufruf, sondern in der Kombination: Ein LLM kann mehrere Tools nacheinander aufrufen – und auf Basis der Ergebnisse entscheiden, was als Naechstes zu tun ist."
+        },
+        {
+          "type": "diagram",
+          "caption": "Kombinierter Ablauf: GitHub-PR → Jira-Ticket",
+          "nodes": [
+            { "id": "pr",    "type": "start", "emoji": "🔀", "label": "Neuer PR",               "sublabel": "PR beschreibt einen Bug-Fix" },
+            { "id": "read",  "type": "step",  "emoji": "📤", "label": "lese_pull_request()",    "sublabel": "PR-Inhalt laden" },
+            { "id": "think", "type": "step",  "emoji": "🧠", "label": "LLM entscheidet",        "sublabel": "Gibt es ein zugehöriges Ticket?" },
+            { "id": "jira",  "type": "step",  "emoji": "📤", "label": "suche_tickets()",        "sublabel": "Passendes Jira-Ticket finden" },
+            { "id": "link",  "type": "step",  "emoji": "📤", "label": "aktualisiere_ticket()",  "sublabel": "PR-Link im Ticket ergaenzen" },
+            { "id": "done",  "type": "end",   "emoji": "✅", "label": "Verknuepft",              "sublabel": "PR und Ticket sind verbunden" }
+          ]
         },
         {
           "type": "quizCheck",
-          "question": "Welche Aufgabe passt gut zu einem KI-Agenten?",
+          "question": "Was ist der Vorteil, wenn ein LLM mehrere Tools kombinieren kann?",
           "options": [
-            "Einen Betrag von EUR in USD umrechnen.",
-            "Support-Tickets lesen und dem richtigen Team zuweisen.",
-            "Jeden Tag um 8 Uhr einen Datenbankexport starten."
+            "Es wird schneller, weil weniger Token verbraucht werden.",
+            "Es kann komplexe Workflows automatisieren, die mehrere Systeme beruehren.",
+            "Es braucht keinen System-Prompt mehr."
           ],
           "correct": 1,
-          "hint": "Braucht die Aufgabe Sprachverstaendnis und Urteil?"
+          "hint": "Einzelne Tool Calls sind gut – kombinierte sind maechtiger."
         }
       ]
     }
@@ -279,88 +269,94 @@
       {
         "id": "q1",
         "type": "single",
-        "lessonRef": "l3",
-        "question": "Was unterscheidet einen KI-Agenten von einem Skript?",
+        "lessonRef": "l2",
+        "question": "Was kann ein LLM ohne Tools NICHT tun?",
         "options": [
-          "Agenten sind immer schneller.",
-          "Ein Agent entscheidet eigenstaendig den naechsten Schritt.",
-          "Skripte koennen keine APIs aufrufen."
+          "Text erzeugen.",
+          "Fragen beantworten.",
+          "Ein Jira-Ticket anlegen."
         ],
-        "correct": 1,
-        "explanation": "Der Kern: autonome Entscheidung bei jedem Schritt."
+        "correct": 2,
+        "explanation": "Ohne Tools kann ein LLM nur Text erzeugen – kein Zugriff auf externe Systeme wie Jira."
       },
       {
         "id": "q2",
-        "type": "multi",
-        "lessonRef": "l4",
-        "question": "Welche vier Elemente bilden einen KI-Agenten? (Mehrfachauswahl)",
+        "type": "single",
+        "lessonRef": "l3",
+        "question": "Wer fuehrt die Funktion aus, nachdem das LLM einen Tool Call erzeugt hat?",
         "options": [
-          "Modell (LLM)",
-          "Instruktionen (System-Prompt)",
-          "Grafikkarte",
-          "Werkzeuge (Tools)",
-          "Speicher (Memory)"
+          "Das LLM selbst.",
+          "Das Agent-Framework.",
+          "Der Nutzer manuell."
         ],
-        "correct": [
-          0,
-          1,
-          3,
-          4
-        ],
-        "explanation": "Modell, Instruktionen, Werkzeuge und Speicher."
+        "correct": 1,
+        "explanation": "Das LLM erzeugt nur den Aufruf. Das Framework fuehrt die Funktion aus und gibt das Ergebnis zurueck."
       },
       {
         "id": "q3",
         "type": "single",
-        "lessonRef": "l5",
-        "question": "In welcher Reihenfolge arbeitet der Agent Loop?",
+        "lessonRef": "l4",
+        "question": "Ein Nutzer sagt: 'Zeig mir alle offenen Bugs im Projekt ES-212.' Welcher Tool Call passt?",
         "options": [
-          "Act - Reason - Observe",
-          "Observe - Act - Reason",
-          "Reason - Act - Observe"
+          "erstelle_ticket('ES-212', 'Bug', ...)",
+          "suche_tickets(projekt='ES-212', status='Offen', typ='Bug')",
+          "aktualisiere_ticket('ES-212', ...)"
         ],
-        "correct": 2,
-        "explanation": "Reason, Act, Observe - wiederholen."
+        "correct": 1,
+        "explanation": "Der Nutzer moechte Tickets suchen – 'suche_tickets()' mit den passenden Parametern ist der richtige Aufruf."
       },
       {
         "id": "q4",
         "type": "single",
-        "lessonRef": "l6",
-        "question": "Welche Aufgabe eignet sich am besten fuer einen KI-Agenten?",
+        "lessonRef": "l5",
+        "question": "Ein LLM soll automatisch einen PR-Review-Kommentar schreiben. Welche Reihenfolge ist korrekt?",
         "options": [
-          "Commits nach Zeitstempel sortieren.",
-          "Support-Tickets kategorisieren und priorisieren.",
-          "Einen Datenbankexport starten."
+          "Zuerst kommentieren, dann den PR lesen.",
+          "Zuerst den PR lesen, dann kommentieren.",
+          "Nur kommentieren – das LLM kennt den PR bereits."
         ],
         "correct": 1,
-        "explanation": "Kategorisierung erfordert Sprachverstaendnis und Urteil."
+        "explanation": "Das LLM muss zuerst den PR-Inhalt laden ('lese_pull_request'), bevor es sinnvoll kommentieren kann."
+      },
+      {
+        "id": "q5",
+        "type": "single",
+        "lessonRef": "l6",
+        "question": "Was beschreibt den groessten Vorteil von Tool Calling?",
+        "options": [
+          "Das LLM braucht weniger Tokens.",
+          "Es kann mehrere Systeme kombiniert ansprechen und komplexe Workflows automatisieren.",
+          "Der System-Prompt wird kleiner."
+        ],
+        "correct": 1,
+        "explanation": "Die Kombination mehrerer Tools erlaubt es, komplexe Prozesse zu automatisieren, die mehrere Systeme (z. B. GitHub und Jira) beruehren."
       }
     ]
   },
   "reference": [
     {
-      "term": "KI-Agent",
-      "definition": "Ein Programm, das ein LLM nutzt, um ein Ziel ueber mehrere Schritte selbststaendig zu verfolgen."
+      "term": "Tool / Werkzeug",
+      "definition": "Eine Funktion, die dem LLM zur Verfuegung steht, um die Aussenwelt zu erreichen – APIs, Datenbanken, Dateisystem."
     },
     {
-      "term": "Agent Loop",
-      "definition": "Reason (planen), Act (handeln), Observe (Ergebnis lesen) - wiederholen bis Ziel erreicht."
+      "term": "Tool Call",
+      "definition": "Ein strukturierter Aufruf (JSON mit Funktionsname + Argumente), den das LLM erzeugt. Das Framework fuehrt die Funktion dann aus und gibt das Ergebnis zurueck."
     },
     {
-      "term": "Modell (LLM)",
-      "definition": "Das Gehirn des Agenten: plant, entscheidet und erzeugt Tool Calls."
+      "term": "Framework",
+      "definition": "Das Programm, das den Tool Call des LLM entgegennimmt, die Funktion ausfuehrt und das Ergebnis an das LLM zurueckgibt (z. B. LangChain, OpenAI Agents SDK)."
     },
     {
-      "term": "Instruktionen",
-      "definition": "Der System-Prompt - legt Rolle, Ziel und Grenzen fest."
+      "term": "Jira-Integration",
+      "definition": "Tool-Funktionen, die das LLM nutzen kann, um Tickets zu suchen, anzulegen oder zu aktualisieren – ueber die Jira-REST-API."
     },
     {
-      "term": "Werkzeuge (Tools)",
-      "definition": "Funktionen fuer den Zugriff auf die Aussenwelt."
+      "term": "GitHub-Integration",
+      "definition": "Tool-Funktionen fuer Pull Requests lesen, Kommentare erstellen und Dateien aus Repositories laden – ueber die GitHub-REST-API."
     },
     {
-      "term": "Speicher (Memory)",
-      "definition": "Gespraechsverlauf und Tool-Ergebnisse im Kontext-Fenster."
+      "term": "Tool-Kombination",
+      "definition": "Das Aufrufen mehrerer Tools nacheinander – die Staerke von Tool Calling liegt in der Verknuepfung mehrerer Systeme in einem Workflow."
     }
   ]
 }

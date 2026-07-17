@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  GraduationCap, BookOpen, ClipboardCheck, Library,
+  GraduationCap, BookOpen, ClipboardCheck,
   Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Info,
 } from 'lucide-react'
 import styles from './App.module.css'
@@ -8,13 +8,13 @@ import { api } from './api'
 import type { Topic, SubTopic, StepId } from './types'
 import LandingPage from './components/LandingPage'
 import AboutPage from './components/AboutPage'
+import GlossaryPage from './components/GlossaryPage'
 import TopicPage from './components/TopicPage'
 import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
 import TestPanel from './components/TestPanel'
-import ReferencePanel from './components/ReferencePanel'
 
-type View = 'landing' | 'about' | 'topic' | 'chapter'
+type View = 'landing' | 'about' | 'glossary' | 'topic' | 'chapter'
 
 interface StepDef {
   id: StepId
@@ -43,9 +43,8 @@ interface CustomPanelProps {
 }
 
 const STEPS: StepDef[] = [
-  { id: 'learn',     num: 1, label: 'Lernen',      hint: 'Inhalte verstehen',       icon: BookOpen },
-  { id: 'test',      num: 2, label: 'Testen',       hint: 'Wissen prüfen',           icon: ClipboardCheck },
-  { id: 'reference', num: 3, label: 'Nachschlagen', hint: 'Begriffe & Definitionen', icon: Library },
+  { id: 'learn',     num: 1, label: 'Lernen',  hint: 'Inhalte verstehen', icon: BookOpen },
+  { id: 'test',      num: 2, label: 'Testen',  hint: 'Wissen prüfen',     icon: ClipboardCheck },
 ]
 
 export default function App() {
@@ -104,6 +103,12 @@ export default function App() {
     setActiveChapterId('')
   }
 
+  const goToGlossary = () => {
+    setView('glossary')
+    setActiveTopicId('')
+    setActiveChapterId('')
+  }
+
   const goToTopic = (topicId: string) => {
     setActiveTopicId(topicId)
     setView('topic')
@@ -131,6 +136,17 @@ export default function App() {
           </button>
           <ChevronRight size={13} className={styles.breadcrumbSep} />
           <span className={styles.breadcrumbCurrent}>Über die Plattform</span>
+        </div>
+      )
+    }
+    if (view === 'glossary') {
+      return (
+        <div className={styles.breadcrumb}>
+          <button className={styles.breadcrumbBtn} onClick={goToLanding}>
+            <ArrowLeft size={13} /> Themenübersicht
+          </button>
+          <ChevronRight size={13} className={styles.breadcrumbSep} />
+          <span className={styles.breadcrumbCurrent}>Nachschlagewerk</span>
         </div>
       )
     }
@@ -180,13 +196,20 @@ export default function App() {
           <span className={styles.brandSub}>Lernen · Testen · Nachschlagen</span>
         </div>
         <div className={styles.headerSpacer} />
-        {(view === 'landing' || view === 'about') ? (
+        {(view === 'landing' || view === 'about' || view === 'glossary') ? (
           <nav className={styles.headerNav}>
             <button
               className={view === 'landing' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
               onClick={goToLanding}
             >
               Themen
+            </button>
+            <button
+              className={view === 'glossary' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              onClick={goToGlossary}
+            >
+              <Info size={13} />
+              Nachschlagen
             </button>
             <button
               className={view === 'about' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
@@ -225,6 +248,13 @@ export default function App() {
       {view === 'about' && (
         <main className={styles.mainFull}>
           <AboutPage onStart={goToLanding} />
+        </main>
+      )}
+
+      {/* ── Glossary Page ────────────────────────────────────────────────────── */}
+      {view === 'glossary' && (
+        <main className={styles.mainFull}>
+          <GlossaryPage />
         </main>
       )}
 
@@ -299,19 +329,19 @@ export default function App() {
                       passed={isPassed}
                       onPassed={() => handleQuizPassed(activeChapterId)}
                       onBackToLearn={() => setStep('learn')}
-                      onOpenReference={() => setStep('reference')}
+                      onOpenReference={() => goToGlossary()}
                     />
                   )
                 }
 
-                // Standard-Flow: Lernen / Testen / Nachschlagen
+                // Standard-Flow: Lernen / Testen
                 return (
                   <>
                     {step === 'learn' && (
                       <LearnPanel
                         chapterId={activeChapterId}
                         onStartTest={() => setStep('test')}
-                        onOpenReference={() => setStep('reference')}
+                        onOpenReference={() => goToGlossary()}
                       />
                     )}
                     {step === 'test' && (
@@ -320,11 +350,8 @@ export default function App() {
                         passed={isPassed}
                         onPassed={() => handleQuizPassed(activeChapterId)}
                         onBackToLearn={() => setStep('learn')}
-                        onOpenReference={() => setStep('reference')}
+                        onOpenReference={() => goToGlossary()}
                       />
-                    )}
-                    {step === 'reference' && (
-                      <ReferencePanel chapterId={activeChapterId} passed={isPassed} />
                     )}
                   </>
                 )
