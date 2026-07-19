@@ -40,7 +40,7 @@
   --ds-color-surface-action-strong:         #1C69D4;
   --ds-color-surface-action-strong-hover:   #0453AF;
   --ds-color-surface-action-strong-active:  #03428C;
-  --ds-color-surface-invert:                #121212;
+  --ds-color-surface-invert:                #1C69D4; /* BMW Blue – Light-Mode-Header/Nav */
   --ds-color-surface-disabled:              #E0E0E0;
   --ds-color-surface-backdrop:              rgba(0,0,0,0.40);
   --ds-color-surface-transparent:           transparent;
@@ -223,7 +223,7 @@
   --bg:              var(--ds-color-surface-page);
   --card-bg:         var(--ds-color-surface-base);
   --nav-bg:          var(--ds-color-surface-invert);
-  --nav-bg-alt:      #1F1F1F;
+  --nav-bg-alt:      #1457B3; /* dunkleres BMW Blue als Alt-Hintergrund */
   --surface-raised:  var(--ds-color-surface-base);
 
   /* Text */
