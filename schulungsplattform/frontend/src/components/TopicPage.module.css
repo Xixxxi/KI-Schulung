@@ -120,7 +120,69 @@
   font-weight: 400;
 }
 
-/* â”€â”€ Unterthemen-Liste â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Tag-Filter-Bar ─────────────────────────────────────────────────────────── */
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-right: 2px;
+}
+
+.filterBtn {
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.filterBtn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.filterBtnActive {
+  background: var(--ds-color-surface-action);
+  border-color: var(--ds-color-surface-action);
+  color: #fff;
+}
+
+.filterBtnActive:hover {
+  background: var(--ds-color-surface-action-hover);
+  border-color: var(--ds-color-surface-action-hover);
+  color: #fff;
+}
+
+.filterBtnBMW:not(.filterBtnActive) {
+  background: rgba(28, 105, 212, 0.06);
+  border-color: rgba(28, 105, 212, 0.25);
+  color: var(--bmw-blue-dark);
+}
+
+.emptyFilter {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 24px 0 8px;
+  font-style: italic;
+}
+
+/* ── Unterthemen-Liste ─────────────────────────────────────────────────────── */
 .subTopicList {
   display: flex;
   flex-direction: column;

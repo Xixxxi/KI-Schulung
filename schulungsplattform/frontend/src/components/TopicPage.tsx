@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BookOpen, ClipboardCheck, Library, ArrowRight, CheckCircle2, Clock, Award } from 'lucide-react'
 import styles from './TopicPage.module.css'
 import type { Topic } from '../types'
@@ -11,6 +12,13 @@ export default function TopicPage({ topic, onSelectChapter }: Props) {
   if (!topic) return null
   const accent = topic.accentColor || '#1c69d4'
   const subs   = topic.subTopics || []
+
+  // ── Tag-Filter ──────────────────────────────────────────────────────────
+  const availableTags = Array.from(
+    new Set(subs.map(s => s.tag).filter((t): t is string => Boolean(t)))
+  )
+  const [activeTag, setActiveTag] = useState<string>('all')
+  const visibleSubs = activeTag === 'all' ? subs : subs.filter(s => s.tag === activeTag)
 
   return (
     <div className={styles.root}>
@@ -49,9 +57,35 @@ export default function TopicPage({ topic, onSelectChapter }: Props) {
           </div>
         </div>
 
-        <div className={styles.subTopicList}>
-          {subs.map((sub, i) => (
+        {/* ── Tag-Filter-Bar ── */}
+        {availableTags.length > 0 && (
+          <div className={styles.filterBar}>
+            <span className={styles.filterLabel}>Filter:</span>
             <button
+              className={`${styles.filterBtn} ${activeTag === 'all' ? styles.filterBtnActive : ''}`}
+              onClick={() => setActiveTag('all')}
+            >
+              Alle
+            </button>
+            {availableTags.map(tag => (
+              <button
+                key={tag}
+                className={`${styles.filterBtn} ${activeTag === tag ? styles.filterBtnActive : ''} ${tag.toLowerCase() === 'bmw-intern' ? styles.filterBtnBMW : ''}`}
+                onClick={() => setActiveTag(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className={styles.subTopicList}>
+          {visibleSubs.length === 0 && (
+            <p className={styles.emptyFilter}>Keine Kapitel für diesen Filter.</p>
+          )}
+          {visibleSubs.map((sub) => {
+            const origIdx = subs.indexOf(sub)
+            return <button
               key={sub.id}
               className={styles.card}
               onClick={() => onSelectChapter(sub.id)}
@@ -59,7 +93,7 @@ export default function TopicPage({ topic, onSelectChapter }: Props) {
             >
               {/* Linke Nummerierung */}
               <div className={styles.cardNum} style={{ background: sub.passed ? '#dcfce7' : `color-mix(in srgb, ${accent} 12%, white 88%)`, color: sub.passed ? '#166534' : accent }}>
-                {sub.passed ? <CheckCircle2 size={16} /> : <span>{i + 1}</span>}
+                {sub.passed ? <CheckCircle2 size={16} /> : <span>{origIdx + 1}</span>}
               </div>
 
               {/* Inhalt */}
@@ -123,7 +157,7 @@ export default function TopicPage({ topic, onSelectChapter }: Props) {
                 <ArrowRight size={16} />
               </div>
             </button>
-          ))}
+          })}
         </div>
       </div>
     </div>
