@@ -9,6 +9,7 @@ import type { Topic, SubTopic, StepId } from './types'
 import LandingPage from './components/LandingPage'
 import AboutPage from './components/AboutPage'
 import GlossaryPage from './components/GlossaryPage'
+import RessourcenPage from './components/RessourcenPage'
 import TopicPage from './components/TopicPage'
 import SubTopicSidebar from './components/SubTopicSidebar'
 import LearnPanel from './components/LearnPanel'
@@ -39,7 +40,7 @@ const CHAPTER_LEARN: Record<string, React.ComponentType<ChapterLearnProps>> = {
   'workflows-deployment': WorkflowsDeployment,
 }
 
-type View = 'landing' | 'about' | 'glossary' | 'settings' | 'topic' | 'chapter'
+type View = 'landing' | 'about' | 'glossary' | 'settings' | 'resources' | 'topic' | 'chapter'
 
 interface StepDef {
   id: StepId
@@ -150,6 +151,12 @@ export default function App() {
     setActiveChapterId('')
   }
 
+  const goToResources = () => {
+    setView('resources')
+    setActiveTopicId('')
+    setActiveChapterId('')
+  }
+
   const goToTopic = (topicId: string) => {
     setActiveTopicId(topicId)
     setView('topic')
@@ -202,6 +209,17 @@ export default function App() {
         </div>
       )
     }
+    if (view === 'resources') {
+      return (
+        <div className={styles.breadcrumb}>
+          <button className={styles.breadcrumbBtn} onClick={goToLanding}>
+            <ArrowLeft size={13} /> Themenübersicht
+          </button>
+          <ChevronRight size={13} className={styles.breadcrumbSep} />
+          <span className={styles.breadcrumbCurrent}>Ressourcen</span>
+        </div>
+      )
+    }
     if (view === 'topic' && activeTopic) {
       return (
         <div className={styles.breadcrumb}>
@@ -248,7 +266,7 @@ export default function App() {
           <span className={styles.brandSub}>Lernen · Testen · Nachschlagen</span>
         </div>
         <div className={styles.headerSpacer} />
-        {(view === 'landing' || view === 'about' || view === 'glossary' || view === 'settings') ? (
+        {(view === 'landing' || view === 'about' || view === 'glossary' || view === 'settings' || view === 'resources') ? (
           <nav className={styles.headerNav}>
             <button
               className={view === 'landing' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
@@ -269,6 +287,12 @@ export default function App() {
             >
               <Info size={13} />
               About
+            </button>
+            <button
+              className={view === 'resources' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              onClick={goToResources}
+            >
+              Ressourcen
             </button>
             <button
               className={view === 'settings' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
@@ -324,7 +348,12 @@ export default function App() {
           <SettingsPage theme={theme} onThemeChange={setTheme} />
         </main>
       )}
-
+      {/* ── Ressourcen Page ─────────────────────────────────────────────────────── */}
+      {view === 'resources' && (
+        <main className={styles.mainFull}>
+          <RessourcenPage />
+        </main>
+      )}
       {/* ── Topic-Seite ─────────────────────────────────────────────────────── */}
       {!loading && !error && view === 'topic' && (
         <main className={styles.mainFull}>
