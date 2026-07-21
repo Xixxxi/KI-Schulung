@@ -63,6 +63,48 @@
   font-weight: 300;
 }
 
+/* ── Toggle Switch ────────────────────────────────────────────────────────── */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 28px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.toggleBtn {
+  padding: 7px 20px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--ds-typography-family-system);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.toggleBtn:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.toggleBtnActive {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.toggleBtnActiveBMW {
+  background: var(--bmw-blue);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(28, 105, 212, 0.4);
+}
+
 /* ── Content ──────────────────────────────────────────────────────────────── */
 .content {
   flex: 1;
@@ -197,10 +239,15 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--bmw-blue);
+  background: var(--bmw-blue-light);
   border: 3px solid var(--bg);
-  box-shadow: 0 0 0 1px var(--bmw-blue);
+  box-shadow: 0 0 0 1px var(--bmw-blue-light);
   flex-shrink: 0;
+}
+
+.dotBMW {
+  background: var(--bmw-blue);
+  box-shadow: 0 0 0 1px var(--bmw-blue);
 }
 
 /* ── Text-Spalte ──────────────────────────────────────────────────────────── */
@@ -287,6 +334,17 @@
   border-color: var(--ds-color-surface-action);
   color: #fff;
   text-decoration: none;
+}
+
+.btnBMW {
+  border-color: var(--bmw-blue);
+  color: var(--bmw-blue);
+}
+
+.btnBMW:hover {
+  background: var(--bmw-blue);
+  border-color: var(--bmw-blue);
+  color: #fff;
 }
 
 /* ── Responsive ───────────────────────────────────────────────────────────── */
