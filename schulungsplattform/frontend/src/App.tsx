@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   GraduationCap, BookOpen, ClipboardCheck,
-  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Info, Settings,
+  Lock, Loader2, AlertTriangle, ArrowLeft, ChevronRight, Settings, ChevronDown,
+  BookMarked, HelpCircle,
 } from 'lucide-react'
 import styles from './App.module.css'
 import { api } from './api'
@@ -82,6 +83,20 @@ export default function App() {
   const [loading, setLoading]                 = useState(true)
   const [error, setError]                     = useState('')
   const [passedChapters, setPassedChapters]   = useState<Record<string, boolean>>({})
+  const [moreOpen, setMoreOpen]               = useState(false)
+  const moreRef                               = useRef<HTMLDivElement>(null)
+
+  // ── Dropdown außerhalb schließen ─────────────────────────────────────────
+  useEffect(() => {
+    if (!moreOpen) return
+    const handler = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [moreOpen])
 
   // ── Theme ─────────────────────────────────────────────────────────────────
   const [theme, setTheme] = useState<Theme>(() => {
@@ -268,40 +283,67 @@ export default function App() {
         <div className={styles.headerSpacer} />
         {(view === 'landing' || view === 'about' || view === 'glossary' || view === 'settings' || view === 'resources') ? (
           <nav className={styles.headerNav}>
+            {/* Themen */}
             <button
               className={view === 'landing' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
               onClick={goToLanding}
             >
               Themen
             </button>
-            <button
-              className={view === 'glossary' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
-              onClick={goToGlossary}
-            >
-              <Info size={13} />
-              Nachschlagen
-            </button>
-            <button
-              className={view === 'about' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
-              onClick={goToAbout}
-            >
-              <Info size={13} />
-              About
-            </button>
+
+            {/* Ressourcen */}
             <button
               className={view === 'resources' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
               onClick={goToResources}
             >
               Ressourcen
             </button>
-            <button
-              className={view === 'settings' ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
-              onClick={goToSettings}
-              aria-label="Einstellungen"
-            >
-              <Settings size={13} />
-              Einstellungen
-            </button>
+
+            {/* Mehr ▾ */}
+            <div className={styles.moreWrapper} ref={moreRef}>
+              <button
+                className={
+                  (view === 'glossary' || view === 'about' || view === 'settings')
+                    ? `${styles.navLink} ${styles.navLinkActive} ${styles.moreBtn}`
+                    : `${styles.navLink} ${styles.moreBtn}`
+                }
+                onClick={() => setMoreOpen(o => !o)}
+                aria-haspopup="true"
+                aria-expanded={moreOpen}
+              >
+                Mehr <ChevronDown size={12} className={moreOpen ? styles.chevronOpen : styles.chevronClosed} />
+              </button>
+
+              {moreOpen && (
+                <div className={styles.dropdown} role="menu">
+                  <button
+                    className={`${styles.dropdownItem} ${view === 'glossary' ? styles.dropdownItemActive : ''}`}
+                    role="menuitem"
+                    onClick={() => { goToGlossary(); setMoreOpen(false) }}
+                  >
+                    <BookMarked size={15} />
+                    Nachschlagen
+                  </button>
+                  <button
+                    className={`${styles.dropdownItem} ${view === 'about' ? styles.dropdownItemActive : ''}`}
+                    role="menuitem"
+                    onClick={() => { goToAbout(); setMoreOpen(false) }}
+                  >
+                    <HelpCircle size={15} />
+                    Über die Plattform
+                  </button>
+                  <div className={styles.dropdownDivider} />
+                  <button
+                    className={`${styles.dropdownItem} ${view === 'settings' ? styles.dropdownItemActive : ''}`}
+                    role="menuitem"
+                    onClick={() => { goToSettings(); setMoreOpen(false) }}
+                  >
+                    <Settings size={15} />
+                    Einstellungen
+                  </button>
+                </div>
+              )}
+            </div>
           </nav>
         ) : (
           renderBreadcrumb()

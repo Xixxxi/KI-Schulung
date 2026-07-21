@@ -101,6 +101,81 @@
   font-weight: 600;
 }
 
+/* ── "Mehr"-Dropdown ─────────────────────────────────────────────────────── */
+.moreWrapper {
+  position: relative;
+}
+
+.moreBtn {
+  gap: 5px;
+}
+
+.chevronClosed {
+  transition: transform 0.18s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+  transition: transform 0.18s ease;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--shadow-2);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 999;
+  animation: dropdownIn 0.14s ease;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: none;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--ds-typography-family-system);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  width: 100%;
+}
+
+.dropdownItem:hover {
+  background: var(--ds-color-surface-action-ghost);
+  color: var(--ds-color-typography-action);
+}
+
+.dropdownItemActive {
+  background: rgba(28, 105, 212, 0.08);
+  color: var(--bmw-blue);
+  font-weight: 600;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
 /* ── Breadcrumb ─────────────────────────────────────────────────────────── */
 .breadcrumb {
   display: flex;
