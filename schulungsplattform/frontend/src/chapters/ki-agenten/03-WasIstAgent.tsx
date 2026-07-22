@@ -7,6 +7,7 @@ import {
   Callout, Steps, Text, Diagram, Cards,
   Comparison, QuizCheck,
 } from '../shared/Blocks'
+import type { ChapterDef } from '../../content/types'
 
 interface Props {
   onStartTest: () => void
@@ -244,4 +245,75 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
       ]}
     />
   )
+}
+
+// ── Kapitel-Definition (Metadaten, Quiz, Nachschlagewerk) ────────────────────
+export const chapter: ChapterDef = {
+  id: 'ki-agenten',
+  title: 'Was ist ein Agent und wie arbeitet er?',
+  subTopicTitle: 'Was ist ein Agent und wie arbeitet er?',
+  summary:
+    'Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent wirklich lohnt.',
+  subTopicDescription:
+    'Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent lohnt.',
+  estimatedMinutes: 12,
+  lessonCount: 6,
+  tag: 'Allgemein',
+  Learn: WasIstAgent,
+  quiz: {
+    passThreshold: 0.7,
+    questions: [
+      {
+        id: 'q1',
+        type: 'single',
+        question: 'Was unterscheidet einen KI-Agenten von einem Skript?',
+        options: [
+          'Agenten sind immer schneller.',
+          'Ein Agent entscheidet eigenständig den nächsten Schritt.',
+          'Skripte können keine APIs aufrufen.',
+        ],
+        correct: 1,
+        explanation: 'Der Kern: autonome Entscheidung bei jedem Schritt.',
+        reviewLesson: 'Agent vs. Chatbot vs. Skript',
+      },
+      {
+        id: 'q2',
+        type: 'multi',
+        question: 'Welche vier Elemente bilden einen KI-Agenten? (Mehrfachauswahl)',
+        options: [
+          'Modell (LLM)',
+          'Instruktionen (System-Prompt)',
+          'Grafikkarte',
+          'Werkzeuge (Tools)',
+          'Speicher (Memory)',
+        ],
+        correct: [0, 1, 3, 4],
+        explanation: 'Modell, Instruktionen, Werkzeuge und Speicher \u2013 das sind die vier Bausteine.',
+        reviewLesson: 'Die vier Bausteine eines Agenten',
+      },
+      {
+        id: 'q3',
+        type: 'single',
+        question: 'In welcher Reihenfolge arbeitet der Agent Loop?',
+        options: ['Act \u2013 Reason \u2013 Observe', 'Observe \u2013 Act \u2013 Reason', 'Reason \u2013 Act \u2013 Observe'],
+        correct: 2,
+        explanation: 'Reason, Act, Observe \u2013 wiederholen bis das Ziel erreicht ist.',
+        reviewLesson: 'Der Agent Loop: Reason \u2013 Act \u2013 Observe',
+      },
+      {
+        id: 'q4',
+        type: 'single',
+        question: 'Welche Aufgabe eignet sich am besten für einen KI-Agenten?',
+        options: [
+          'Commits nach Zeitstempel sortieren.',
+          'Support-Tickets kategorisieren und priorisieren.',
+          'Jeden Tag um 8 Uhr einen Datenbankexport starten.',
+        ],
+        correct: 1,
+        explanation:
+          'Kategorisierung erfordert Sprachverständnis und Urteilsvermögen \u2013 ideal für einen Agenten.',
+        reviewLesson: 'Wann lohnt sich ein Agent?',
+      },
+    ],
+  },
 }

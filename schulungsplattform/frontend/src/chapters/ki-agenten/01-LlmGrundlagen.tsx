@@ -9,6 +9,7 @@ import {
   Callout, Steps, Text, Diagram, Cards,
   Comparison, QuizCheck,
 } from '../shared/Blocks'
+import type { ChapterDef } from '../../content/types'
 
 interface Props {
   onStartTest: () => void
@@ -219,4 +220,77 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
       ]}
     />
   )
+}
+
+// ── Kapitel-Definition (Metadaten, Quiz, Nachschlagewerk) ────────────────────
+export const chapter: ChapterDef = {
+  id: 'llm-grundlagen',
+  title: 'Was LLMs sind und wie sie arbeiten',
+  subTopicTitle: 'Was LLMs sind und wie sie arbeiten',
+  summary: "LLMs als Text-Vorhersage-Systeme, Tokens, Kontext-Fenster und das Prinzip 'alles ist Text'.",
+  subTopicDescription:
+    'Das Grundprinzip: Text rein, Text raus \u2013 Tokens, Kontext-Fenster und warum LLMs keine Gedanken haben.',
+  estimatedMinutes: 10,
+  lessonCount: 6,
+  tag: 'Allgemein',
+  Learn: LlmGrundlagen,
+  quiz: {
+    passThreshold: 0.7,
+    questions: [
+      {
+        id: 'q1',
+        type: 'single',
+        question: 'Was macht ein LLM im Kern?',
+        options: [
+          'Es speichert Daten in einer Datenbank.',
+          'Es empfängt Text und erzeugt Text.',
+          'Es führt Programme direkt aus.',
+        ],
+        correct: 1,
+        explanation: 'Ein LLM ist im Kern eine Text-zu-Text-Maschine.',
+        reviewLesson: 'Wie LLMs arbeiten',
+      },
+      {
+        id: 'q2',
+        type: 'multi',
+        question: 'Welche Formate muss ein LLM als Text erhalten? (Mehrfachauswahl)',
+        options: [
+          'PDFs (als extrahierter Text)',
+          'Bilder direkt als Pixel-Array',
+          'Datenbankinhalte (z. B. als JSON/CSV)',
+          'API-Antworten (als Text konvertiert)',
+        ],
+        correct: [0, 2, 3],
+        explanation:
+          'PDFs, Datenbankinhalte und API-Antworten müssen in Text umgewandelt werden. Bilder sind nur bei multimodalen Modellen direkt verarbeitbar.',
+        reviewLesson: 'Alles ist Text (oder unterstützte Modalitäten)',
+      },
+      {
+        id: 'q3',
+        type: 'single',
+        question: 'Erinnert sich ein LLM automatisch an frühere Gespräche?',
+        options: [
+          'Ja, es hat ein permanentes Gedächtnis.',
+          'Nein \u2013 alles muss im Kontext-Fenster stehen.',
+          'Nur wenn man es darum bittet.',
+        ],
+        correct: 1,
+        explanation: 'LLMs sind zustandslos. Alles muss explizit im Kontext-Fenster mitgegeben werden.',
+        reviewLesson: 'Das Kontext-Fenster',
+      },
+      {
+        id: 'q4',
+        type: 'single',
+        question: 'Was passiert wirklich, wenn ein LLM eine Antwort erzeugt?',
+        options: [
+          'Es denkt wie ein Mensch und formuliert eine eigene Meinung.',
+          'Es sagt das wahrscheinlichste nächste Token basierend auf dem Kontext voraus.',
+          'Es schlägt die Antwort in einer Datenbank nach.',
+        ],
+        correct: 1,
+        explanation: 'LLMs sind Vorhersage-Systeme. Die Qualität der Eingabe bestimmt die Qualität der Ausgabe.',
+        reviewLesson: 'Vorhersagen statt Verstehen',
+      },
+    ],
+  },
 }

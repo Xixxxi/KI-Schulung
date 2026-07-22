@@ -7,6 +7,7 @@ import {
   Callout, Steps, Text, Diagram,
   Comparison, QuizCheck,
 } from '../shared/Blocks'
+import type { ChapterDef } from '../../content/types'
 
 interface Props {
   onStartTest: () => void
@@ -240,4 +241,86 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
       ]}
     />
   )
+}
+
+// ── Kapitel-Definition (Metadaten, Quiz, Nachschlagewerk) ────────────────────
+export const chapter: ChapterDef = {
+  id: 'tool-calling',
+  title: 'Wie kommunizieren LLMs mit der Außenwelt?',
+  subTopicTitle: 'Wie kommunizieren LLMs mit der Außenwelt?',
+  summary:
+    'Warum LLMs Werkzeuge brauchen, wie ein Tool Call Schritt für Schritt abläuft und konkrete Beispiele mit Jira und GitHub.',
+  subTopicDescription:
+    'Tool Calling: Wie ein LLM Jira-Tickets anlegt, GitHub-PRs liest und externe Systeme steuert.',
+  estimatedMinutes: 12,
+  lessonCount: 6,
+  tag: 'Allgemein',
+  Learn: ToolCalling,
+  quiz: {
+    passThreshold: 0.7,
+    questions: [
+      {
+        id: 'q1',
+        type: 'single',
+        question: 'Was kann ein LLM ohne Tools NICHT tun?',
+        options: ['Text erzeugen.', 'Fragen beantworten.', 'Ein Jira-Ticket anlegen.'],
+        correct: 2,
+        explanation:
+          'Ohne Tools kann ein LLM nur Text erzeugen \u2013 kein Zugriff auf externe Systeme wie Jira.',
+        reviewLesson: 'Das Problem: LLMs können nur Text',
+      },
+      {
+        id: 'q2',
+        type: 'single',
+        question: 'Wer führt die Funktion aus, nachdem das LLM einen Tool Call erzeugt hat?',
+        options: ['Das LLM selbst.', 'Das Agent-Framework.', 'Der Nutzer manuell.'],
+        correct: 1,
+        explanation:
+          'Das LLM erzeugt nur den Aufruf. Das Framework führt die Funktion aus und gibt das Ergebnis zurück.',
+        reviewLesson: 'Was ist ein Tool Call?',
+      },
+      {
+        id: 'q3',
+        type: 'single',
+        question: "Ein Nutzer sagt: 'Zeig mir alle offenen Bugs im Projekt ES-212.' Welcher Tool Call passt?",
+        options: [
+          "erstelle_ticket('ES-212', 'Bug', ...)",
+          "suche_tickets(projekt='ES-212', status='Offen', typ='Bug')",
+          "aktualisiere_ticket('ES-212', ...)",
+        ],
+        correct: 1,
+        explanation:
+          "Der Nutzer möchte Tickets suchen \u2013 'suche_tickets()' mit den passenden Parametern ist der richtige Aufruf.",
+        reviewLesson: 'Beispiel: Jira-Integration',
+      },
+      {
+        id: 'q4',
+        type: 'single',
+        question: 'Ein LLM soll automatisch einen PR-Review-Kommentar schreiben. Welche Reihenfolge ist korrekt?',
+        options: [
+          'Zuerst kommentieren, dann den PR lesen.',
+          'Zuerst den PR lesen, dann kommentieren.',
+          'Nur kommentieren \u2013 das LLM kennt den PR bereits.',
+        ],
+        correct: 1,
+        explanation:
+          "Das LLM muss zuerst den PR-Inhalt laden ('lese_pull_request'), bevor es sinnvoll kommentieren kann.",
+        reviewLesson: 'Beispiel: GitHub-Integration',
+      },
+      {
+        id: 'q5',
+        type: 'single',
+        question: 'Was beschreibt den größten Vorteil von Tool Calling?',
+        options: [
+          'Das LLM braucht weniger Tokens.',
+          'Es kann mehrere Systeme kombiniert ansprechen und komplexe Workflows automatisieren.',
+          'Der System-Prompt wird kleiner.',
+        ],
+        correct: 1,
+        explanation:
+          'Die Kombination mehrerer Tools erlaubt es, komplexe Prozesse zu automatisieren, die mehrere Systeme (z. B. GitHub und Jira) berühren.',
+        reviewLesson: 'Mehrere Tools kombinieren',
+      },
+    ],
+  },
 }

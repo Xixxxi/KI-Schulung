@@ -77,7 +77,7 @@ if !errorlevel! neq 0 (
 echo.
 echo [INFO] Pruefe Backend-Dateien ...
 set "BACKEND_FILES_OK=1"
-for %%F in (app.py content_store.py) do (
+for %%F in (app.py) do (
     if not exist "%BACKEND_DIR%\%%F" (
         echo [FEHLER] Fehlende Backend-Datei: %BACKEND_DIR%\%%F
         set "BACKEND_FILES_OK=0"

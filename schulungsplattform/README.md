@@ -1,6 +1,8 @@
 # KI-Schulungsplattform
 
-Interne Lernplattform für KI-Themen. Aufgebaut als React-SPA (Vite) + Flask-Backend. Inhalte werden ausschließlich über JSON-Dateien gepflegt – kein Code nötig, um neue Themen, Kapitel oder Lektionen hinzuzufügen.
+Interne Lernplattform für KI-Themen. Aufgebaut als React-SPA (Vite + TypeScript) + schlankes Flask-Backend. **Alle Inhalte** (Lektionen, Quiz und Nachschlagewerk) werden direkt in **TSX-Kapiteldateien** gepflegt. Das Backend dient ausschließlich der Fortschritts-Speicherung und als Grundlage für spätere Account-Verwaltung.
+
+> **Migrationshinweis:** Früher wurden die Inhalte über JSON-Dateien gepflegt. Diese liegen jetzt nur noch als Legacy-Referenz unter `docs/legacy-content/` und werden **nicht** mehr von der Anwendung geladen.
 
 ---
 
@@ -9,10 +11,10 @@ Interne Lernplattform für KI-Themen. Aufgebaut als React-SPA (Vite) + Flask-Bac
 1. [Konzept & Begriffe](#1-konzept--begriffe)
 2. [Plattform-Architektur](#2-plattform-architektur)
 3. [Inhalts-Hierarchie](#3-inhalts-hierarchie)
-4. [JSON-Schema eines Kapitels](#4-json-schema-eines-kapitels)
-5. [Block-Typen (Lektions-Inhalte)](#5-block-typen-lektions-inhalte)
+4. [Aufbau einer Kapitel-TSX-Datei](#4-aufbau-einer-kapitel-tsx-datei)
+5. [Bausteine für Lektionen (Blocks)](#5-bausteine-für-lektionen-blocks)
 6. [Quiz-Fragen-Typen](#6-quiz-fragen-typen)
-7. [Datei-Namenskonvention & Ordner](#7-datei-namenskonvention--ordner)
+7. [Datei-Namenskonvention & Registry](#7-datei-namenskonvention--registry)
 8. [Aktuelle Inhalte](#8-aktuelle-inhalte)
 9. [Neue Inhalte hinzufügen](#9-neue-inhalte-hinzufügen)
 10. [One-Screen-Constraint](#10-one-screen-constraint)
@@ -25,12 +27,12 @@ Interne Lernplattform für KI-Themen. Aufgebaut als React-SPA (Vite) + Flask-Bac
 
 | Begriff | Bedeutung |
 |---|---|
-| **Thema** (Topic) | Oberste Gruppierungsebene (z. B. „KI-Agenten und Automatisierung"). Mehrere Kapitel gehören zu einem Thema. |
-| **Kapitel** (Chapter / SubTopic) | Eine JSON-Datei = ein Kapitel. Enthält Lektionen, Quiz und Referenz-Einträge. Wird in der UI als Unterpunkt des Themas angezeigt. |
-| **Lektion** (Lesson) | Eine einzelne, bildschirmfüllende Lerneinheit innerhalb eines Kapitels. Besteht aus mehreren inhaltlichen Blöcken. |
-| **Block** | Kleinste Inhaltseinheit einer Lektion (Text, Liste, Callout, Code, Diagramm, …). |
-| **Quiz** | Wissenstest am Ende eines Kapitels (serverseitig ausgewertet, Lösungen nie im Frontend sichtbar). |
-| **Referenz** | Glossar-ähnliche Nachschlage-Einträge pro Kapitel. |
+| **Thema** (Topic) | Oberste Gruppierungsebene (z. B. „KI-Agenten und Automatisierung"). Mehrere Kapitel gehören zu einem Thema. Wird in der Registry definiert. |
+| **Kapitel** (Chapter / SubTopic) | Eine TSX-Datei = ein Kapitel. Enthält die Lern-Komponente und das Quiz. Wird in der UI als Unterpunkt des Themas angezeigt. |
+| **Lektion** (Lesson) | Eine einzelne, bildschirmfüllende Lerneinheit innerhalb eines Kapitels. Als JSX in der Lern-Komponente umgesetzt. |
+| **Block** | Wiederverwendbare Präsentations-Komponente einer Lektion (Text, Liste, Callout, Code, Diagramm, …) aus `chapters/shared/Blocks.tsx`. |
+| **Quiz** | Wissenstest am Ende eines Kapitels. Wird **clientseitig** ausgewertet; die Ergebnisse werden ans Backend gemeldet. |
+| **Referenz** | Glossar-ähnliche Nachschlage-Einträge. Liegen bewusst getrennt in `content/reference.ts`, sind aber ihrem Kapitel (chapterId) zugeordnet. |
 
 ---
 
@@ -39,51 +41,64 @@ Interne Lernplattform für KI-Themen. Aufgebaut als React-SPA (Vite) + Flask-Bac
 ```
 schulungsplattform/
 ├── backend/
-│   ├── app.py              # Flask-App, API-Routen, ProgressStore (In-Memory)
-│   ├── content_store.py    # Lädt & verarbeitet alle Kapitel-JSON-Dateien
-│   ├── requirements.txt
-│   └── content/            # ← HIER LIEGEN DIE INHALTE (JSON-Dateien)
-│       ├── 01-llm-grundlagen.json
-│       ├── 02-ki-agenten.json
-│       └── ...
+│   ├── app.py              # Flask-App: Fortschritt-API + Auslieferung des Frontend-Builds
+│   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx                  # Routing: Landing → Topic → Chapter
-│   │   ├── api.js                   # Fetch-Wrapper für alle Backend-Aufrufe
+│   │   ├── App.tsx                     # Routing: Landing → Topic → Chapter
+│   │   ├── api.ts                      # Fetch-Wrapper (nur Health + Fortschritt)
+│   │   ├── types.ts                    # UI-Typen (Topic, SubTopic, Quiz, …)
+│   │   ├── content/
+│   │   │   ├── types.ts                # Autoren-Typen (ChapterDef, QuizQuestion, …)
+│   │   │   ├── reference.ts            # Nachschlagewerk (getrennt, nach chapterId)
+│   │   │   ├── quiz.ts                 # Quiz-Aufbereitung & clientseitige Auswertung
+│   │   │   └── registry.ts             # ← fügt Kapitel, Quiz & Referenz zusammen
+│   │   ├── chapters/
+│   │   │   ├── ki-agenten/
+│   │   │   │   ├── 01-LlmGrundlagen.tsx        # ← HIER LIEGEN DIE INHALTE
+│   │   │   │   ├── 02-ToolCalling.tsx
+│   │   │   │   └── ...
+│   │   │   └── shared/
+│   │   │       ├── Blocks.tsx          # Wiederverwendbare Inhalts-Bausteine
+│   │   │       └── ChapterFrame.tsx    # Lektions-Rahmen (Fortschritt, Dot-Nav)
 │   │   └── components/
-│   │       ├── LandingPage.jsx      # Themen-Übersicht (Kacheln)
-│   │       ├── TopicPage.jsx        # Kapitel-Übersicht eines Themas
-│   │       ├── SubTopicSidebar.jsx  # Linke Sidebar in der Kapitel-Ansicht
-│   │       ├── LearnPanel.jsx       # Lektions-Renderer (alle Block-Typen)
-│   │       ├── TestPanel.jsx        # Quiz-Ansicht
-│   │       └── ReferencePanel.jsx  # Glossar-Ansicht
-│   └── vite.config.js
-└── dev_hosting.bat         # Startet Backend + Frontend in einem Fenster
+│   │       ├── LandingPage.tsx         # Themen-Übersicht (Kacheln)
+│   │       ├── TopicPage.tsx           # Kapitel-Übersicht eines Themas
+│   │       ├── SubTopicSidebar.tsx     # Linke Sidebar in der Kapitel-Ansicht
+│   │       ├── TestPanel.tsx           # Quiz-Ansicht (clientseitig ausgewertet)
+│   │       ├── ReferencePanel.tsx      # Glossar-Ansicht (Kapitel)
+│   │       └── GlossaryPage.tsx        # Zentrales Glossar (alle Kapitel)
+│   └── vite.config.ts
+└── dev_hosting.bat         # Baut Frontend + startet Backend in einem Fenster
+
+docs/
+└── legacy-content/         # Archivierte JSON-Inhalte (nicht mehr aktiv genutzt)
 ```
 
 **Datenfluss:**
 ```
-JSON-Datei  →  content_store.py  →  Flask API  →  React-Frontend
+Kapitel-TSX  →  content/registry.ts  →  React-Frontend
+                                     ↘  Fortschritt  →  Flask API (/api/progress)
 ```
 
-Der `content_store.py` scannt beim Start **automatisch** alle `*.json`-Dateien im `content/`-Ordner. Es ist kein Code-Eingriff nötig, um neue Inhalte zu laden.
+Die `registry.ts` importiert jedes Kapitel und stellt daraus die Themenstruktur, das Quiz (über `content/quiz.ts`) und das Nachschlagewerk (über `content/reference.ts`) bereit. Es ist **kein** Backend-Aufruf nötig, um Inhalte zu laden.
 
 ---
 
 ## 3. Inhalts-Hierarchie
 
 ```
-Thema (Topic)
-└── Kapitel 1 (Chapter / JSON-Datei)
-│   ├── Lektion 1
-│   │   ├── Block (text)
-│   │   ├── Block (callout)
-│   │   └── Block (quizCheck)
+Thema (Topic – in registry.ts)
+└── Kapitel 1 (Chapter / TSX-Datei)
+│   ├── Lektion 1 (JSX in der Learn-Komponente)
+│   │   ├── <Text>
+│   │   ├── <Callout>
+│   │   └── <QuizCheck>
 │   ├── Lektion 2
 │   │   └── ...
-│   ├── Quiz (4–8 Fragen)
-│   └── Referenz (Glossar-Einträge)
-└── Kapitel 2 (Chapter / JSON-Datei)
+│   ├── quiz     (4–8 Fragen, mit Lösungen im chapter-Export)
+│   └── (Referenz → content/reference.ts, unter derselben chapterId)
+└── Kapitel 2 (Chapter / TSX-Datei)
     └── ...
 ```
 
@@ -92,245 +107,156 @@ Thema (Topic)
 2. **Topic-Seite** → Kapitel-Kacheln (mit Fortschrittsanzeige)
 3. **Kapitel-Ansicht** → 3 Tabs: `Lernen` / `Testen` / `Nachschlagen`
    - Im **Lernen**-Tab: Lektionen als Folien (Dot-Navigation), eine Lektion = ein Screen
-   - Im **Testen**-Tab: Quiz, serverseitig ausgewertet
+   - Im **Testen**-Tab: Quiz, clientseitig ausgewertet, Ergebnis wird ans Backend gemeldet
    - Im **Nachschlagen**-Tab: Glossar
 
 ---
 
-## 4. JSON-Schema eines Kapitels
+## 4. Aufbau einer Kapitel-TSX-Datei
 
-Jede JSON-Datei in `backend/content/` beschreibt genau **ein Kapitel**.
+Jede TSX-Datei in `frontend/src/chapters/<thema>/` beschreibt genau **ein Kapitel**. Sie besteht aus zwei Teilen:
 
-```jsonc
-{
-  // ── Thema-Metadaten (gleich für alle Kapitel desselben Themas) ──────────
-  "topicId":          "ki-agenten",                        // Gruppierschlüssel
-  "topicTitle":       "KI-Agenten und Automatisierung",    // Anzeigename des Themas
-  "topicDescription": "Kurzbeschreibung des Themas …",
-  "topicIcon":        "🤖",                                // Emoji
-  "topicAccentColor": "#1c69d4",                           // Hex-Farbe (BMW-Blau)
-  "topicOrder":       1,                                   // Reihenfolge der Themen
+1. Einer **Lern-Komponente** (`export default function …`), die die Lektionen als JSX rendert.
+2. Einem **`chapter`-Export** (`export const chapter: ChapterDef`), der Metadaten und das Quiz (inkl. Lösungen) enthält. Das Nachschlagewerk liegt separat in `content/reference.ts`.
 
-  // ── Kapitel-Metadaten ────────────────────────────────────────────────────
-  "id":               "llm-grundlagen",    // EINDEUTIG, URL-safe, = API-Schlüssel
-  "order":            1,                   // Reihenfolge innerhalb des Themas
-  "title":            "Wie LLMs funktionieren",  // Anzeige in Breadcrumb & Tabs
-  "subTopicTitle":    "Wie LLMs funktionieren",  // Anzeige in der Topic-Kachel (oft = title)
-  "subTopicDescription": "Kurzbeschreibung …",   // Unter der Kachel
-  "summary":          "Kurzbeschreibung für die Sidebar …",
-  "estimatedMinutes": 15,
-  "tag":              "Allgemein",         // Optional: "Allgemein" | "BMW-intern" | …
+```tsx
+import type { ChapterDef, ChapterLearnProps } from '../../content/types'
+import ChapterFrame from '../shared/ChapterFrame'
+import { Text, Callout, List, QuizCheck } from '../shared/Blocks'
 
-  // ── Lektionen ────────────────────────────────────────────────────────────
-  "lessons": [
-    {
-      "id":     "l1",              // Eindeutig im Kapitel, wird als lessonRef im Quiz genutzt
-      "title":  "Lektionstitel",
-      "blocks": [ /* siehe Block-Typen */ ]
-    }
-  ],
+// ── 1) Lern-Komponente ──────────────────────────────────────────────────────
+export default function LlmGrundlagen({ onStartTest, onOpenReference }: ChapterLearnProps) {
+  return (
+    <ChapterFrame
+      onStartTest={onStartTest}
+      onOpenReference={onOpenReference}
+      lessons={[
+        {
+          title: 'Was ist ein LLM?',
+          content: (
+            <>
+              <Text text="Ein Large Language Model …" />
+              <Callout tone="info" title="Merke" text="…" />
+            </>
+          ),
+        },
+        // weitere Lektionen …
+      ]}
+    />
+  )
+}
 
-  // ── Quiz ─────────────────────────────────────────────────────────────────
-  "quiz": {
-    "passThreshold": 0.7,          // 70 % zum Bestehen
-    "questions": [ /* siehe Quiz-Typen */ ]
+// ── 2) Kapitel-Definition (Meta + Quiz + Referenz) ──────────────────────────
+export const chapter: ChapterDef = {
+  id: 'llm-grundlagen',            // EINDEUTIG, URL-safe, = Registry-Schlüssel
+  title: 'Wie LLMs funktionieren',
+  subTopicTitle: 'Wie LLMs funktionieren',
+  summary: 'Kurzbeschreibung für die Sidebar …',
+  subTopicDescription: 'Kurzbeschreibung unter der Kachel …',
+  estimatedMinutes: 15,
+  lessonCount: 5,
+  tag: 'Allgemein',                // Optional
+  Learn: LlmGrundlagen,            // Verweis auf die Lern-Komponente oben
+  quiz: {
+    passThreshold: 0.7,            // 70 % zum Bestehen (Default)
+    questions: [ /* siehe Quiz-Typen */ ],
   },
-
-  // ── Referenz / Glossar ───────────────────────────────────────────────────
-  "reference": [
-    { "term": "Begriff", "definition": "Erklärung …" }
-  ]
 }
 ```
 
-> **Wichtig:** Das Feld `"id"` ist der API-Schlüssel. Es muss über **alle** JSON-Dateien hinweg eindeutig sein und darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten (URL-safe).
+> **Wichtig:** Das Feld `id` ist der Registry-Schlüssel. Es muss über **alle** Kapitel hinweg eindeutig sein und darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten (URL-safe). Die passenden Nachschlage-Einträge werden in [`content/reference.ts`](frontend/src/content/reference.ts) unter derselben `id` gepflegt.
 
 ---
 
-## 5. Block-Typen (Lektions-Inhalte)
+## 5. Bausteine für Lektionen (Blocks)
 
-Jede Lektion hat ein `"blocks"`-Array. Die Reihenfolge bestimmt die visuelle Ausgabe.
+Die Lektions-Inhalte werden mit den wiederverwendbaren Komponenten aus [`chapters/shared/Blocks.tsx`](frontend/src/chapters/shared/Blocks.tsx) aufgebaut. Statt eines JSON-Block-Arrays wird JSX geschrieben, z. B.:
 
-### `text`
-Fließtext. Markdown-Subsets werden **nicht** interpretiert – Plaintext.
-```json
-{ "type": "text", "text": "Erklärungstext …" }
+```tsx
+<Text text="Fließtext …" />
+
+<Callout tone="tip" title="Hinweis" text="Inhalt …" />
+
+<List title="Optionaler Titel" items={['Punkt 1', 'Punkt 2']} />
+
+<QuizCheck
+  blockKey="l2-quiz"
+  question="Verständnisfrage direkt in der Lektion"
+  options={['A', 'B', 'C']}
+  correct={1}
+  hint="Tipp …"
+/>
 ```
 
-### `callout`
-Hervorgehobener Hinweis-Kasten. Tone steuert die Farbe.
-```json
-{
-  "type":  "callout",
-  "tone":  "info",       // "info" | "tip" | "warn"
-  "title": "Hinweis",
-  "text":  "Inhalt …"
-}
-```
-
-### `list`
-Aufzählungsliste mit optionalem Titel.
-```json
-{
-  "type":  "list",
-  "title": "Optionaler Titel",
-  "items": ["Punkt 1", "Punkt 2", "Punkt 3"]
-}
-```
-
-### `cards`
-Kachel-Raster (3 Spalten) für Begriffe/Konzepte mit Icon.
-```json
-{
-  "type":  "cards",
-  "title": "Optionaler Titel",
-  "items": [
-    { "icon": "🧠", "label": "Begriff", "description": "Kurzbeschreibung" }
-  ]
-}
-```
-
-### `comparison`
-Zwei-Spalten-Vergleich (links vs. rechts).
-```json
-{
-  "type": "comparison",
-  "left":  { "label": "Variante A", "items": ["Merkmal 1", "Merkmal 2"] },
-  "right": { "label": "Variante B", "items": ["Merkmal 1", "Merkmal 2"] }
-}
-```
-
-### `steps`
-Nummerierte Schritt-für-Schritt-Abfolge.
-```json
-{
-  "type":  "steps",
-  "title": "Optionaler Titel",
-  "items": [
-    { "label": "Schritt 1", "description": "Was passiert …", "example": "Optional: Beispiel" }
-  ]
-}
-```
-
-### `code`
-Code-Block mit Syntax-Highlighting.
-```json
-{
-  "type":     "code",
-  "language": "python",    // "python" | "json" | "bash" | "javascript" | …
-  "caption":  "Optionale Überschrift",
-  "text":     "print('Hello World')"
-}
-```
-
-### `diagram`
-Ablauf-Diagramm (Nodes + optionaler Loop-Pfeil).
-```json
-{
-  "type":    "diagram",
-  "caption": "Optionaler Titel",
-  "nodes": [
-    { "id": "n1", "label": "Start",      "shape": "rounded" },
-    { "id": "n2", "label": "Verarbeite", "shape": "rect"    },
-    { "id": "n3", "label": "Ende",       "shape": "rounded" }
-  ],
-  "loop": {
-    "from":  "n3",
-    "to":    "n1",
-    "label": "Wiederholen"
-  }
-}
-```
-`shape`: `"rounded"` | `"rect"` | `"diamond"`
-
-### `quizCheck`
-Mini-Verständnisfrage direkt in der Lektion (kein Teil des Haupt-Quiz).
-```json
-{
-  "type":     "quizCheck",
-  "question": "Frage …",
-  "options":  ["Antwort A", "Antwort B", "Antwort C"],
-  "correct":  1,            // 0-basierter Index
-  "hint":     "Tipp …"
-}
-```
-
-### `taskInput`
-Freie Texteingabe mit Muster-Antwort (nicht serverseitig bewertet).
-```json
-{
-  "type":          "taskInput",
-  "prompt":        "Aufgabenstellung …",
-  "exampleAnswer": "Musterlösung …"
-}
-```
-
-### `simulation`
-Interaktives Beispiel (vordefinierte Eingaben + Ausgaben simulieren).
-```json
-{
-  "type":    "simulation",
-  "caption": "Optionaler Titel",
-  "steps": [
-    { "input": "Nutzer-Input", "output": "Simulated Output" }
-  ]
-}
-```
+Die verfügbaren Bausteine (und ihre Props) sind in [`Blocks.tsx`](frontend/src/chapters/shared/Blocks.tsx) definiert. Neue Baustein-Typen werden dort ergänzt und stehen anschließend allen Kapiteln zur Verfügung.
 
 ---
 
 ## 6. Quiz-Fragen-Typen
 
-```jsonc
+Die Fragen stehen im `quiz.questions`-Array des `chapter`-Exports (Typ `QuizQuestion` aus [`content/types.ts`](frontend/src/content/types.ts)):
+
+```ts
 {
-  "id":         "q1",          // Eindeutig im Kapitel
-  "type":       "single",      // "single" | "multi" | "text"
-  "lessonRef":  "l1",          // Welche Lektion wird bei Fehler empfohlen
-  "question":   "Frage …",
-  "options":    ["A", "B", "C", "D"],   // Nur bei single/multi
-  "correct":    1,             // single: 0-basierter Index; multi: Array [0,2]
-  "keywords":   ["token"],     // Nur bei type:"text" – Schlüsselwörter zur Auswertung
-  "minKeywords": 1,            // Nur bei type:"text" – wie viele müssen treffen
-  "hint":       "Tipp …",      // Optional, im Frontend sichtbar
-  "explanation": "Erklärung …" // Wird nach Abgabe angezeigt
+  id: 'q1',                 // Eindeutig im Kapitel
+  type: 'single',           // 'single' | 'multi' | 'text'
+  question: 'Frage …',
+  options: ['A', 'B', 'C', 'D'],   // Nur bei single/multi
+  correct: 1,               // single: Index; multi: Array [0, 2]
+  keywords: ['token'],      // Nur bei type:'text' – Schlüsselwörter zur Auswertung
+  minKeywords: 1,           // Nur bei type:'text' – wie viele müssen treffen
+  hint: 'Tipp …',           // Optional
+  explanation: 'Erklärung …',       // Wird nach Abgabe angezeigt
+  reviewLesson: 'Was ist ein LLM?', // Lektionstitel, der bei Fehler empfohlen wird
 }
 ```
 
-> **Sicherheit:** `correct`, `keywords` und `explanation` werden vom Backend **nie** an den Browser gesendet. Auswertung erfolgt ausschließlich serverseitig.
+> **Auswertung:** Das Quiz wird **clientseitig** in [`content/quiz.ts`](frontend/src/content/quiz.ts) (`gradeQuiz`) ausgewertet; [`content/registry.ts`](frontend/src/content/registry.ts) reicht die Aufrufe pro Kapitel-ID durch. `buildPublicQuiz` liefert die Fragen ohne Lösungen an die UI; die Lösungen (`correct`, `keywords`, `explanation`) bleiben im gebündelten JS, werden aber erst nach der Abgabe angezeigt. Das Ergebnis (`passed`, `scorePercent`) wird per `POST /api/progress` ans Backend gemeldet.
 
 ---
 
-## 7. Datei-Namenskonvention & Ordner
+## 7. Datei-Namenskonvention & Registry
 
 ```
-backend/content/NN-kurzname.json
+frontend/src/chapters/<thema>/NN-PascalCaseName.tsx
 ```
 
-- `NN` = zweistellige Nummer (01, 02, …) – steuert die Sortier-**Reihenfolge** innerhalb eines Themas
-- `kurzname` = URL-safe, beschreibend, Kleinbuchstaben + Bindestriche
-- Das `"order"`-Feld im JSON **muss** mit dem Nummernpräfix übereinstimmen
-- Das `"id"`-Feld sollte dem `kurzname`-Teil des Dateinamens entsprechen
+- `NN` = zweistellige Nummer (01, 02, …) – für eine saubere Sortierung im Dateisystem
+- `PascalCaseName` = beschreibend, entspricht dem Namen der Lern-Komponente
+- Die **tatsächliche Reihenfolge** in der UI bestimmt die `chapters`-Liste des Themas in [`content/registry.ts`](frontend/src/content/registry.ts)
 
-**Beispiel:**
-```
-01-llm-grundlagen.json   →  "id": "llm-grundlagen",   "order": 1
-02-ki-agenten.json       →  "id": "ki-agenten",        "order": 2
-```
+**Registry:** In [`content/registry.ts`](frontend/src/content/registry.ts) wird jedes Kapitel importiert und einem Thema (`TopicDef`) zugeordnet:
 
-**Neues Thema:** Einfach `topicId` auf einen neuen Wert setzen. Das Backend gruppiert automatisch.
+```ts
+import { chapter as llmGrundlagen } from '../chapters/ki-agenten/01-LlmGrundlagen'
+// …
+
+export const TOPICS: TopicDef[] = [
+  {
+    id: 'ki-agenten',
+    title: 'KI-Agenten und Automatisierung',
+    description: '…',
+    icon: '🤖',
+    accentColor: '#1c69d4',
+    order: 1,
+    chapters: [llmGrundlagen, toolCalling, /* … */],  // Reihenfolge = UI-Reihenfolge
+  },
+]
+```
 
 ---
 
 ## 8. Aktuelle Inhalte
 
-### Thema: KI-Agenten und Automatisierung (`topicId: "ki-agenten"`)
+### Thema: KI-Agenten und Automatisierung (`id: "ki-agenten"`)
 
 | Datei | Chapter-ID | Titel | Lektionen | Quiz | ca. Min |
 |---|---|---|---|---|---|
-| `01-llm-grundlagen.json` | `llm-grundlagen` | Wie LLMs und Tool Calls funktionieren | 5 | 4 | 15 |
-| `02-ki-agenten.json` | `ki-agenten` | Was KI-Agenten sind | 4 | 4 | 10 |
-| `03-agenten-bauen.json` | `agenten-bauen` | Eigene spezialisierte Agenten erstellen | 7 | 7 | 28 |
-| `04-workflows-deployment.json` | `workflows-deployment` | Mehrstufige Arbeitsabläufe automatisieren | 8 | 8 | 30 |
+| `01-LlmGrundlagen.tsx` | `llm-grundlagen` | Wie LLMs funktionieren | 5 | 4 | 15 |
+| `02-ToolCalling.tsx` | `tool-calling` | Tool Calling | 5 | 5 | — |
+| `03-WasIstAgent.tsx` | `was-ist-agent` | Was KI-Agenten sind | 4 | 4 | 10 |
+| `04-AgentenBauen.tsx` | `agenten-bauen` | Eigene spezialisierte Agenten erstellen | 7 | 7 | 28 |
+| `05-WorkflowsDeployment.tsx` | `workflows-deployment` | Mehrstufige Arbeitsabläufe automatisieren | 8 | 8 | 30 |
 
 ---
 
@@ -338,32 +264,17 @@ backend/content/NN-kurzname.json
 
 ### Neues Kapitel zu einem bestehenden Thema
 
-1. Neue Datei anlegen: `backend/content/NN-kurzname.json`
-2. `topicId` auf das bestehende Thema setzen (z. B. `"ki-agenten"`)
-3. `id` eindeutig wählen (= `kurzname`), `order` = `NN`
-4. `topicTitle`, `topicDescription`, `topicIcon`, `topicAccentColor`, `topicOrder` identisch zu den anderen Kapiteln des Themas setzen
-5. Lektionen, Quiz und Referenz befüllen
-6. JSON validieren (s. u.)
-7. Backend neu starten – fertig
+1. Neue Datei anlegen: `frontend/src/chapters/<thema>/NN-PascalCaseName.tsx`
+2. Lern-Komponente (`export default`) mit `ChapterFrame` und Lektionen umsetzen
+3. `chapter`-Export (`export const chapter: ChapterDef`) mit Metadaten und Quiz ergänzen; `id` eindeutig wählen
+4. Nachschlage-Einträge in [`content/reference.ts`](frontend/src/content/reference.ts) unter derselben `id` ergänzen (optional)
+5. In [`content/registry.ts`](frontend/src/content/registry.ts) das Kapitel importieren und an gewünschter Stelle in die `chapters`-Liste des Themas einfügen
+6. `npm run build` / Dev-Server prüft die Typen automatisch – fertig
 
 ### Neues Thema
 
-1. Neue Datei anlegen, z. B. `backend/content/01-mein-thema-einfuehrung.json`
-2. Neue `topicId` vergeben (z. B. `"prompt-engineering"`)
-3. `topicOrder` so wählen, dass das Thema an der gewünschten Stelle erscheint
-4. Weitere Kapitel desselben Themas mit gleicher `topicId` anlegen
-
-### JSON validieren
-
-```powershell
-# PowerShell
-Get-Content backend\content\NN-kurzname.json -Raw | ConvertFrom-Json
-```
-
-```python
-# Python
-import json; json.loads(open("backend/content/NN-kurzname.json", encoding="utf-8").read())
-```
+1. Ordner `frontend/src/chapters/<neues-thema>/` anlegen und Kapitel wie oben erstellen
+2. In [`content/registry.ts`](frontend/src/content/registry.ts) einen neuen `TopicDef`-Eintrag in `TOPICS` ergänzen (`id`, `title`, `description`, `icon`, `accentColor`, `order`, `chapters`)
 
 ---
 
@@ -372,12 +283,12 @@ import json; json.loads(open("backend/content/NN-kurzname.json", encoding="utf-8
 **Jede Lektion muss auf einem durchschnittlichen Laptop-Bildschirm ohne Scrollen lesbar sein.**
 
 Faustregel pro Lektion:
-- Max. **2 Content-Blöcke** (text, list, cards, comparison, …)
-- Max. **1 interaktiver Block** (quizCheck, taskInput, simulation, code)
-- Kein Block mit mehr als ~5 Listeneinträgen oder ~6 Karten
+- Max. **2 Content-Bausteine** (Text, List, Cards, Comparison, …)
+- Max. **1 interaktiver Baustein** (QuizCheck, TaskInput, Simulation, Code)
+- Kein Baustein mit mehr als ~5 Listeneinträgen oder ~6 Karten
 - Diagramme: max. 5 Nodes
 
-Wenn ein Thema mehr Inhalt braucht → **neue Lektion** anlegen, nicht den Block aufblähen.
+Wenn ein Thema mehr Inhalt braucht → **neue Lektion** anlegen, nicht den Baustein aufblähen.
 
 ---
 
@@ -387,16 +298,9 @@ Wenn ein Thema mehr Inhalt braucht → **neue Lektion** anlegen, nicht den Block
 ```bat
 dev_hosting.bat
 ```
-Öffnet Backend (Port 8100) + Frontend-Dev-Server (Port 5173) automatisch.
+Baut das Frontend und startet das Backend (Port 8100), das den Build automatisch aus `frontend/dist/` ausliefert.
 
 ### Manuell
-
-**Backend:**
-```powershell
-cd backend
-.\.venv\Scripts\Activate.ps1
-python app.py
-```
 
 **Frontend (Dev):**
 ```powershell
@@ -412,6 +316,13 @@ npm run build
 # Flask serviert dann / automatisch aus dist/
 ```
 
+**Backend:**
+```powershell
+cd backend
+.\.venv\Scripts\Activate.ps1
+python app.py
+```
+
 **Umgebungsvariablen (Backend):**
 | Variable | Default | Beschreibung |
 |---|---|---|
@@ -425,18 +336,17 @@ npm run build
 
 Basis-URL: `http://127.0.0.1:8100`
 
+Das Backend liefert **keine** Inhalte mehr aus – diese leben im Frontend. Es verwaltet nur den Fortschritt:
+
 | Methode | Pfad | Beschreibung |
 |---|---|---|
 | `GET` | `/api/health` | Health-Check |
-| `GET` | `/api/topics` | Alle Themen mit Kapitelstruktur und Fortschritt |
-| `GET` | `/api/chapters` | Alle Kapitel (Übersicht, ohne Lektions-Inhalte) |
-| `GET` | `/api/chapters/{id}/learn` | Lektions-Inhalte eines Kapitels |
-| `GET` | `/api/chapters/{id}/quiz` | Quiz-Fragen (ohne Lösungen) |
-| `POST` | `/api/chapters/{id}/quiz/evaluate` | Quiz auswerten (Body: `{"answers": {"q1": 0}}`) |
-| `GET` | `/api/chapters/{id}/reference` | Glossar-Einträge eines Kapitels |
 | `GET` | `/api/progress` | Fortschritt der aktuellen Session |
+| `POST` | `/api/progress` | Fortschritt melden (Body: `{"chapterId": "…", "passed": true, "scorePercent": 85}`) |
 
 **Session-ID:** Optionaler Header `X-Session-Id: <uuid>` oder Query-Parameter `?session=<uuid>`. Ohne Angabe: `"anonymous"` (gemeinsamer Fortschritt).
+
+> Der Fortschritt liegt aktuell nur im Arbeitsspeicher (pro Prozess). Der `ProgressStore` in [`app.py`](backend/app.py) ist so gekapselt, dass er später 1:1 durch eine datenbankgestützte, account-basierte Implementierung ersetzt werden kann.
 
 ---
 
@@ -444,8 +354,8 @@ Basis-URL: `http://127.0.0.1:8100`
 
 | Schicht | Technologie |
 |---|---|
-| Frontend | React 18, Vite, CSS Modules |
+| Frontend | React 18, Vite, TypeScript, CSS Modules |
 | Backend | Python 3.11+, Flask, flask-cors, waitress |
 | Icons | lucide-react |
-| Inhalte | JSON (kein CMS, kein Build-Schritt) |
+| Inhalte | TSX-Kapitel (kein CMS, in den Build eingebunden) |
 | Fortschritt | In-Memory (pro Prozess, kein Persist) |

@@ -4,6 +4,7 @@ import {
 } from 'lucide-react'
 import styles from './TestPanel.module.css'
 import { api } from '../api'
+import { getPublicQuiz, evaluateQuiz } from '../content/registry'
 import type { QuizData, QuizQuestion, QuizResult, QuestionResult } from '../types'
 
 interface Props {
@@ -24,17 +25,14 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
-    let active = true
     setLoading(true)
     setError('')
     setResult(null)
     setAnswers({})
-    api
-      .getQuiz(chapterId)
-      .then((d) => { if (active) setQuiz(d) })
-      .catch((err: Error) => { if (active) setError(err?.message || 'Quiz konnte nicht geladen werden.') })
-      .finally(() => { if (active) setLoading(false) })
-    return () => { active = false }
+    const q = getPublicQuiz(chapterId)
+    if (q) setQuiz(q)
+    else setError('Quiz konnte nicht geladen werden.')
+    setLoading(false)
   }, [chapterId])
 
   const questions = useMemo<QuizQuestion[]>(() => quiz?.questions || [], [quiz])
@@ -77,16 +75,20 @@ export default function TestPanel({ chapterId, passed, onPassed, onBackToLearn, 
     setAnswers((prev) => ({ ...prev, [qId]: value }))
   }
 
-  async function submit() {
+  function submit() {
     setSubmitting(true)
     setError('')
     try {
-      const res = await api.evaluateQuiz(chapterId, answers)
+      const res = evaluateQuiz(chapterId, answers)
+      if (!res) {
+        setError('Auswertung fehlgeschlagen.')
+        return
+      }
       setResult(res)
-      if (res?.passed) onPassed?.()
+      // Fortschritt best-effort ans Backend melden (für spätere Accounts).
+      api.reportProgress(chapterId, { passed: res.passed, scorePercent: res.scorePercent }).catch(() => {})
+      if (res.passed) onPassed?.()
       window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch (err) {
-      setError((err as Error)?.message || 'Auswertung fehlgeschlagen.')
     } finally {
       setSubmitting(false)
     }

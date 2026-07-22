@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Loader2, Search, CheckCircle2, Unlock } from 'lucide-react'
 import styles from './ReferencePanel.module.css'
-import { api } from '../api'
+import { getChapterReference } from '../content/registry'
 import type { ReferenceData } from '../types'
 
 interface Props {
@@ -16,16 +16,13 @@ export default function ReferencePanel({ chapterId, passed }: Props) {
   const [query, setQuery] = useState('')
 
   useEffect(() => {
-    let active = true
     setLoading(true)
     setError('')
     setQuery('')
-    api
-      .getReference(chapterId)
-      .then((d) => { if (active) setData(d) })
-      .catch((err: Error) => { if (active) setError(err?.message || 'Nachschlagewerk konnte nicht geladen werden.') })
-      .finally(() => { if (active) setLoading(false) })
-    return () => { active = false }
+    const d = getChapterReference(chapterId)
+    if (d) setData(d)
+    else setError('Nachschlagewerk konnte nicht geladen werden.')
+    setLoading(false)
   }, [chapterId])
 
   const filtered = useMemo(() => {

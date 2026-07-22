@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Search, Loader2, AlertTriangle, BookOpen, ChevronDown, ChevronRight } from 'lucide-react'
 import styles from './GlossaryPage.module.css'
-import { api } from '../api'
+import { getAllReferences } from '../content/registry'
 import type { GlobalReferenceData, GlobalReferenceTopic } from '../types'
 
 export default function GlossaryPage() {
@@ -14,11 +14,8 @@ export default function GlossaryPage() {
   useEffect(() => {
     setLoading(true)
     setError('')
-    api
-      .getAllReference()
-      .then((d) => setData(d))
-      .catch((err: Error) => setError(err?.message || 'Nachschlagewerk konnte nicht geladen werden.'))
-      .finally(() => setLoading(false))
+    setData(getAllReferences())
+    setLoading(false)
   }, [])
 
   const filtered = useMemo((): GlobalReferenceTopic[] => {

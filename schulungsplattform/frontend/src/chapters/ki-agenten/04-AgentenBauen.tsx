@@ -8,6 +8,7 @@ import {
   Comparison, Cards, QuizCheck, TaskInput,
   Simulation, LabLayout,
 } from '../shared/Blocks'
+import type { ChapterDef } from '../../content/types'
 
 interface Props {
   onStartTest: () => void
@@ -323,4 +324,124 @@ print(r.choices[0].message.content)`}
       ]}
     />
   )
+}
+
+// ── Kapitel-Definition (Metadaten, Quiz, Nachschlagewerk) ────────────────────
+export const chapter: ChapterDef = {
+  id: 'agenten-bauen',
+  title: 'Eigene spezialisierte Agenten erstellen',
+  subTopicTitle: 'Eigene spezialisierte Agenten erstellen',
+  summary:
+    'Einen fokussierten Fach-Agenten entwerfen, einrichten und im VS-Code-Terminal ausführen \u2013 und verstehen, wie Kontext und Autonomie gesteuert werden.',
+  subTopicDescription:
+    'Vom Bauplan zum lauffähigen Agenten \u2013 System-Prompt, Setup, Praxis, Context Engineering und Autonomie.',
+  estimatedMinutes: 28,
+  lessonCount: 8,
+  tag: 'Allgemein',
+  Learn: AgentenBauen,
+  quiz: {
+    passThreshold: 0.7,
+    questions: [
+      {
+        id: 'q1',
+        type: 'single',
+        question: 'Was macht einen spezialisierten Agenten zuverlässiger als einen Allzweck-Assistenten?',
+        options: [
+          'Er verwendet ein größeres Modell.',
+          'Er hat genau eine Aufgabe mit vorhersehbarem, testbarem Verhalten.',
+          'Er braucht keinen System-Prompt.',
+        ],
+        correct: 1,
+        explanation: 'Ein enger Fokus macht Verhalten konsistent, Format vorhersehbar und Testen einfacher.',
+        reviewLesson: 'Spezialisierung statt Allzweck',
+      },
+      {
+        id: 'q2',
+        type: 'multi',
+        question: 'Welche Elemente gehören in einen professionellen System-Prompt? (Mehrfachauswahl)',
+        options: [
+          'Persona \u2013 wer ist der Agent?',
+          'Der API-Key',
+          'Aufgabe \u2013 was genau soll er tun?',
+          'Grenzen \u2013 was soll er nie tun?',
+          'Format \u2013 wie sieht die Ausgabe aus?',
+        ],
+        correct: [0, 2, 3, 4],
+        explanation:
+          'Persona, Aufgabe, Grenzen und Format \u2013 das sind die vier Pflichtteile. Der API-Key gehört niemals in den Prompt.',
+        reviewLesson: 'Der System-Prompt als Stellenbeschreibung',
+      },
+      {
+        id: 'q3',
+        type: 'single',
+        question: 'Warum wird der Commit-Agent mit temperature=0 aufgerufen?',
+        options: [
+          'Damit er kürzere Antworten gibt.',
+          'Damit gleiche Eingaben möglichst gleiche, deterministische Ausgaben liefern.',
+          'Es reduziert die API-Kosten.',
+        ],
+        correct: 1,
+        explanation:
+          'temperature=0 macht das Modell so deterministisch wie möglich \u2013 ideal für ein festes Format wie Conventional Commits.',
+        reviewLesson: 'Commit-Agenten ausführen',
+      },
+      {
+        id: 'q4',
+        type: 'single',
+        question: 'Wo speicherst du den OpenAI API-Key sicher?',
+        options: [
+          'Direkt im Python-Skript als String.',
+          'In einer .env-Datei, die in .gitignore steht.',
+          'Im System-Prompt.',
+        ],
+        correct: 1,
+        explanation:
+          'Keys gehören nie in den Code oder ein Repository. Die .env-Datei wird lokal geladen und von Git ausgeschlossen.',
+        reviewLesson: 'Setup in VS Code',
+      },
+      {
+        id: 'q5',
+        type: 'single',
+        question: 'Wann sollte ein Agent die Ausgabe erneut anfordern?',
+        options: [
+          'Immer, bei jedem Aufruf.',
+          'Wenn die Ausgabe das erwartete Format nicht erfüllt.',
+          'Niemals \u2013 dem Agenten muss man vertrauen.',
+        ],
+        correct: 1,
+        explanation:
+          'Ausgabevalidierung ist Pflicht, sobald die Ausgabe weiterverarbeitet wird. Ein Neuversuch bei Formatfehler ist die sauberste Lösung.',
+        reviewLesson: 'Ausgaben absichern',
+      },
+      {
+        id: 'q6',
+        type: 'single',
+        question: 'Ein Tool gibt 200 JSON-Felder zurück, nur 5 sind relevant. Was ist die beste Strategie?',
+        options: [
+          'Alle 200 Felder in den Kontext schreiben.',
+          'Die Tool-Wrapper-Funktion filtert und gibt nur die 5 relevanten Felder zurück.',
+          'Den Kontext nach jedem Schritt leeren.',
+        ],
+        correct: 1,
+        explanation:
+          'Kompakter Kontext verbessert Reasoning und senkt Kosten. Tool-Funktionen sollten filtern, bevor das Ergebnis in den Kontext kommt.',
+        reviewLesson: 'Context Engineering',
+      },
+      {
+        id: 'q7',
+        type: 'single',
+        question:
+          'Ein Agent soll eigenständig produktive Datenbankeinträge löschen. Welche Autonomiestufe ist der richtige Startpunkt?',
+        options: [
+          'Stufe 4 \u2013 vollständig autonom.',
+          'Stufe 1 oder 2 \u2013 schwer umkehrbare Aktionen brauchen Kontrolle.',
+          'Stufe 3 mit Leitplanken ist immer ausreichend.',
+        ],
+        correct: 1,
+        explanation:
+          'Schwer umkehrbare Aktionen gehören auf eine niedrige Autonomiestufe. Erst mit wachsendem Vertrauen erhöhen.',
+        reviewLesson: 'Wie viel Autonomie ist sinnvoll?',
+      },
+    ],
+  },
 }

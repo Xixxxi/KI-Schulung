@@ -13,7 +13,6 @@ export interface SubTopic {
   passed: boolean
   bestScorePercent: number
   tag?: string | null
-  renderer?: string | null
 }
 
 export interface Topic {
@@ -28,28 +27,6 @@ export interface Topic {
   totalMinutes: number
   passedCount: number
   allPassed: boolean
-}
-
-// ── Learn ──────────────────────────────────────────────────────────────────
-
-export interface Block {
-  type: string
-  [key: string]: unknown
-}
-
-export interface Lesson {
-  id: string
-  title: string
-  layout?: string
-  blocks: Block[]
-}
-
-export interface LearnData {
-  id: string
-  title: string
-  summary: string
-  estimatedMinutes: number | null
-  lessons: Lesson[]
 }
 
 // ── Quiz ───────────────────────────────────────────────────────────────────
@@ -120,4 +97,13 @@ export interface GlobalReferenceTopic {
 
 export interface GlobalReferenceData {
   topics: GlobalReferenceTopic[]
+}
+
+// ── Fortschritt (Backend – für spätere Accounts) ────────────────────────────
+
+export type ProgressMap = Record<string, { passed?: boolean; scorePercent?: number }>
+
+export interface ChapterProgressInput {
+  passed: boolean
+  scorePercent: number
 }

@@ -28,8 +28,6 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
-import content_store
-
 # ── Pfade ─────────────────────────────────────────────────────────────────────
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -90,80 +88,27 @@ def create_app() -> Flask:
     def health():
         return jsonify({"status": "ok", "service": "schulungsplattform"})
 
-    # ── API: Themen-Übersicht (Thema → Unterthemen) ─────────────────────────
-    @app.get("/api/topics")
-    def topics():
-        try:
-            progress = PROGRESS.get(_session_id())
-            data = content_store.list_topics(progress)
-        except content_store.ContentError as exc:
-            return jsonify({"error": str(exc)}), 500
-        return jsonify({"topics": data})
-
-    # ── API: Kapitel-Übersicht ───────────────────────────────────────────────
-    @app.get("/api/chapters")
-    def chapters():
-        try:
-            summary = content_store.list_chapters_summary()
-        except content_store.ContentError as exc:
-            return jsonify({"error": str(exc)}), 500
-        # Fortschritt anreichern
-        progress = PROGRESS.get(_session_id())
-        for item in summary:
-            p = progress.get(item["id"], {})
-            item["passed"] = bool(p.get("passed"))
-            item["bestScorePercent"] = int(p.get("scorePercent", 0))
-        return jsonify({"chapters": summary})
-
-    # ── API: Lerninhalt ──────────────────────────────────────────────────────
-    @app.get("/api/chapters/<chapter_id>/learn")
-    def chapter_learn(chapter_id: str):
-        data = content_store.get_chapter_learning(chapter_id)
-        if not data:
-            return jsonify({"error": "Kapitel nicht gefunden"}), 404
-        return jsonify(data)
-
-    # ── API: Quiz (ohne Lösungen) ────────────────────────────────────────────
-    @app.get("/api/chapters/<chapter_id>/quiz")
-    def chapter_quiz(chapter_id: str):
-        data = content_store.get_chapter_quiz(chapter_id)
-        if not data:
-            return jsonify({"error": "Kapitel nicht gefunden"}), 404
-        return jsonify(data)
-
-    # ── API: Quiz-Auswertung (serverseitig) ──────────────────────────────────
-    @app.post("/api/chapters/<chapter_id>/quiz/evaluate")
-    def chapter_quiz_evaluate(chapter_id: str):
-        payload = request.get_json(silent=True) or {}
-        answers = payload.get("answers")
-        if not isinstance(answers, dict):
-            return jsonify({"error": "Feld 'answers' (Objekt) erforderlich"}), 400
-        result = content_store.evaluate_quiz(chapter_id, answers)
-        if result is None:
-            return jsonify({"error": "Kapitel nicht gefunden"}), 404
-        PROGRESS.set_chapter_result(_session_id(), chapter_id, result)
-        return jsonify(result)
-
-    # ── API: Nachschlagewerk (Kapitel) ──────────────────────────────────────
-    @app.get("/api/chapters/<chapter_id>/reference")
-    def chapter_reference(chapter_id: str):
-        data = content_store.get_chapter_reference(chapter_id)
-        if not data:
-            return jsonify({"error": "Kapitel nicht gefunden"}), 404
-        return jsonify(data)
-
-    # ── API: Zentrales Nachschlagewerk (alle Kapitel) ────────────────────────
-    @app.get("/api/reference")
-    def all_reference():
-        try:
-            data = content_store.get_all_references()
-        except content_store.ContentError as exc:
-            return jsonify({"error": str(exc)}), 500
-        return jsonify({"topics": data})
-
-    # ── API: Fortschritt ─────────────────────────────────────────────────────
+    # ── API: Fortschritt lesen ───────────────────────────────────────────────
     @app.get("/api/progress")
     def progress():
+        return jsonify({"progress": PROGRESS.get(_session_id())})
+
+    # ── API: Fortschritt melden ──────────────────────────────────────────────
+    # Die Schulungsinhalte (Lektionen, Quiz, Nachschlagewerk) leben vollständig
+    # im Frontend (TSX-Kapitel). Das Quiz wird clientseitig ausgewertet; das
+    # Ergebnis wird hier nur gespeichert – als Grundlage für spätere Accounts.
+    @app.post("/api/progress")
+    def report_progress():
+        payload = request.get_json(silent=True) or {}
+        chapter_id = payload.get("chapterId")
+        if not chapter_id:
+            return jsonify({"error": "Feld 'chapterId' erforderlich"}), 400
+        try:
+            score_percent = int(payload.get("scorePercent", 0) or 0)
+        except (TypeError, ValueError):
+            score_percent = 0
+        result = {"passed": bool(payload.get("passed")), "scorePercent": score_percent}
+        PROGRESS.set_chapter_result(_session_id(), str(chapter_id), result)
         return jsonify({"progress": PROGRESS.get(_session_id())})
 
     # ── Frontend-Build ausliefern (Hosting-Modus) ────────────────────────────

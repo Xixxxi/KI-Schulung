@@ -8,6 +8,7 @@ import {
   Comparison, Cards, Diagram, QuizCheck,
   Simulation, LabLayout,
 } from '../shared/Blocks'
+import type { ChapterDef } from '../../content/types'
 
 interface Props {
   onStartTest: () => void
@@ -388,4 +389,135 @@ print(s3)`}
       ]}
     />
   )
+}
+
+// ── Kapitel-Definition (Metadaten, Quiz, Nachschlagewerk) ────────────────────
+export const chapter: ChapterDef = {
+  id: 'workflows-deployment',
+  title: 'Mehrstufige Arbeitsabläufe automatisieren',
+  subTopicTitle: 'Mehrstufige Arbeitsabläufe automatisieren',
+  summary:
+    'Wie aus einzelnen Agenten-Aufrufen robuste Workflows werden \u2013 und wie Architekturen und Deployment-Muster entschieden werden.',
+  subTopicDescription:
+    'Aufgaben zerlegen, Schritte verketten, Architekturen wählen und Agenten deployen.',
+  estimatedMinutes: 30,
+  lessonCount: 9,
+  tag: 'Allgemein',
+  Learn: WorkflowsDeployment,
+  quiz: {
+    passThreshold: 0.7,
+    questions: [
+      {
+        id: 'q1',
+        type: 'single',
+        question: 'Was ist der Hauptvorteil, eine komplexe Aufgabe in mehrere kleine Schritte zu zerlegen?',
+        options: [
+          'Es ist technisch die einzige Möglichkeit.',
+          'Modelle liefern bei fokussierten Aufgaben bessere Ergebnisse und Fehler sind leichter einzugrenzen.',
+          'Es ist immer günstiger.',
+        ],
+        correct: 1,
+        explanation:
+          'Fokus verbessert Qualität. Zerlegung macht Zwischenergebnisse sichtbar und jeden Schritt testbar.',
+        reviewLesson: 'Große Aufgabe, kleine Schritte',
+      },
+      {
+        id: 'q2',
+        type: 'single',
+        question: 'Was kennzeichnet das sequenzielle Ketten-Muster?',
+        options: [
+          'Alle Schritte laufen gleichzeitig.',
+          'Ein Zwischenergebnis entscheidet den weiteren Weg.',
+          'Die Ausgabe eines Schritts ist die Eingabe des nächsten.',
+        ],
+        correct: 2,
+        explanation:
+          'Bei der Kette laufen Schritte nacheinander, jede Ausgabe wird direkt als Eingabe für den nächsten Schritt verwendet.',
+        reviewLesson: 'Die drei Workflow-Muster',
+      },
+      {
+        id: 'q3',
+        type: 'single',
+        question: 'Warum muss das Ergebnis jedes Schritts explizit an den nächsten übergeben werden?',
+        options: [
+          'Weil Python keine Rückgabewerte kennt.',
+          'Weil die OpenAI API zustandslos ist und sich nichts merkt.',
+          'Das ist optional.',
+        ],
+        correct: 1,
+        explanation:
+          'Die API ist vollständig zustandslos. Jeder Aufruf ist unabhängig. Die Kette entsteht rein im Code durch explizite Weitergabe.',
+        reviewLesson: 'Kette bauen und ausführen',
+      },
+      {
+        id: 'q4',
+        type: 'single',
+        question: 'Wann ist ein fester Workflow einem autonomen Agenten vorzuziehen?',
+        options: [
+          'Immer \u2013 autonome Agenten sind nie sinnvoll.',
+          'Wenn die Schritte im Voraus bekannt sind \u2013 er ist vorhersehbarer, günstiger und kontrollierbarer.',
+          'Autonome Agenten sind in allen Fällen überlegen.',
+        ],
+        correct: 1,
+        explanation:
+          'Sind die Schritte bekannt, schlägt der feste Workflow in Zuverlässigkeit, Kosten und Kontrollierbarkeit.',
+        reviewLesson: 'Fester Workflow oder autonomer Agent?',
+      },
+      {
+        id: 'q5',
+        type: 'single',
+        question: 'Wann sollte man von einem Single Agent zu Multi-Agent wechseln?',
+        options: [
+          'Immer \u2013 Multi-Agent ist grundsätzlich besser.',
+          'Wenn die Aufgabe zu groß für ein Kontext-Fenster wird, Parallelisierung spart oder Spezialisierung nötig ist.',
+          'Nur wenn das LLM keine Tools unterstützt.',
+        ],
+        correct: 1,
+        explanation:
+          'Multi-Agent ist mächtiger, aber komplexer. Starte mit Single Agent und wechsle nur wenn nötig.',
+        reviewLesson: 'Single vs. Multi-Agent Architekturen',
+      },
+      {
+        id: 'q6',
+        type: 'single',
+        question: 'Wer koordiniert Sub-Agents in einer hierarchischen Architektur?',
+        options: [
+          'Sub-Agents koordinieren sich direkt.',
+          'Der Orchestrator \u2013 er zerlegt, delegiert und aggregiert.',
+          'Der Nutzer koordiniert manuell.',
+        ],
+        correct: 1,
+        explanation: 'Der Orchestrator ist zentral: zerlegen, delegieren, warten, aggregieren.',
+        reviewLesson: 'Hierarchical Architecture & Agent Communication',
+      },
+      {
+        id: 'q7',
+        type: 'single',
+        question: 'Ein Agent soll Entwicklern auf Anfrage GitHub-PRs zusammenfassen. Welches Deployment passt?',
+        options: [
+          'Automation Pipeline.',
+          'Interactive Chatbot Frontend \u2013 interaktiv, auf Anfrage.',
+          'Multi-Agent System.',
+        ],
+        correct: 1,
+        explanation: 'Auf Anfrage, interaktiv, durch den Nutzer gesteuert bedeutet Chatbot Frontend.',
+        hint: 'Gibt es direkte Nutzerinteraktion?',
+        reviewLesson: 'Deployment \u2013 Chatbot oder Pipeline?',
+      },
+      {
+        id: 'q8',
+        type: 'single',
+        question: 'Was ist bei Automation Pipelines besonders wichtig, das Chatbots weniger brauchen?',
+        options: [
+          'Eine bessere UI.',
+          'Robustes Monitoring, Logging und Fehlerbehandlung \u2013 niemand schaut zu.',
+          'Mehr RAM.',
+        ],
+        correct: 1,
+        explanation:
+          'Automation Pipelines laufen unbeaufsichtigt. Monitoring und Fehlerbehandlung sind deshalb kritisch.',
+        reviewLesson: 'Automation Pipeline \u2013 Aufbau und Monitoring',
+      },
+    ],
+  },
 }

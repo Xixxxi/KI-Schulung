@@ -1,4 +1,4 @@
-import type { LearnData, QuizData, QuizResult, ReferenceData, GlobalReferenceData, Topic } from './types'
+import type { ProgressMap, ChapterProgressInput } from './types'
 
 const SESSION_KEY = 'schulung.sessionId'
 
@@ -33,17 +33,18 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return res.json() as Promise<T>
 }
 
+// ── API ───────────────────────────────────────────────────────────────────
+//
+// Die Schulungsinhalte kommen ausschließlich aus den .tsx-Kapiteln
+// (siehe src/content/registry.ts). Das Backend dient nur noch dem
+// Fortschritt / den späteren Accounts.
+
 export const api = {
   health: () => request<{ status: string; service: string }>('/api/health'),
-  listTopics: () => request<{ topics: Topic[] }>('/api/topics'),
-  listChapters: () => request<{ chapters: unknown[] }>('/api/chapters'),
-  getLearn: (id: string) => request<LearnData>(`/api/chapters/${id}/learn`),
-  getQuiz: (id: string) => request<QuizData>(`/api/chapters/${id}/quiz`),
-  evaluateQuiz: (id: string, answers: Record<string, unknown>) =>
-    request<QuizResult>(`/api/chapters/${id}/quiz/evaluate`, {
+  getProgress: () => request<{ progress: ProgressMap }>('/api/progress'),
+  reportProgress: (chapterId: string, data: ChapterProgressInput) =>
+    request<{ progress: ProgressMap }>('/api/progress', {
       method: 'POST',
-      body: JSON.stringify({ answers }),
+      body: JSON.stringify({ chapterId, ...data }),
     }),
-  getReference: (id: string) => request<ReferenceData>(`/api/chapters/${id}/reference`),
-  getAllReference: () => request<GlobalReferenceData>('/api/reference'),
 }

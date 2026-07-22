@@ -6,40 +6,16 @@ import {
 } from 'lucide-react'
 import styles from './App.module.css'
 import { api } from './api'
-import type { Topic, SubTopic, StepId } from './types'
+import type { Topic, SubTopic, StepId, ProgressMap } from './types'
+import { buildTopics, getChapterLearn } from './content/registry'
 import LandingPage from './components/LandingPage'
 import AboutPage from './components/AboutPage'
 import GlossaryPage from './components/GlossaryPage'
 import RessourcenPage from './components/RessourcenPage'
 import TopicPage from './components/TopicPage'
 import SubTopicSidebar from './components/SubTopicSidebar'
-import LearnPanel from './components/LearnPanel'
 import TestPanel from './components/TestPanel'
 import SettingsPage, { type Theme } from './components/SettingsPage'
-
-// ── Kapitel-Lern-Panels (TSX-Dateien pro Kapitel) ─────────────────────────────
-import LlmGrundlagen from './chapters/ki-agenten/01-LlmGrundlagen'
-import ToolCalling from './chapters/ki-agenten/02-ToolCalling'
-import WasIstAgent from './chapters/ki-agenten/03-WasIstAgent'
-import AgentenBauen from './chapters/ki-agenten/04-AgentenBauen'
-import WorkflowsDeployment from './chapters/ki-agenten/05-WorkflowsDeployment'
-
-interface ChapterLearnProps {
-  onStartTest: () => void
-  onOpenReference: () => void
-}
-
-/**
- * Registry: chapterId → eigenständige Kapitel-Komponente.
- * Neue Kapitel hier eintragen – der generische LearnPanel bleibt als Fallback.
- */
-const CHAPTER_LEARN: Record<string, React.ComponentType<ChapterLearnProps>> = {
-  'llm-grundlagen':       LlmGrundlagen,
-  'tool-calling':         ToolCalling,
-  'ki-agenten':           WasIstAgent,
-  'agenten-bauen':        AgentenBauen,
-  'workflows-deployment': WorkflowsDeployment,
-}
 
 type View = 'landing' | 'about' | 'glossary' | 'settings' | 'resources' | 'topic' | 'chapter'
 
@@ -49,24 +25,6 @@ interface StepDef {
   label: string
   hint: string
   icon: React.ComponentType<{ size?: number }>
-}
-
-// ── Custom-Renderer-Registry ──────────────────────────────────────────────────
-// Für Unterthemen, die einen völlig eigenen Lern-Flow benötigen (Escape-Hatch).
-// Standard: kein Eintrag → generischer Lernen/Testen/Nachschlagen-Flow.
-//
-// Verwendung im JSON:  "renderer": "mein-custom-renderer"
-// Registrierung hier:
-//   import MeinCustomPanel from './components/custom/MeinCustomPanel'
-//   CUSTOM_RENDERERS['mein-custom-renderer'] = MeinCustomPanel
-const CUSTOM_RENDERERS: Record<string, React.ComponentType<CustomPanelProps>> = {}
-
-interface CustomPanelProps {
-  chapterId: string
-  passed: boolean
-  onPassed: () => void
-  onBackToLearn: () => void
-  onOpenReference: () => void
 }
 
 const STEPS: StepDef[] = [
@@ -113,8 +71,14 @@ export default function App() {
     setLoading(true)
     setError('')
     try {
-      const data = await api.listTopics()
-      const list = Array.isArray(data?.topics) ? data.topics : []
+      let progress: ProgressMap = {}
+      try {
+        const res = await api.getProgress()
+        progress = res?.progress || {}
+      } catch {
+        // Backend ist optional – die Inhalte funktionieren auch ohne Fortschritts-Server.
+      }
+      const list = buildTopics(progress)
       setTopics(list)
       const passed: Record<string, boolean> = {}
       list.forEach((t) => t.subTopics?.forEach((s) => { if (s.passed) passed[s.id] = true }))
@@ -458,41 +422,15 @@ export default function App() {
               )}
 
               {activeChapter && (() => {
-                // Custom-Renderer-Escape-Hatch
-                const CustomPanel = CUSTOM_RENDERERS[(activeChapter as SubTopic & { renderer?: string }).renderer ?? '']
-                if (CustomPanel) {
-                  return (
-                    <CustomPanel
-                      chapterId={activeChapterId}
-                      passed={isPassed}
-                      onPassed={() => handleQuizPassed(activeChapterId)}
-                      onBackToLearn={() => setStep('learn')}
-                      onOpenReference={() => goToGlossary()}
-                    />
-                  )
-                }
-
-                // Standard-Flow: Lernen / Testen
+                const ChapterLearn = getChapterLearn(activeChapterId)
                 return (
                   <>
-                    {step === 'learn' && (() => {
-                      const ChapterLearn = CHAPTER_LEARN[activeChapterId]
-                      if (ChapterLearn) {
-                        return (
-                          <ChapterLearn
-                            onStartTest={() => setStep('test')}
-                            onOpenReference={goToGlossary}
-                          />
-                        )
-                      }
-                      return (
-                        <LearnPanel
-                          chapterId={activeChapterId}
-                          onStartTest={() => setStep('test')}
-                          onOpenReference={goToGlossary}
-                        />
-                      )
-                    })()}
+                    {step === 'learn' && ChapterLearn && (
+                      <ChapterLearn
+                        onStartTest={() => setStep('test')}
+                        onOpenReference={goToGlossary}
+                      />
+                    )}
                     {step === 'test' && (
                       <TestPanel
                         chapterId={activeChapterId}
