@@ -74,7 +74,7 @@
 /* ── Lesson Area ──────────────────────────────────────────────────────────── */
 .lesson {
   flex: 1;
-  padding: 14px 28px 6px;
+  padding: 10px 28px 4px;
   overflow-y: auto;
 }
 
@@ -82,7 +82,7 @@
   font-family: var(--ds-typography-family-brand);
   font-size: var(--ds-typography-size-07); /* 20 px */
   font-weight: 500;
-  margin: 0 0 var(--ds-space-4x);
+  margin: 0 0 var(--ds-space-3x);
   color: var(--ds-color-typography-base);
   display: flex;
   align-items: center;

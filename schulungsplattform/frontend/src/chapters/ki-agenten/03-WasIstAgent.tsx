@@ -51,7 +51,7 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
               <Callout
                 tone="info"
                 title="Die einfache Definition"
-                text="Ein KI-Agent ist ein Programm, das ein LLM nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen. Es entscheidet bei jedem Schritt eigenständig, was als Nächstes zu tun ist – und ob es fertig ist."
+                text="Ein KI-Agent ist ein Programm, das ein LLM nutzt, um ein Ziel über mehrere Schritte selbstständig zu verfolgen. Es entscheidet bei jedem Schritt selbst, was als Nächstes zu tun ist."
               />
               <Diagram
                 caption="Agent = LLM + eigenständige Entscheidungen + Tools"
@@ -61,7 +61,6 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
                   { id: 'act',    type: 'step',  emoji: '⚡', label: 'Agent handelt', sublabel: 'Tool Call oder Antwort' },
                   { id: 'done',   type: 'end',   emoji: '✅', label: 'Ziel erreicht', sublabel: 'Ergebnis zurück zum Nutzer' },
                 ]}
-                loop={{ label: 'Noch nicht fertig – nächster Schritt' }}
               />
               <QuizCheck
                 blockKey="l2-quiz"
@@ -125,7 +124,6 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
         // ── Lektion 4: Vier Bausteine ────────────────────────────────────
         {
           title: 'Die vier Bausteine eines Agenten',
-          requiredKeys: ['l4-quiz'],
           content: (
             <>
               <Text text="Jeder KI-Agent besteht aus denselben vier Grundelementen – egal ob er Jira-Tickets anlegt, Code reviewed oder Support-Anfragen bearbeitet." />
@@ -135,6 +133,16 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
                 { icon: '🔧', label: 'Werkzeuge (Tools)', color: '#0369a1', description: 'Die Hände – Verbindung zur Außenwelt (Jira, GitHub, APIs).' },
                 { icon: '💾', label: 'Speicher (Memory)', color: '#166534', description: 'Das Kurzzeitgedächtnis – Kontext, Verlauf und Tool-Ergebnisse.' },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 5: Zusammenspiel der Bausteine ───────────────────────
+        {
+          title: 'Zusammenspiel der Bausteine',
+          requiredKeys: ['l4-quiz'],
+          content: (
+            <>
               <Diagram
                 caption="Zusammenspiel der vier Bausteine"
                 nodes={[
@@ -160,10 +168,9 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 5: Agent Loop ────────────────────────────────────────
+        // ── Lektion 6: Agent Loop ────────────────────────────────────────
         {
           title: 'Der Agent Loop: Reason – Act – Observe',
-          requiredKeys: ['l5-quiz'],
           content: (
             <>
               <Text text="Ein Agent arbeitet nicht einmalig – er durchläuft einen Zyklus, bis das Ziel erreicht ist. Dieser Kernzyklus heißt Reason-Act-Observe." />
@@ -178,6 +185,16 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
                 ]}
                 loop={{ label: 'Ziel noch nicht erreicht – erneut Reason' }}
               />
+            </>
+          ),
+        },
+
+        // ── Lektion 7: Was in jedem Schritt passiert ─────────────────────
+        {
+          title: 'Was in jedem Schritt passiert',
+          requiredKeys: ['l5-quiz'],
+          content: (
+            <>
               <Steps title="Was passiert in jedem Schritt?" items={[
                 { label: 'Reason – Planen', description: 'Das LLM überlegt: Was weiß ich bisher? Was ist der beste nächste Schritt?' },
                 { label: 'Act – Handeln', description: "Der Agent ruft ein Tool auf – z. B. 'suche_jira_tickets()' oder 'lese_pull_request()'." },
@@ -198,7 +215,7 @@ export default function WasIstAgent({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 6: Wann lohnt sich ein Agent? ───────────────────────
+        // ── Lektion 8: Wann lohnt sich ein Agent? ───────────────────────
         {
           title: 'Wann lohnt sich ein Agent?',
           requiredKeys: ['l6-quiz'],
@@ -257,7 +274,7 @@ export const chapter: ChapterDef = {
   subTopicDescription:
     'Agent vs. Skript, die vier Bausteine, der Reason-Act-Observe-Loop und wann sich ein Agent lohnt.',
   estimatedMinutes: 12,
-  lessonCount: 6,
+  lessonCount: 8,
   tag: 'Allgemein',
   Learn: WasIstAgent,
   quiz: {

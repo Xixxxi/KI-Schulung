@@ -88,7 +88,6 @@ export default function AgentenBauen({ onStartTest, onOpenReference }: Props) {
         // ── Lektion 3: System-Prompt ─────────────────────────────────────
         {
           title: 'Der System-Prompt als Stellenbeschreibung',
-          requiredKeys: ['l2-task'],
           content: (
             <>
               <Steps title="Die vier Pflichtteile jedes System-Prompts" items={[
@@ -97,6 +96,17 @@ export default function AgentenBauen({ onStartTest, onOpenReference }: Props) {
                 { label: 'Grenzen – Was soll er NIE tun?', description: 'Explizite Verbote sind wirksamer als implizite Erwartungen.', example: 'Erfinde keine Änderungen. Frag nach, wenn unklar.' },
                 { label: 'Format – Wie sieht die Ausgabe aus?', description: 'Länge, Sprache, Struktur – das Modell hält sich sehr zuverlässig daran.', example: 'Nur die Commit-Nachricht, kein Kommentar. Erste Zeile max. 72 Zeichen.' },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 4: System-Prompt selbst schreiben ────────────────────
+        {
+          title: 'System-Prompt selbst schreiben',
+          requiredKeys: ['l2-task'],
+          content: (
+            <>
+              <Text text="Jetzt bist du dran: Ein guter System-Prompt beginnt mit einer klaren Persona und einer konkreten Aufgabe. Formuliere die ersten Sätze selbst." />
               <TaskInput
                 blockKey="l2-task"
                 title="Selbst schreiben"
@@ -112,7 +122,7 @@ export default function AgentenBauen({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 4: Setup (Lab) ───────────────────────────────────────
+        // ── Lektion 5: Setup (Lab) ───────────────────────────────────────
         {
           title: 'Setup in VS Code',
           layout: 'wide',
@@ -152,11 +162,11 @@ export default function AgentenBauen({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 5: Code ausführen (Lab) ─────────────────────────────
+        // ── Lektion 6: Code ausführen (Lab) ─────────────────────────────
         {
           title: 'Commit-Agenten ausführen',
           layout: 'wide',
-          requiredKeys: ['l4-quiz', 'l4-sim'],
+          requiredKeys: ['l4-sim'],
           content: (
             <LabLayout
               left={
@@ -194,19 +204,6 @@ r = client.chat.completions.create(
 )
 print(r.choices[0].message.content)`}
                   />
-                  <QuizCheck
-                    blockKey="l4-quiz"
-                    title="Verstanden?"
-                    question="Warum wird temperature=0 verwendet?"
-                    options={[
-                      'Es beschleunigt den API-Call.',
-                      'Gleiche Eingabe liefert möglichst gleiche Ausgabe – ideal für feste Formate.',
-                      'Das Modell liest sonst keinen System-Prompt.',
-                    ]}
-                    correct={1}
-                    explanation="temperature=0 macht das Modell so deterministisch wie möglich – für ein festes Format wie Conventional Commits genau richtig."
-                    hint="Was bedeutet 'deterministisch'?"
-                  />
                 </>
               }
               right={
@@ -230,16 +227,40 @@ print(r.choices[0].message.content)`}
           ),
         },
 
-        // ── Lektion 6: Ausgaben absichern ────────────────────────────────
+        // ── Lektion 7: temperature=0 verstehen ──────────────────────────
+        {
+          title: 'Warum temperature = 0?',
+          requiredKeys: ['l4-quiz'],
+          content: (
+            <>
+              <Text text="Ein Detail im Code entscheidet über die Zuverlässigkeit des Agenten: der Parameter temperature. Für feste Ausgabeformate ist die Wahl eindeutig." />
+              <QuizCheck
+                blockKey="l4-quiz"
+                title="Verstanden?"
+                question="Warum wird temperature=0 verwendet?"
+                options={[
+                  'Es beschleunigt den API-Call.',
+                  'Gleiche Eingabe liefert möglichst gleiche Ausgabe – ideal für feste Formate.',
+                  'Das Modell liest sonst keinen System-Prompt.',
+                ]}
+                correct={1}
+                explanation="temperature=0 macht das Modell so deterministisch wie möglich – für ein festes Format wie Conventional Commits genau richtig."
+                hint="Was bedeutet 'deterministisch'?"
+              />
+            </>
+          ),
+        },
+
+        // ── Lektion 8: Ausgaben absichern ────────────────────────────────
         {
           title: 'Ausgaben absichern',
           requiredKeys: ['l5-quiz'],
           content: (
             <>
               <Steps title="Drei Leitplanken für produktionsreife Agenten" items={[
-                { label: 'Eingabe prüfen', description: 'Leere oder unsinnige Eingaben fangen, bevor sie unnötige Kosten verursachen.', example: "if not beschreibung.strip(): raise ValueError('Leer')" },
-                { label: 'Ausgabe validieren', description: 'Prüfen, ob das Format stimmt – nicht blind vertrauen.', example: "if not commit.split('(')[0] in TYPEN: ...neu anfordern" },
-                { label: 'System-Prompt versionieren', description: 'In eigener Datei speichern und in Git committen – Änderungen müssen nachvollziehbar sein.', example: "prompt = Path('prompts/commit.txt').read_text()" },
+                { label: 'Eingabe prüfen', description: 'Leere oder unsinnige Eingaben abfangen, bevor sie Kosten verursachen.' },
+                { label: 'Ausgabe validieren', description: 'Prüfen, ob das Format stimmt – nicht blind vertrauen.' },
+                { label: 'System-Prompt versionieren', description: 'In eigener Datei speichern und in Git committen – Änderungen bleiben nachvollziehbar.' },
               ]} />
               <QuizCheck
                 blockKey="l5-quiz"
@@ -258,7 +279,7 @@ print(r.choices[0].message.content)`}
           ),
         },
 
-        // ── Lektion 7: Context Engineering ──────────────────────────────
+        // ── Lektion 9: Context Engineering ─────────────────────────
         {
           title: 'Context Engineering',
           requiredKeys: ['l6-quiz'],
@@ -267,7 +288,7 @@ print(r.choices[0].message.content)`}
               <Callout
                 tone="info"
                 title="Was ist Context Engineering?"
-                text="Context Engineering bezeichnet alle Techniken, mit denen du steuerst, welche Informationen wann im Kontext-Fenster des LLM landen: System-Prompt-Design, Verlaufsmanagement, Tool-Output-Formatierung und RAG."
+                text="Context Engineering umfasst alle Techniken, mit denen du steuerst, welche Informationen wann im Kontext-Fenster des LLM landen – vom System-Prompt bis zum Tool-Output."
               />
               <Cards items={[
                 { icon: '📋', label: 'System Prompt',   color: '#1c69d4', description: 'Rolle, Ziel, Grenzen und verfügbare Tools. Der wichtigste Hebel – klar und spezifisch formulieren.' },
@@ -292,10 +313,9 @@ print(r.choices[0].message.content)`}
           ),
         },
 
-        // ── Lektion 8: Autonomie ─────────────────────────────────────────
+        // ── Lektion 10: Autonomie – die Stufen ──────────────────────────
         {
           title: 'Wie viel Autonomie ist sinnvoll?',
-          requiredKeys: ['l7-quiz'],
           content: (
             <>
               <Steps title="Vier Stufen – von Vorschlag bis vollständig autonom" items={[
@@ -304,6 +324,17 @@ print(r.choices[0].message.content)`}
                 { label: 'Stufe 3 – Leitplanken', description: 'Agent handelt frei, aber nur innerhalb fester Grenzen.', example: 'Darf Test-Tickets anlegen, keine Produktionsänderungen.' },
                 { label: 'Stufe 4 – Autonom', description: 'Vollständig eigenständig – nur für risikoarme, klar begrenzte Aufgaben.', example: 'Eingehende PRs automatisch nach Dateipfad labeln.' },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 11: Autonomie – die richtige Stufe wählen ───────────
+        {
+          title: 'Die richtige Autonomie-Stufe wählen',
+          requiredKeys: ['l7-quiz'],
+          content: (
+            <>
+              <Text text="Die Faustregel: Je schwerer eine Aktion rückgängig zu machen ist, desto mehr menschliche Kontrolle gehört dazu. Prüfe das folgende Szenario." />
               <QuizCheck
                 blockKey="l7-quiz"
                 title="Szenario"
@@ -336,7 +367,7 @@ export const chapter: ChapterDef = {
   subTopicDescription:
     'Vom Bauplan zum lauffähigen Agenten \u2013 System-Prompt, Setup, Praxis, Context Engineering und Autonomie.',
   estimatedMinutes: 28,
-  lessonCount: 8,
+  lessonCount: 11,
   tag: 'Allgemein',
   Learn: AgentenBauen,
   quiz: {

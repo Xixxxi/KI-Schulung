@@ -117,7 +117,7 @@ export default function WorkflowsDeployment({ onStartTest, onOpenReference }: Pr
         {
           title: 'Kette bauen und ausführen',
           layout: 'wide',
-          requiredKeys: ['l3-quiz', 'l3-sim'],
+          requiredKeys: ['l3-sim'],
           content: (
             <LabLayout
               left={
@@ -149,19 +149,6 @@ s2 = schritt("Fasse diese Fehler in 2 Saetzen zusammen.", s1)
 s3 = schritt("Leite eine konkrete Handlungsempfehlung ab.", s2)
 print(s3)`}
                   />
-                  <QuizCheck
-                    blockKey="l3-quiz"
-                    title="Verstanden?"
-                    question="Wie kommt das Ergebnis von Schritt 1 in Schritt 2?"
-                    options={[
-                      'Die OpenAI API merkt sich den Verlauf automatisch.',
-                      'Die Ausgabe von Schritt 1 wird als Eingabe-Argument an die Funktion von Schritt 2 übergeben.',
-                      'Über eine globale Variable, die das Modell setzt.',
-                    ]}
-                    correct={1}
-                    explanation="Die API ist zustandslos. Die Kette entsteht rein im Code: s1 wird als Eingabe an den zweiten Schritt übergeben."
-                    hint="Sieh dir die letzten drei Zeilen des Skripts an."
-                  />
                 </>
               }
               right={
@@ -185,7 +172,31 @@ print(s3)`}
           ),
         },
 
-        // ── Lektion 5: Fester Workflow vs. Agent ─────────────────────────
+        // ── Lektion 5: Kette verstehen ───────────────────────────────────
+        {
+          title: 'Wie die Kette Daten weitergibt',
+          requiredKeys: ['l3-quiz'],
+          content: (
+            <>
+              <Text text="Die OpenAI API ist zustandslos – sie merkt sich nichts zwischen zwei Aufrufen. Die Verkettung entsteht allein in deinem Code: Die Ausgabe eines Schritts wird zur Eingabe des nächsten." />
+              <QuizCheck
+                blockKey="l3-quiz"
+                title="Verstanden?"
+                question="Wie kommt das Ergebnis von Schritt 1 in Schritt 2?"
+                options={[
+                  'Die OpenAI API merkt sich den Verlauf automatisch.',
+                  'Die Ausgabe von Schritt 1 wird als Eingabe-Argument an die Funktion von Schritt 2 übergeben.',
+                  'Über eine globale Variable, die das Modell setzt.',
+                ]}
+                correct={1}
+                explanation="Die API ist zustandslos. Die Kette entsteht rein im Code: s1 wird als Eingabe an den zweiten Schritt übergeben."
+                hint="Sieh dir die letzten drei Zeilen des Skripts an."
+              />
+            </>
+          ),
+        },
+
+        // ── Lektion 6: Fester Workflow vs. Agent ─────────────────────────
         {
           title: 'Fester Workflow oder autonomer Agent?',
           requiredKeys: ['l4-quiz'],
@@ -228,7 +239,7 @@ print(s3)`}
           ),
         },
 
-        // ── Lektion 6: Single vs. Multi-Agent ───────────────────────────
+        // ── Lektion 7: Single vs. Multi-Agent ──────────────────────
         {
           title: 'Single vs. Multi-Agent Architekturen',
           requiredKeys: ['l5-quiz'],
@@ -259,7 +270,7 @@ print(s3)`}
               <Callout
                 tone="tip"
                 title="Faustformel"
-                text="Starte immer mit einem Single Agent. Wechsle zu Multi-Agent, wenn (1) die Aufgabe zu groß für ein Kontext-Fenster wird, (2) Parallelisierung Zeit spart oder (3) Spezialisierung die Qualität deutlich verbessert."
+                text="Starte immer mit einem Single Agent. Wechsle zu Multi-Agent, wenn die Aufgabe zu groß fürs Kontext-Fenster wird, Parallelisierung Zeit spart oder Spezialisierung die Qualität deutlich verbessert."
               />
               <QuizCheck
                 blockKey="l5-quiz"
@@ -278,7 +289,7 @@ print(s3)`}
           ),
         },
 
-        // ── Lektion 7: Hierarchische Architektur ─────────────────────────
+        // ── Lektion 8: Hierarchische Architektur ────────────────────
         {
           title: 'Hierarchical Architecture & Agent Communication',
           requiredKeys: ['l6-quiz'],
@@ -312,7 +323,7 @@ print(s3)`}
           ),
         },
 
-        // ── Lektion 8: Deployment ────────────────────────────────────────
+        // ── Lektion 9: Deployment ──────────────────────────────────
         {
           title: 'Deployment – Chatbot oder Pipeline?',
           requiredKeys: ['l7-quiz'],
@@ -357,10 +368,9 @@ print(s3)`}
           ),
         },
 
-        // ── Lektion 9: Pipeline-Aufbau ───────────────────────────────────
+        // ── Lektion 10: Pipeline-Aufbau ──────────────────────────────────
         {
-          title: 'Automation Pipeline – Aufbau und Monitoring',
-          requiredKeys: ['l8-quiz'],
+          title: 'Automation Pipeline – die vier Stationen',
           content: (
             <>
               <Steps title="Die vier Stationen einer Automation Pipeline" items={[
@@ -369,6 +379,17 @@ print(s3)`}
                 { label: 'Output / Notification', description: 'Ergebnis persistieren oder weiterleiten: Datenbank, E-Mail, Ticket, nächste Pipeline.', example: 'Zusammenfassung in Confluence + Slack-Nachricht ans Team.' },
                 { label: 'Monitoring und Fehlerbehandlung', description: 'Pipelines laufen unbeaufsichtigt – Logging, Alerting und Retry-Logik sind Pflicht.', example: 'Bei Fehler: Slack-Alert, Error-Log-Eintrag, automatischer Retry nach 5 Min.' },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 11: Pipeline-Monitoring ──────────────────────────────
+        {
+          title: 'Warum Monitoring unverzichtbar ist',
+          requiredKeys: ['l8-quiz'],
+          content: (
+            <>
+              <Text text="Eine Automation Pipeline läuft ohne Zuschauer. Fällt ein Schritt still aus, merkt es niemand – es sei denn, Monitoring und Fehlerbehandlung sind von Anfang an eingebaut." />
               <QuizCheck
                 blockKey="l8-quiz"
                 title="Kurzer Check"
@@ -401,7 +422,7 @@ export const chapter: ChapterDef = {
   subTopicDescription:
     'Aufgaben zerlegen, Schritte verketten, Architekturen wählen und Agenten deployen.',
   estimatedMinutes: 30,
-  lessonCount: 9,
+  lessonCount: 11,
   tag: 'Allgemein',
   Learn: WorkflowsDeployment,
   quiz: {
@@ -516,7 +537,7 @@ export const chapter: ChapterDef = {
         correct: 1,
         explanation:
           'Automation Pipelines laufen unbeaufsichtigt. Monitoring und Fehlerbehandlung sind deshalb kritisch.',
-        reviewLesson: 'Automation Pipeline \u2013 Aufbau und Monitoring',
+        reviewLesson: 'Warum Monitoring unverzichtbar ist',
       },
     ],
   },

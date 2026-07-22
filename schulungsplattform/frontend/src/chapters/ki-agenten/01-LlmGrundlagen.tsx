@@ -46,7 +46,6 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
         // ── Lektion 2: Grundprinzip ──────────────────────────────────────
         {
           title: 'Wie LLMs arbeiten',
-          requiredKeys: ['l2-quiz'],
           content: (
             <>
               <Text text="Im Kern sind Large Language Models (LLMs) hochentwickelte Text-Vorhersage-Systeme. Sie empfangen eine Eingabe und erzeugen eine Ausgabe – basierend auf Mustern, die sie beim Training gelernt haben." />
@@ -58,6 +57,16 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
                   { id: 'out', type: 'end',   emoji: '💬', label: 'Text / Bild',  sublabel: 'Ausgabe: Antwort, Code, JSON' },
                 ]}
               />
+            </>
+          ),
+        },
+
+        // ── Lektion 3: Eingabe, Verarbeitung, Ausgabe ────────────────────
+        {
+          title: 'Eingabe, Verarbeitung, Ausgabe',
+          requiredKeys: ['l2-quiz'],
+          content: (
+            <>
               <Steps title="Was der Ablauf bedeutet" items={[
                 { label: 'Eingabe', description: 'Du gibst Text (einen Prompt) oder Bilder an das LLM.' },
                 { label: 'Verarbeitung', description: 'Das LLM analysiert die Eingabe mit seinem trainierten neuronalen Netz (z. B. über langchain-bmw).' },
@@ -72,13 +81,13 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
                   'Es führt Programme direkt aus.',
                 ]}
                 correct={1}
-                hint="Schau auf das Diagramm: Was geht rein, was kommt raus?"
+                hint="Schau auf das Diagramm aus der vorigen Lektion: Was geht rein, was kommt raus?"
               />
             </>
           ),
         },
 
-        // ── Lektion 3: Alles ist Text ────────────────────────────────────
+        // ── Lektion 4: Alles ist Text ────────────────────────────────────
         {
           title: 'Alles ist Text (oder unterstützte Modalitäten)',
           requiredKeys: ['l3-quiz'],
@@ -110,7 +119,7 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 4: Tokens ────────────────────────────────────────────
+        // ── Lektion 5: Tokens ────────────────────────────────────────────
         {
           title: 'Tokens – die Bausteine',
           requiredKeys: ['l4-quiz'],
@@ -119,7 +128,7 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
               <Callout
                 tone="info"
                 title="Was ist ein Token?"
-                text="Ein LLM liest Text nicht buchstabenweise, sondern in Stücken – sogenannten Tokens. Ein Token ist oft ein Wort oder Wortteil. Beispiel: 'Automatisierung' wird zu 'Auto' + 'mat' + 'isierung' (3 Tokens). Modellgrenzen und API-Kosten werden in Tokens gemessen."
+                text="Ein LLM liest Text nicht buchstabenweise, sondern in Stücken – sogenannten Tokens (oft ein Wort oder Wortteil). Modellgrenzen und API-Kosten werden in Tokens gemessen."
               />
               <Comparison
                 left={{ label: 'Kurze Wörter', items: ["'Hallo' = 1 Token", "'und' = 1 Token", "'KI' = 1 Token"] }}
@@ -140,7 +149,7 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 5: Kontext-Fenster ───────────────────────────────────
+        // ── Lektion 6: Kontext-Fenster ───────────────────────────────────
         {
           title: 'Das Kontext-Fenster',
           requiredKeys: ['l5-quiz'],
@@ -171,7 +180,7 @@ export default function LlmGrundlagen({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 6: Vorhersagen statt Verstehen ───────────────────────
+        // ── Lektion 7: Vorhersagen statt Verstehen ───────────────────────
         {
           title: 'Vorhersagen statt Verstehen',
           requiredKeys: ['l6-quiz'],
@@ -231,7 +240,7 @@ export const chapter: ChapterDef = {
   subTopicDescription:
     'Das Grundprinzip: Text rein, Text raus \u2013 Tokens, Kontext-Fenster und warum LLMs keine Gedanken haben.',
   estimatedMinutes: 10,
-  lessonCount: 6,
+  lessonCount: 7,
   tag: 'Allgemein',
   Learn: LlmGrundlagen,
   quiz: {

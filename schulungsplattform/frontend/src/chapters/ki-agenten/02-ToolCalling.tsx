@@ -92,7 +92,6 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
         // ── Lektion 3: Was ist ein Tool Call? ────────────────────────────
         {
           title: 'Was ist ein Tool Call?',
-          requiredKeys: ['l3-quiz'],
           content: (
             <>
               <Text text={'Ein Tool Call ist die Möglichkeit für ein LLM, eine klar definierte Funktion aufzurufen – zum Beispiel suche_jira_tickets(projekt="ES-212"). Das LLM erzeugt dabei nur den Aufruf. Das Framework führt die Funktion aus und gibt das Ergebnis zurück.'} />
@@ -107,6 +106,16 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
                   { id: 'ans',    type: 'end',   emoji: '💬', label: 'Antwort',          sublabel: 'LLM fasst zusammen' },
                 ]}
               />
+            </>
+          ),
+        },
+
+        // ── Lektion 4: Wer führt den Tool Call aus? ──────────────────────
+        {
+          title: 'Wer führt den Tool Call aus?',
+          requiredKeys: ['l3-quiz'],
+          content: (
+            <>
               <Callout
                 tone="tip"
                 title="Merke"
@@ -127,10 +136,9 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 4: Jira ──────────────────────────────────────────────
+        // ── Lektion 5: Jira – die Tools ──────────────────────────────────
         {
-          title: 'Beispiel: Jira-Integration',
-          requiredKeys: ['l4-quiz'],
+          title: 'Jira-Integration: die Tools',
           content: (
             <>
               <Text text="Jira ist eines der häufigsten Systeme in Entwicklungsteams. Mit Tool Calling kann ein LLM Tickets anlegen, suchen und aktualisieren – ohne dass der Nutzer die Jira-Oberfläche öffnen muss." />
@@ -139,6 +147,16 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
                 { label: 'suche_tickets(projekt, status, zugewiesen_an)', description: 'Gibt eine Liste passender Tickets zurück.', example: "suche_tickets(projekt='ES-212', status='Offen')" },
                 { label: 'aktualisiere_ticket(ticket_id, felder)', description: 'Ändert Status, Priorität oder Beschreibung.', example: "aktualisiere_ticket('ES-42', {'status': 'In Bearbeitung'})" },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 6: Jira – Ticket anlegen ─────────────────────────────
+        {
+          title: 'Jira-Beispiel: Ticket anlegen',
+          requiredKeys: ['l4-quiz'],
+          content: (
+            <>
               <Diagram
                 caption="Jira-Tool Call: Ticket aus einer Beschreibung anlegen"
                 nodes={[
@@ -164,10 +182,9 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 5: GitHub ────────────────────────────────────────────
+        // ── Lektion 7: GitHub – die Tools ────────────────────────────────
         {
-          title: 'Beispiel: GitHub-Integration',
-          requiredKeys: ['l5-quiz'],
+          title: 'GitHub-Integration: die Tools',
           content: (
             <>
               <Text text="GitHub ist die zentrale Plattform für Code-Zusammenarbeit. Mit Tool Calling kann ein LLM Pull Requests analysieren, Kommentare verfassen und Code-Änderungen verarbeiten – direkt im Entwicklungsworkflow." />
@@ -176,6 +193,16 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
                 { label: 'erstelle_kommentar(repo, pr_nummer, kommentar)', description: 'Verfasst einen Review-Kommentar am PR.', example: "erstelle_kommentar('my-org/backend', 42, 'Bitte Fehlerbehandlung ergänzen.')" },
                 { label: 'lese_datei(repo, pfad, branch)', description: 'Liest den Inhalt einer Datei aus dem Repository.', example: "lese_datei('my-org/backend', 'src/auth.py', 'main')" },
               ]} />
+            </>
+          ),
+        },
+
+        // ── Lektion 8: GitHub – PR zusammenfassen ────────────────────────
+        {
+          title: 'GitHub-Beispiel: PR zusammenfassen',
+          requiredKeys: ['l5-quiz'],
+          content: (
+            <>
               <Diagram
                 caption="GitHub-Tool Call: PR automatisch zusammenfassen"
                 nodes={[
@@ -201,10 +228,9 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
           ),
         },
 
-        // ── Lektion 6: Kombination ───────────────────────────────────────
+        // ── Lektion 9: Kombination ───────────────────────────────────────
         {
           title: 'Mehrere Tools kombinieren',
-          requiredKeys: ['l6-quiz'],
           content: (
             <>
               <Callout
@@ -223,6 +249,17 @@ export default function ToolCalling({ onStartTest, onOpenReference }: Props) {
                   { id: 'done',  type: 'end',   emoji: '✅', label: 'Verknüpft',               sublabel: 'PR und Ticket sind verbunden' },
                 ]}
               />
+            </>
+          ),
+        },
+
+        // ── Lektion 10: Vom Einzelaufruf zum Workflow ────────────────────
+        {
+          title: 'Vom Einzelaufruf zum Workflow',
+          requiredKeys: ['l6-quiz'],
+          content: (
+            <>
+              <Text text="Einzelne Tool Calls sind nützlich – ihren echten Wert entfalten sie aber, wenn ein LLM sie zu einem Ablauf verkettet: lesen, entscheiden, handeln. So entstehen automatisierte Workflows, die mehrere Systeme verbinden." />
               <QuizCheck
                 blockKey="l6-quiz"
                 question="Was ist der Vorteil, wenn ein LLM mehrere Tools kombinieren kann?"
@@ -253,7 +290,7 @@ export const chapter: ChapterDef = {
   subTopicDescription:
     'Tool Calling: Wie ein LLM Jira-Tickets anlegt, GitHub-PRs liest und externe Systeme steuert.',
   estimatedMinutes: 12,
-  lessonCount: 6,
+  lessonCount: 10,
   tag: 'Allgemein',
   Learn: ToolCalling,
   quiz: {
@@ -291,7 +328,7 @@ export const chapter: ChapterDef = {
         correct: 1,
         explanation:
           "Der Nutzer möchte Tickets suchen \u2013 'suche_tickets()' mit den passenden Parametern ist der richtige Aufruf.",
-        reviewLesson: 'Beispiel: Jira-Integration',
+        reviewLesson: 'Jira-Beispiel: Ticket anlegen',
       },
       {
         id: 'q4',
@@ -305,7 +342,7 @@ export const chapter: ChapterDef = {
         correct: 1,
         explanation:
           "Das LLM muss zuerst den PR-Inhalt laden ('lese_pull_request'), bevor es sinnvoll kommentieren kann.",
-        reviewLesson: 'Beispiel: GitHub-Integration',
+        reviewLesson: 'GitHub-Beispiel: PR zusammenfassen',
       },
       {
         id: 'q5',
